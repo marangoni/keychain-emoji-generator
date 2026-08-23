@@ -13,7 +13,7 @@
 
     <link
         rel="stylesheet"
-        href="style.css?v=1"
+        href="style.css?v=2"
     >
 </head>
 
@@ -33,8 +33,8 @@
             </h1>
 
             <p>
-                Escolha um desenho, ajuste as dimensões e gere
-                o SVG para fabricação.
+                Escolha um desenho, ajuste as dimensões
+                e gere o SVG para fabricação.
             </p>
 
         </header>
@@ -157,8 +157,12 @@
                         ● Corte
                     </span>
 
-                    <span class="gravacao">
-                        ● Gravação
+                    <span class="contorno">
+                        ● Contorno
+                    </span>
+
+                    <span class="preenchimento">
+                        ● Preenchimento
                     </span>
 
                 </div>
@@ -390,7 +394,7 @@
                 </div>
 
 
-                <!-- POSIÇÃO -->
+                <!-- POSIÇÃO DA ARGOLA -->
 
                 <div class="grupo-controle slider-posicao">
 
@@ -421,13 +425,33 @@
                 </div>
 
 
-                <!-- AVISO -->
+                <!-- ================================= -->
+                <!-- PREENCHIMENTO                     -->
+                <!-- ================================= -->
 
-                <div class="aviso">
+                <div class="preenchimento-box">
 
-                    O desenho preto representa a gravação.
-                    Quanto maior a quantidade de áreas gravadas,
-                    maior tende a ser o tempo de fabricação.
+                    <label class="checkbox-container">
+
+                        <input
+                            type="checkbox"
+                            id="incluirPreenchimento"
+                        >
+
+                        <span>
+                            Incluir preenchimento do emoji
+                        </span>
+
+                    </label>
+
+
+                    <p class="aviso-fabricacao">
+
+                        ⚠ O preenchimento exige gravação de área
+                        e pode aumentar significativamente o tempo
+                        de fabricação.
+
+                    </p>
 
                 </div>
 
@@ -447,7 +471,7 @@
 
     <!-- GERADOR -->
 
-    <script src="script.js?v=1"></script>
+    <script src="script.js?v=2"></script>
 
 </body>
 

@@ -882,4 +882,57 @@ button:disabled {
     .grade-parametros {
         grid-template-columns: 1fr;
     }
+.legenda .contorno {
+    color: #0000ff;
+}
+
+.legenda .preenchimento {
+    color: #111111;
+}
+
+
+.preenchimento-box {
+    margin-top: 8px;
+
+    padding: 9px 10px;
+
+    background: #fafafa;
+
+    border: 1px solid #e2e2e2;
+
+    border-radius: 6px;
+}
+
+
+.checkbox-container {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+}
+
+
+.checkbox-container input {
+    width: 16px;
+    height: 16px;
+
+    margin: 0;
+}
+
+
+.aviso-fabricacao {
+    margin: 6px 0 0 23px;
+
+    color: #7a5b00;
+
+    font-size: 11px;
+
+    line-height: 1.35;
+}
+
 }

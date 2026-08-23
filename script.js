@@ -36,6 +36,9 @@ const inputPosicaoArgola =
 const valorPosicaoArgola =
     document.getElementById("valorPosicaoArgola");
 
+const inputIncluirPreenchimento =
+    document.getElementById("incluirPreenchimento");
+
 
 const dimensoesFinais =
     document.getElementById("dimensoesFinais");
@@ -99,7 +102,10 @@ let frameAtualizacao = null;
 function poligono(pontos) {
 
     return pontos.map(
-        ([x, y]) => ({ x, y })
+        ([x, y]) => ({
+            x,
+            y
+        })
     );
 }
 
@@ -200,11 +206,20 @@ function retangulo(
 
         [x, y],
 
-        [x + largura, y],
+        [
+            x + largura,
+            y
+        ],
 
-        [x + largura, y + altura],
+        [
+            x + largura,
+            y + altura
+        ],
 
-        [x, y + altura]
+        [
+            x,
+            y + altura
+        ]
     ]);
 }
 
@@ -351,13 +366,41 @@ function fantasma() {
 
 
     pontos.push(
-        { x: 80, y: 78 },
-        { x: 70, y: 70 },
-        { x: 60, y: 80 },
-        { x: 50, y: 70 },
-        { x: 40, y: 80 },
-        { x: 30, y: 70 },
-        { x: 20, y: 78 }
+
+        {
+            x: 80,
+            y: 78
+        },
+
+        {
+            x: 70,
+            y: 70
+        },
+
+        {
+            x: 60,
+            y: 80
+        },
+
+        {
+            x: 50,
+            y: 70
+        },
+
+        {
+            x: 40,
+            y: 80
+        },
+
+        {
+            x: 30,
+            y: 70
+        },
+
+        {
+            x: 20,
+            y: 78
+        }
     );
 
 
@@ -369,9 +412,15 @@ function melancia() {
 
     const pontos = [
 
-        { x: 18, y: 35 },
+        {
+            x: 18,
+            y: 35
+        },
 
-        { x: 82, y: 35 }
+        {
+            x: 82,
+            y: 35
+        }
     ];
 
 
@@ -409,13 +458,18 @@ function melancia() {
 // =====================================================
 // CATÁLOGO
 //
-// O emoji aqui serve apenas para a interface.
+// emoji = somente representação na interface
 //
-// A fabricação utiliza as geometrias vetoriais
-// definidas em silhouette + details.
+// silhouette = geometria externa da figura
+//
+// details = linhas internas em azul
 // =====================================================
 
 const ICONES = [
+
+    // =================================================
+    // GATO
+    // =================================================
 
     {
         id: "cat",
@@ -467,11 +521,16 @@ const ICONES = [
 
             <path d="M38 60 L22 57" />
             <path d="M38 64 L20 65" />
+
             <path d="M62 60 L78 57" />
             <path d="M62 64 L80 65" />
         `
     },
 
+
+    // =================================================
+    // CACHORRO
+    // =================================================
 
     {
         id: "dog",
@@ -510,15 +569,30 @@ const ICONES = [
         ],
 
         details: `
-            <circle cx="39" cy="50" r="3" fill="#000" stroke="none"/>
-            <circle cx="61" cy="50" r="3" fill="#000" stroke="none"/>
+            <circle
+                cx="39"
+                cy="50"
+                r="3"
+            />
+
+            <circle
+                cx="61"
+                cy="50"
+                r="3"
+            />
 
             <path d="M44 62 Q50 66 56 62" />
+
             <path d="M50 65 L50 70" />
+
             <path d="M42 71 Q50 79 58 71" />
         `
     },
 
+
+    // =================================================
+    // TARTARUGA
+    // =================================================
 
     {
         id: "turtle",
@@ -569,22 +643,31 @@ const ICONES = [
         ],
 
         details: `
-            <ellipse cx="47" cy="53" rx="21" ry="15"/>
+            <ellipse
+                cx="47"
+                cy="53"
+                rx="21"
+                ry="15"
+            />
 
             <path d="M32 43 L60 63" />
+
             <path d="M32 63 L60 43" />
+
             <path d="M47 38 L47 68" />
 
             <circle
                 cx="81"
                 cy="49"
                 r="2.5"
-                fill="#000"
-                stroke="none"
             />
         `
     },
 
+
+    // =================================================
+    // CORAÇÃO
+    // =================================================
 
     {
         id: "heart",
@@ -623,6 +706,10 @@ const ICONES = [
     },
 
 
+    // =================================================
+    // ESTRELA
+    // =================================================
+
     {
         id: "star",
 
@@ -633,7 +720,7 @@ const ICONES = [
         categoria: "simbolos",
 
         keywords:
-            "estrela star estrela cinco pontas",
+            "estrela star cinco pontas",
 
         silhouette: () => [
 
@@ -665,6 +752,10 @@ const ICONES = [
     },
 
 
+    // =================================================
+    // FANTASMA
+    // =================================================
+
     {
         id: "ghost",
 
@@ -688,8 +779,6 @@ const ICONES = [
                 cy="45"
                 rx="4"
                 ry="7"
-                fill="#000"
-                stroke="none"
             />
 
             <ellipse
@@ -697,8 +786,6 @@ const ICONES = [
                 cy="45"
                 rx="4"
                 ry="7"
-                fill="#000"
-                stroke="none"
             />
 
             <ellipse
@@ -711,6 +798,10 @@ const ICONES = [
     },
 
 
+    // =================================================
+    // ROBÔ
+    // =================================================
+
     {
         id: "robot",
 
@@ -721,7 +812,7 @@ const ICONES = [
         categoria: "tecnologia",
 
         keywords:
-            "robo robô robot tecnologia ia",
+            "robo robô robot tecnologia ia inteligencia artificial",
 
         silhouette: () => [
 
@@ -763,16 +854,12 @@ const ICONES = [
                 cx="39"
                 cy="47"
                 r="4"
-                fill="#000"
-                stroke="none"
             />
 
             <circle
                 cx="61"
                 cy="47"
                 r="4"
-                fill="#000"
-                stroke="none"
             />
 
             <rect
@@ -783,11 +870,17 @@ const ICONES = [
             />
 
             <path d="M42 59 L42 68" />
+
             <path d="M50 59 L50 68" />
+
             <path d="M58 59 L58 68" />
         `
     },
 
+
+    // =================================================
+    // MELANCIA
+    // =================================================
 
     {
         id: "watermelon",
@@ -808,14 +901,21 @@ const ICONES = [
 
         details: `
             <path d="M23 42 Q50 72 77 42" />
+
             <path d="M29 42 Q50 64 71 42" />
 
             <path d="M38 50 L40 55" />
+
             <path d="M50 53 L50 59" />
+
             <path d="M62 50 L60 55" />
         `
     },
 
+
+    // =================================================
+    // PIZZA
+    // =================================================
 
     {
         id: "pizza",
@@ -869,6 +969,10 @@ const ICONES = [
     },
 
 
+    // =================================================
+    // PATA
+    // =================================================
+
     {
         id: "paw",
 
@@ -879,7 +983,7 @@ const ICONES = [
         categoria: "animais",
 
         keywords:
-            "pata pegada paw animal",
+            "pata pegada paw animal cachorro gato",
 
         silhouette: () => [
 
@@ -923,13 +1027,36 @@ const ICONES = [
                 ry="12"
             />
 
-            <circle cx="30" cy="46" r="6" />
-            <circle cx="43" cy="38" r="6" />
-            <circle cx="57" cy="38" r="6" />
-            <circle cx="70" cy="46" r="6" />
+            <circle
+                cx="30"
+                cy="46"
+                r="6"
+            />
+
+            <circle
+                cx="43"
+                cy="38"
+                r="6"
+            />
+
+            <circle
+                cx="57"
+                cy="38"
+                r="6"
+            />
+
+            <circle
+                cx="70"
+                cy="46"
+                r="6"
+            />
         `
     },
 
+
+    // =================================================
+    // SORRISO
+    // =================================================
 
     {
         id: "smile",
@@ -941,7 +1068,7 @@ const ICONES = [
         categoria: "diversao",
 
         keywords:
-            "sorriso smile feliz happy rosto",
+            "sorriso smile feliz happy rosto emoji",
 
         silhouette: () => [
 
@@ -954,6 +1081,7 @@ const ICONES = [
 
         details: `
             <path d="M33 45 Q38 39 43 45" />
+
             <path d="M57 45 Q62 39 67 45" />
 
             <path
@@ -967,6 +1095,10 @@ const ICONES = [
     },
 
 
+    // =================================================
+    // BORBOLETA
+    // =================================================
+
     {
         id: "butterfly",
 
@@ -977,7 +1109,7 @@ const ICONES = [
         categoria: "animais",
 
         keywords:
-            "borboleta butterfly animal",
+            "borboleta butterfly animal inseto",
 
         silhouette: () => [
 
@@ -1026,12 +1158,15 @@ const ICONES = [
             />
 
             <path d="M47 28 Q40 15 34 16" />
+
             <path d="M53 28 Q60 15 66 16" />
 
             <path d="M24 36 Q35 47 45 50" />
+
             <path d="M76 36 Q65 47 55 50" />
 
             <path d="M26 66 Q35 58 45 56" />
+
             <path d="M74 66 Q65 58 55 56" />
         `
     }
@@ -1277,7 +1412,7 @@ function offsetPaths(
 
 
 // =====================================================
-// EXTERNOS
+// CONTORNOS EXTERNOS
 // =====================================================
 
 function estaDentro(
@@ -1510,8 +1645,11 @@ function boundingBoxClipper(
     return {
 
         minX,
+
         minY,
+
         maxX,
+
         maxY
     };
 }
@@ -1568,7 +1706,8 @@ function clipperParaSvg(
         }
 
 
-        d += "Z ";
+        d +=
+            "Z ";
     }
 
 
@@ -1643,7 +1782,7 @@ function criarCirculoClipper(
 
 
 // =====================================================
-// SLIDER DO PERÍMETRO
+// PERÍMETRO
 // =====================================================
 
 function iniciarPathPelaEsquerda(
@@ -1739,6 +1878,7 @@ function construirPerimetro(
         segmentos.push({
 
             p1,
+
             p2,
 
             inicio:
@@ -1845,6 +1985,19 @@ function normalizar(
         );
 
 
+    if (
+        tamanho === 0
+    ) {
+
+        return {
+
+            x: 1,
+
+            y: 0
+        };
+    }
+
+
     return {
 
         x:
@@ -1864,8 +2017,11 @@ function pontoNoPerimetro(
 ) {
 
     const {
+
         segmentos,
+
         comprimentoTotal
+
     } =
         construirPerimetro(
             path
@@ -1888,6 +2044,7 @@ function pontoNoPerimetro(
 
     const janela =
         Math.max(
+
             3 *
             ESCALA_CLIPPER,
 
@@ -2090,7 +2247,7 @@ function criarConector(
 
 
 // =====================================================
-// RÉGUAS
+// RÉGUA HORIZONTAL
 // =====================================================
 
 function gerarReguaHorizontal(
@@ -2175,6 +2332,10 @@ function gerarReguaHorizontal(
     }
 }
 
+
+// =====================================================
+// RÉGUA VERTICAL
+// =====================================================
 
 function gerarReguaVertical(
     alturaMm
@@ -2421,24 +2582,56 @@ function atualizarPrancheta(
 
 
 // =====================================================
-// GRAVAÇÃO
+// DESENHO DO EMOJI
+//
+// Azul = contorno e detalhes
+// Preto = preenchimento opcional
 // =====================================================
 
-function criarGravacao(
+function criarDesenhoEmoji(
     item,
-    espessuraLinha
+    pathCorpo,
+    espessuraLinha,
+    incluirPreenchimento
 ) {
 
+    const preenchimento =
+        incluirPreenchimento
+            ? "#000000"
+            : "none";
+
+
     return `
+        <!-- ================================= -->
+        <!-- CONTORNO PRINCIPAL DO EMOJI       -->
+        <!-- ================================= -->
+
+        <path
+            id="contorno-emoji"
+            d="${pathCorpo}"
+            fill="${preenchimento}"
+            stroke="#0000FF"
+            stroke-width="${espessuraLinha}"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        />
+
+
+        <!-- ================================= -->
+        <!-- DETALHES INTERNOS                 -->
+        <!-- ================================= -->
+
         <g
-            id="gravacao"
+            id="detalhes-emoji"
             fill="none"
-            stroke="#000000"
+            stroke="#0000FF"
             stroke-width="${espessuraLinha}"
             stroke-linecap="round"
             stroke-linejoin="round"
         >
+
             ${item.details}
+
         </g>
     `;
 }
@@ -2494,13 +2687,47 @@ function gerarSvg() {
             );
 
 
+        const incluirPreenchimento =
+            inputIncluirPreenchimento.checked;
+
+
         valorPosicaoArgola.textContent =
             `${posicaoArgola.toFixed(1)}%`;
 
 
-        // -----------------------------------------
+        // =================================================
+        // VALIDAÇÃO
+        // =================================================
+
+        if (
+            !Number.isFinite(
+                tamanhoMm
+            ) ||
+            tamanhoMm <= 0
+        ) {
+
+            throw new Error(
+                "Altura do desenho inválida."
+            );
+        }
+
+
+        if (
+            !Number.isFinite(
+                bordaMm
+            ) ||
+            bordaMm <= 0
+        ) {
+
+            throw new Error(
+                "Borda inválida."
+            );
+        }
+
+
+        // =================================================
         // SILHUETA ORIGINAL
-        // -----------------------------------------
+        // =================================================
 
         const poligonos =
             item.silhouette();
@@ -2525,21 +2752,18 @@ function gerarSvg() {
             bboxCorpo.minY;
 
 
-        // -----------------------------------------
+        // =================================================
         // ESCALA FÍSICA
-        //
-        // O campo "altura do desenho" corresponde
-        // à silhueta original antes da borda.
-        // -----------------------------------------
+        // =================================================
 
         const mmPorUnidade =
             tamanhoMm /
             alturaCorpo;
 
 
-        // -----------------------------------------
-        // BORDA
-        // -----------------------------------------
+        // =================================================
+        // BORDA EXTERNA PARA CORTE
+        // =================================================
 
         const bordaUnidades =
             bordaMm /
@@ -2559,9 +2783,9 @@ function gerarSvg() {
             );
 
 
-        // -----------------------------------------
+        // =================================================
         // POSIÇÃO DA ARGOLA
-        // -----------------------------------------
+        // =================================================
 
         let principal =
             selecionarContornoPrincipal(
@@ -2582,9 +2806,9 @@ function gerarSvg() {
             );
 
 
-        // -----------------------------------------
+        // =================================================
         // ARGOLA
-        // -----------------------------------------
+        // =================================================
 
         const raioFuro =
             (
@@ -2675,9 +2899,9 @@ function gerarSvg() {
             );
 
 
-        // -----------------------------------------
+        // =================================================
         // DIMENSÕES FINAIS
-        // -----------------------------------------
+        // =================================================
 
         const bboxFinal =
             boundingBoxClipper(
@@ -2713,9 +2937,9 @@ function gerarSvg() {
             } mm`;
 
 
-        // -----------------------------------------
+        // =================================================
         // PATHS
-        // -----------------------------------------
+        // =================================================
 
         const pathCorte =
             clipperParaSvg(
@@ -2729,30 +2953,42 @@ function gerarSvg() {
             );
 
 
-        // -----------------------------------------
+        const pathCorpo =
+            clipperParaSvg(
+                corpo
+            );
+
+
+        // =================================================
         // ESPESSURAS VISUAIS
-        // -----------------------------------------
+        // =================================================
 
         const espessuraCorte =
             0.20 /
             mmPorUnidade;
 
 
-        const espessuraGravacao =
-            0.40 /
+        const espessuraContorno =
+            1.50 /
             mmPorUnidade;
 
 
-        const gravacao =
-            criarGravacao(
+        // =================================================
+        // EMOJI
+        // =================================================
+
+        const desenhoEmoji =
+            criarDesenhoEmoji(
                 item,
-                espessuraGravacao
+                pathCorpo,
+                espessuraContorno,
+                incluirPreenchimento
             );
 
 
-        // -----------------------------------------
+        // =================================================
         // MARGEM DO ARQUIVO
-        // -----------------------------------------
+        // =================================================
 
         const margemMm =
             2;
@@ -2797,9 +3033,9 @@ function gerarSvg() {
             2;
 
 
-        // -----------------------------------------
+        // =================================================
         // SVG PARA DOWNLOAD
-        // -----------------------------------------
+        // =================================================
 
         svgGerado = `
 <svg
@@ -2810,7 +3046,9 @@ function gerarSvg() {
     preserveAspectRatio="xMinYMin meet"
 >
 
-    <!-- CORTE -->
+    <!-- ================================= -->
+    <!-- VERMELHO = CORTE                 -->
+    <!-- ================================= -->
 
     <path
         id="corte"
@@ -2823,17 +3061,20 @@ function gerarSvg() {
     />
 
 
-    <!-- GRAVAÇÃO -->
+    <!-- ================================= -->
+    <!-- AZUL = CONTORNO DO EMOJI          -->
+    <!-- PRETO = PREENCHIMENTO OPCIONAL    -->
+    <!-- ================================= -->
 
-    ${gravacao}
+    ${desenhoEmoji}
 
 </svg>
         `.trim();
 
 
-        // -----------------------------------------
+        // =================================================
         // SVG DA PRANCHETA
-        // -----------------------------------------
+        // =================================================
 
         const svgPreview = `
 <svg
@@ -2844,6 +3085,8 @@ function gerarSvg() {
     preserveAspectRatio="xMidYMid meet"
 >
 
+    <!-- CORTE -->
+
     <path
         d="${pathCorte} ${pathFuro}"
         fill="none"
@@ -2853,11 +3096,18 @@ function gerarSvg() {
         stroke-linejoin="round"
     />
 
-    ${gravacao}
+
+    <!-- EMOJI -->
+
+    ${desenhoEmoji}
 
 </svg>
         `.trim();
 
+
+        // =================================================
+        // PRANCHETA
+        // =================================================
 
         atualizarPrancheta(
             svgPreview,
@@ -3065,6 +3315,12 @@ inputPosicaoArgola.addEventListener(
 
         solicitarAtualizacao();
     }
+);
+
+
+inputIncluirPreenchimento.addEventListener(
+    "change",
+    gerarSvg
 );
 
 
