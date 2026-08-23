@@ -141,3 +141,53 @@ transporte, diversão e esportes.
 
 A busca continua filtrando localmente por nome e palavras-chave. As miniaturas
 usam `loading="lazy"` para evitar carregar todo o catálogo de uma só vez.
+
+
+## Versão 5 — duas coleções de emoji
+
+O seletor agora permite alternar entre:
+
+- **Noto Emoji 600** — coleção monocromática usada como referência principal;
+- **OpenMoji Black 17.0.0** — coleção monocromática alternativa, com outra
+  linguagem visual.
+
+O mesmo catálogo de 218 entradas é reutilizado nas duas coleções. Isso oferece
+até 436 variações visuais sem alterar o motor geométrico.
+
+### OpenMoji
+
+Os SVGs são carregados via jsDelivr:
+
+```text
+https://cdn.jsdelivr.net/npm/openmoji@17.0.0/black/svg/<UNICODE>.svg
+```
+
+OpenMoji é licenciado sob **CC BY-SA 4.0** e exige atribuição.
+
+### Cache
+
+O cache agora é separado por `coleção + código Unicode`, evitando que trocar
+de Noto para OpenMoji reutilize acidentalmente a geometria da coleção anterior.
+
+### Disponibilidade
+
+Se um código Unicode específico não existir numa coleção, a miniatura é
+marcada visualmente como indisponível e a geração mostra uma mensagem clara.
+
+
+## Versão 6 — correção dos strokes fechados do OpenMoji
+
+Os SVGs Black do OpenMoji usam muitos elementos com `fill="none"` e
+`stroke="#000000"`. Alguns desses strokes são caminhos fechados, por exemplo
+partes da boca de 😀.
+
+O motor converte os strokes em áreas vetoriais para preservar a espessura
+original. Um stroke fechado passa a ter dois contornos: externo e interno.
+
+A visualização anterior usava `fill-rule="nonzero"` para essas áreas. Em
+algumas geometrias, isso fazia o contorno interno deixar de funcionar como
+vazio, transformando uma linha fechada em uma mancha azul sólida.
+
+Agora os strokes expandidos são renderizados com `fill-rule="evenodd"`.
+Assim o interior continua vazado, enquanto os fills reais (como os olhos)
+continuam sendo tratados separadamente.

@@ -824,6 +824,34 @@ button:disabled {
 }
 
 
+
+.botao-icone.indisponivel {
+    opacity: 0.28;
+}
+
+.botao-icone.indisponivel img {
+    filter: grayscale(1);
+}
+
+.icone-indisponivel {
+    padding:
+        8px
+        12px;
+
+    color: #777;
+
+    font-size: 11px;
+
+    text-align: center;
+}
+
+.credito-separador {
+    margin:
+        0
+        6px;
+}
+
+
 /* =========================================
    RODAPÉ
    ========================================= */

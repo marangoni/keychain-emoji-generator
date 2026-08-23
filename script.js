@@ -25,6 +25,16 @@
 // DOM
 // =====================================================
 
+const selectColecao =
+    document.getElementById("colecaoEmoji");
+
+const descricaoColecao =
+    document.getElementById("descricaoColecao");
+
+const creditoColecao =
+    document.getElementById("creditoColecao");
+
+
 const inputBusca =
     document.getElementById("buscaIcone");
 
@@ -112,8 +122,53 @@ const medidasPreview =
 // Para uma versão publicada, prefira hospedar os SVGs Noto
 // no próprio projeto, em vez de depender deste endpoint.
 
-const NOTO_600_BASE =
-    "https://assets.cuttle.xyz/noto-emoji-600";
+const COLECOES = {
+
+    noto: {
+
+        id:
+            "noto",
+
+        nome:
+            "Noto Emoji 600",
+
+        descricao:
+            "Noto Emoji monocromático — desenho semelhante ao gerador de referência.",
+
+        credito:
+            "Coleção atual: Noto Emoji 600.",
+
+        base:
+            "https://assets.cuttle.xyz/noto-emoji-600",
+
+        arquivo:
+            hex =>
+                `${hex.toLowerCase()}.svg`
+    },
+
+
+    openmoji: {
+
+        id:
+            "openmoji",
+
+        nome:
+            "OpenMoji Black",
+
+        descricao:
+            "OpenMoji Black — alternativa monocromática com desenho diferente e ampla variedade.",
+
+        credito:
+            "Coleção atual: OpenMoji Black — CC BY-SA 4.0.",
+
+        base:
+            "https://cdn.jsdelivr.net/npm/openmoji@17.0.0/black/svg",
+
+        arquivo:
+            hex =>
+                `${hex.toUpperCase()}.svg`
+    }
+};
 
 
 // PathKit fica no CDN para NÃO enviar pathkit.wasm para
@@ -469,11 +524,63 @@ const cacheEmoji =
 // URL
 // =====================================================
 
+function obterColecaoSelecionada() {
+
+    return (
+        COLECOES[
+            selectColecao.value
+        ] ||
+        COLECOES.noto
+    );
+}
+
+
+function chaveCacheEmoji(
+    item
+) {
+
+    const colecao =
+        obterColecaoSelecionada();
+
+
+    return (
+        colecao.id +
+        ":" +
+        item.hex
+    );
+}
+
+
 function urlIcone(
     item
 ) {
 
-    return `${NOTO_600_BASE}/${item.hex}.svg`;
+    const colecao =
+        obterColecaoSelecionada();
+
+
+    return (
+        colecao.base +
+        "/" +
+        colecao.arquivo(
+            item.hex
+        )
+    );
+}
+
+
+function atualizarInformacoesColecao() {
+
+    const colecao =
+        obterColecaoSelecionada();
+
+
+    descricaoColecao.textContent =
+        colecao.descricao;
+
+
+    creditoColecao.textContent =
+        colecao.credito;
 }
 
 
@@ -501,13 +608,37 @@ function atualizarCabecalhoIcone() {
         item.nome;
 
 
-    iconeSelecionado.innerHTML =
+iconeSelecionado.innerHTML =
         `
             <img
                 src="${urlIcone(item)}"
                 alt="${item.nome}"
             >
         `;
+
+
+    const imagem =
+        iconeSelecionado.querySelector(
+            "img"
+        );
+
+
+    imagem.addEventListener(
+        "error",
+        () => {
+
+            iconeSelecionado.innerHTML =
+                `
+                    <div class="icone-indisponivel">
+                        Ícone indisponível nesta coleção
+                    </div>
+                `;
+        },
+        {
+            once:
+                true
+        }
+    );
 }
 
 
@@ -621,6 +752,31 @@ function renderizarGradeIcones() {
                 renderizarGradeIcones();
 
                 solicitarAtualizacao();
+            }
+        );
+
+
+        const miniatura =
+            botao.querySelector(
+                "img"
+            );
+
+
+        miniatura.addEventListener(
+            "error",
+            () => {
+
+                botao.classList.add(
+                    "indisponivel"
+                );
+
+
+                botao.title =
+                    `${item.nome} — indisponível nesta coleção`;
+            },
+            {
+                once:
+                    true
             }
         );
 
@@ -1687,20 +1843,30 @@ async function carregarEmoji(
     item
 ) {
 
+    const chaveCache =
+        chaveCacheEmoji(
+            item
+        );
+
+
     if (
         cacheEmoji.has(
-            item.id
+            chaveCache
         )
     ) {
 
         return cacheEmoji.get(
-            item.id
+            chaveCache
         );
     }
 
 
+    const colecao =
+        obterColecaoSelecionada();
+
+
     mensagem.textContent =
-        `Carregando ${item.nome}...`;
+        `Carregando ${item.nome} — ${colecao.nome}...`;
 
 
     const resposta =
@@ -1716,7 +1882,7 @@ async function carregarEmoji(
     ) {
 
         throw new Error(
-            `Falha ao carregar ${item.nome}: HTTP ${resposta.status}.`
+            `O ícone ${item.nome} não está disponível em ${colecao.nome} (HTTP ${resposta.status}).`
         );
     }
 
@@ -1791,7 +1957,7 @@ async function carregarEmoji(
 
 
     cacheEmoji.set(
-        item.id,
+        chaveCache,
         resultado
     );
 
@@ -2674,6 +2840,13 @@ function markupEmoji(
     // Eles já foram convertidos em áreas no PathKit.
     // Portanto permanecem AZUIS e preservam a largura
     // original do desenho.
+    //
+    // IMPORTANTE PARA OPENMOJI:
+    // muitos strokes são paths fechados. Ao expandir um
+    // stroke, surgem um contorno externo e um interno.
+    // fill-rule="evenodd" mantém o miolo vazado e evita
+    // que boca, olhos ou outros detalhes virem manchas
+    // azuis sólidas.
     // =============================================
 
     if (
@@ -2686,7 +2859,7 @@ function markupEmoji(
                 d="${dTracos}"
                 fill="#0000FF"
                 stroke="none"
-                fill-rule="nonzero"
+                fill-rule="evenodd"
             />
         `);
     }
@@ -3680,6 +3853,23 @@ function solicitarAtualizacao() {
 // =====================================================
 // EVENTOS
 // =====================================================
+
+selectColecao.addEventListener(
+    "change",
+    () => {
+
+        atualizarInformacoesColecao();
+
+        atualizarInformacoesColecao();
+
+        atualizarCabecalhoIcone();
+
+        renderizarGradeIcones();
+
+        solicitarAtualizacao();
+    }
+);
+
 
 inputBusca.addEventListener(
     "input",

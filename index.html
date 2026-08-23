@@ -12,7 +12,7 @@
 
     <link
         rel="stylesheet"
-        href="style.css?v=4"
+        href="style.css?v=6"
     >
 </head>
 
@@ -184,6 +184,34 @@
                 >
                     Carregando...
                 </div>
+
+            </div>
+
+
+            <div class="grupo-controle">
+
+                <label for="colecaoEmoji">
+                    Coleção
+                </label>
+
+                <select id="colecaoEmoji">
+
+                    <option
+                        value="noto"
+                        selected
+                    >
+                        Noto Emoji 600
+                    </option>
+
+                    <option value="openmoji">
+                        OpenMoji Black
+                    </option>
+
+                </select>
+
+                <small id="descricaoColecao">
+                    Noto Emoji monocromático — desenho semelhante ao gerador de referência.
+                </small>
 
             </div>
 
@@ -481,9 +509,15 @@
 
     <footer class="rodape">
 
-        Protótipo de teste. Os SVGs de emoji são carregados,
-        nesta versão, do endpoint Noto Emoji 600 identificado
-        na página de referência.
+        <span id="creditoColecao">
+            Coleção atual: Noto Emoji 600.
+        </span>
+
+        <span class="credito-separador">•</span>
+
+        <span>
+            OpenMoji: CC BY-SA 4.0.
+        </span>
 
     </footer>
 
@@ -499,7 +533,7 @@
     src="https://cdn.jsdelivr.net/npm/pathkit-wasm@1.0.0/bin/pathkit.js"
 ></script>
 
-<script src="script.js?v=4"></script>
+<script src="script.js?v=6"></script>
 
 </body>
 </html>
