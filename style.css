@@ -2,25 +2,21 @@
     box-sizing: border-box;
 }
 
-
 html,
 body {
     margin: 0;
     min-height: 100%;
 }
 
-
 body {
-    padding: 14px;
-
+    padding: 12px;
     background: #f3f3f3;
+    color: #202020;
 
     font-family:
         Arial,
         Helvetica,
         sans-serif;
-
-    color: #202020;
 }
 
 
@@ -33,8 +29,7 @@ body {
     max-width: 1260px;
 
     margin: 0 auto;
-
-    padding: 22px 26px;
+    padding: 18px 26px;
 
     background: #ffffff;
 
@@ -51,21 +46,25 @@ body {
    ========================================= */
 
 .cabecalho {
-    margin-bottom: 18px;
+    display: flex;
 
-    padding-bottom: 13px;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 16px;
+
+    margin-bottom: 16px;
+    padding-bottom: 12px;
 
     border-bottom:
         1px solid #ededed;
 }
-
 
 .cabecalho h1 {
     margin: 0;
 
     font-size: 29px;
 }
-
 
 .cabecalho p {
     margin:
@@ -76,6 +75,41 @@ body {
     color: #666;
 
     font-size: 13px;
+}
+
+.status-pathkit {
+    flex: none;
+
+    padding:
+        7px
+        10px;
+
+    background: #fff4cf;
+
+    border:
+        1px solid #e4d38c;
+
+    border-radius: 6px;
+
+    color: #6f5a12;
+
+    font-size: 11px;
+}
+
+.status-pathkit.ok {
+    background: #e7f8ee;
+
+    border-color: #b8dfc8;
+
+    color: #27643f;
+}
+
+.status-pathkit.erro {
+    background: #fde8e8;
+
+    border-color: #e7bcbc;
+
+    color: #8a2b2b;
 }
 
 
@@ -104,25 +138,22 @@ body {
     min-width: 0;
 }
 
-
 .visualizacao-cabecalho {
     display: flex;
 
-    justify-content: space-between;
     align-items: flex-start;
+    justify-content: space-between;
 
     gap: 15px;
 
     margin-bottom: 8px;
 }
 
-
 .visualizacao h2 {
     margin: 0;
 
     font-size: 21px;
 }
-
 
 .visualizacao-cabecalho p {
     margin:
@@ -134,7 +165,6 @@ body {
 
     font-size: 12px;
 }
-
 
 .dimensoes-finais {
     padding:
@@ -151,11 +181,6 @@ body {
     white-space: nowrap;
 }
 
-
-/* =========================================
-   PREVIEW
-   ========================================= */
-
 .preview-scroll {
     width: 100%;
 
@@ -167,17 +192,12 @@ body {
         9px;
 }
 
-
-/* =========================================
-   MESA
-   ========================================= */
-
 .mesa-medicao {
     position: relative;
 
     flex: none;
 
-    background: #fff;
+    background: #ffffff;
 
     border:
         1px solid #ddd;
@@ -225,7 +245,6 @@ body {
     z-index: 5;
 }
 
-
 .regua-horizontal {
     position: absolute;
 
@@ -243,7 +262,6 @@ body {
 
     z-index: 4;
 }
-
 
 .regua-vertical {
     position: absolute;
@@ -263,11 +281,6 @@ body {
     z-index: 4;
 }
 
-
-/* =========================================
-   TICKS
-   ========================================= */
-
 .tick-horizontal {
     position: absolute;
 
@@ -279,18 +292,15 @@ body {
     background: #bbb;
 }
 
-
 .tick-horizontal.medio {
     height: 9px;
 }
-
 
 .tick-horizontal.maior {
     height: 13px;
 
     background: #999;
 }
-
 
 .tick-horizontal .label {
     position: absolute;
@@ -308,7 +318,6 @@ body {
     white-space: nowrap;
 }
 
-
 .tick-vertical {
     position: absolute;
 
@@ -320,18 +329,15 @@ body {
     background: #bbb;
 }
 
-
 .tick-vertical.medio {
     width: 9px;
 }
-
 
 .tick-vertical.maior {
     width: 13px;
 
     background: #999;
 }
-
 
 .tick-vertical .label {
     position: absolute;
@@ -348,7 +354,7 @@ body {
 
 
 /* =========================================
-   GRADE
+   ÁREA MILIMETRADA
    ========================================= */
 
 .area-medicao {
@@ -399,7 +405,6 @@ body {
             transparent 1px
         );
 
-
     background-size:
 
         var(--grid-10)
@@ -432,18 +437,14 @@ body {
     z-index: 2;
 }
 
-
 .peca-preview svg {
     display: block;
 
     width: 100%;
     height: 100%;
+
+    overflow: visible;
 }
-
-
-/* =========================================
-   MEDIDAS
-   ========================================= */
 
 .medidas-preview {
     position: absolute;
@@ -463,7 +464,6 @@ body {
     border-radius: 5px;
 
     font-size: 12px;
-
     font-weight: 500;
 }
 
@@ -479,7 +479,6 @@ body {
 
     margin-top: 7px;
 }
-
 
 button {
     min-height: 40px;
@@ -502,18 +501,15 @@ button {
     cursor: pointer;
 }
 
-
 button:hover:not(:disabled) {
     background: #3c3c3c;
 }
-
 
 button:disabled {
     background: #aaa;
 
     cursor: default;
 }
-
 
 .mensagem {
     min-height: 17px;
@@ -527,7 +523,6 @@ button:disabled {
     text-align: right;
 }
 
-
 .legenda {
     display: flex;
 
@@ -540,13 +535,15 @@ button:disabled {
     font-size: 11px;
 }
 
-
-.legenda .corte {
-    color: #d00000;
+.legenda-corte {
+    color: #ff0000;
 }
 
+.legenda-emoji {
+    color: #0000ff;
+}
 
-.legenda .gravacao {
+.legenda-preto {
     color: #111;
 }
 
@@ -566,7 +563,6 @@ button:disabled {
     border-radius: 10px;
 }
 
-
 .grupo-controle {
     display: flex;
 
@@ -577,13 +573,10 @@ button:disabled {
     margin-bottom: 10px;
 }
 
-
 .grupo-controle label {
     font-size: 13px;
-
     font-weight: 500;
 }
-
 
 .grupo-controle input,
 .grupo-controle select {
@@ -605,14 +598,12 @@ button:disabled {
     font-size: 13px;
 }
 
-
 .grupo-controle input:focus,
 .grupo-controle select:focus {
     outline: none;
 
     border-color: #555;
 }
-
 
 .grupo-controle input[type="range"] {
     height: auto;
@@ -622,7 +613,6 @@ button:disabled {
     border: 0;
 }
 
-
 .grupo-controle small {
     color: #777;
 
@@ -631,22 +621,22 @@ button:disabled {
 
 
 /* =========================================
-   ÍCONE SELECIONADO
+   EMOJI
    ========================================= */
 
-.bloco.selecionado {
+.bloco-selecionado {
     margin-bottom: 10px;
 }
-
 
 .titulo-linha {
     display: flex;
 
     justify-content: space-between;
 
+    gap: 10px;
+
     font-size: 13px;
 }
-
 
 .icone-selecionado {
     display: flex;
@@ -654,21 +644,23 @@ button:disabled {
     align-items: center;
     justify-content: center;
 
-    height: 52px;
+    height: 70px;
 
     margin-top: 5px;
 
-    background: #eee;
+    overflow: hidden;
+
+    background: #ededed;
 
     border-radius: 7px;
-
-    font-size: 32px;
 }
 
+.icone-selecionado img {
+    width: 58px;
+    height: 58px;
 
-/* =========================================
-   GRADE DE ÍCONES
-   ========================================= */
+    object-fit: contain;
+}
 
 .grade-icones {
     display: grid;
@@ -678,10 +670,9 @@ button:disabled {
 
     gap: 5px;
 
-    max-height: 150px;
+    max-height: 260px;
 
     margin-bottom: 11px;
-
     padding: 5px;
 
     overflow-y: auto;
@@ -694,17 +685,11 @@ button:disabled {
     border-radius: 6px;
 }
 
-
 .botao-icone {
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
     min-width: 0;
-    min-height: 42px;
+    min-height: 48px;
 
-    padding: 3px;
+    padding: 4px;
 
     border:
         1px solid transparent;
@@ -712,24 +697,42 @@ button:disabled {
     border-radius: 6px;
 
     background: #f4f4f4;
-
-    color: #111;
-
-    font-size: 24px;
-
-    cursor: pointer;
 }
-
 
 .botao-icone:hover {
     background: #e8e8e8;
 }
 
-
 .botao-icone.ativo {
     border-color: #222;
 
-    background: #ddd;
+    background: #dcefff;
+}
+
+.botao-icone img {
+    display: block;
+
+    width: 36px;
+    height: 36px;
+
+    margin: auto;
+
+    object-fit: contain;
+}
+
+
+
+.contador-icones {
+    margin:
+        -5px
+        2px
+        12px;
+
+    color: #777;
+
+    font-size: 11px;
+
+    text-align: right;
 }
 
 
@@ -756,7 +759,6 @@ button:disabled {
     text-transform: uppercase;
 }
 
-
 .grade-parametros {
     display: grid;
 
@@ -769,7 +771,6 @@ button:disabled {
         10px;
 }
 
-
 .campo-unidade {
     display: grid;
 
@@ -779,7 +780,6 @@ button:disabled {
 
     gap: 4px;
 }
-
 
 .campo-unidade span {
     display: flex;
@@ -798,33 +798,48 @@ button:disabled {
     font-size: 11px;
 }
 
-
-.slider-posicao {
-    margin-top: 2px;
+.controle-traco.escondido {
+    display: none;
 }
 
-
-/* =========================================
-   AVISO
-   ========================================= */
-
-.aviso {
+.nota-tecnica {
     margin-top: 8px;
 
-    padding: 8px 10px;
+    padding:
+        8px
+        10px;
 
-    background: #fff8df;
+    background: #eef6fb;
 
     border:
-        1px solid #eadba0;
+        1px solid #d4e2eb;
 
     border-radius: 6px;
 
-    color: #705c17;
+    color: #50616b;
 
     font-size: 11px;
 
     line-height: 1.4;
+}
+
+
+/* =========================================
+   RODAPÉ
+   ========================================= */
+
+.rodape {
+    margin-top: 14px;
+    padding-top: 10px;
+
+    border-top:
+        1px solid #eee;
+
+    color: #888;
+
+    font-size: 10px;
+
+    text-align: center;
 }
 
 
@@ -851,6 +866,11 @@ button:disabled {
 
     .controles {
         order: -1;
+    }
+
+
+    .cabecalho {
+        flex-direction: column;
     }
 
 
@@ -882,57 +902,4 @@ button:disabled {
     .grade-parametros {
         grid-template-columns: 1fr;
     }
-.legenda .contorno {
-    color: #0000ff;
-}
-
-.legenda .preenchimento {
-    color: #111111;
-}
-
-
-.preenchimento-box {
-    margin-top: 8px;
-
-    padding: 9px 10px;
-
-    background: #fafafa;
-
-    border: 1px solid #e2e2e2;
-
-    border-radius: 6px;
-}
-
-
-.checkbox-container {
-    display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    cursor: pointer;
-
-    font-size: 13px;
-}
-
-
-.checkbox-container input {
-    width: 16px;
-    height: 16px;
-
-    margin: 0;
-}
-
-
-.aviso-fabricacao {
-    margin: 6px 0 0 23px;
-
-    color: #7a5b00;
-
-    font-size: 11px;
-
-    line-height: 1.35;
-}
-
 }
