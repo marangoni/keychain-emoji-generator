@@ -1,0 +1,885 @@
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+
+body {
+    padding: 14px;
+
+    background: #f3f3f3;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    color: #202020;
+}
+
+
+/* =========================================
+   CONTAINER
+   ========================================= */
+
+.container {
+    width: 100%;
+    max-width: 1260px;
+
+    margin: 0 auto;
+
+    padding: 22px 26px;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 5px 20px
+        rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================
+   CABEÇALHO
+   ========================================= */
+
+.cabecalho {
+    margin-bottom: 18px;
+
+    padding-bottom: 13px;
+
+    border-bottom:
+        1px solid #ededed;
+}
+
+
+.cabecalho h1 {
+    margin: 0;
+
+    font-size: 29px;
+}
+
+
+.cabecalho p {
+    margin:
+        5px
+        0
+        0;
+
+    color: #666;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   PAINEL
+   ========================================= */
+
+.painel {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        350px;
+
+    gap: 28px;
+
+    align-items: start;
+}
+
+
+/* =========================================
+   VISUALIZAÇÃO
+   ========================================= */
+
+.visualizacao {
+    min-width: 0;
+}
+
+
+.visualizacao-cabecalho {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 15px;
+
+    margin-bottom: 8px;
+}
+
+
+.visualizacao h2 {
+    margin: 0;
+
+    font-size: 21px;
+}
+
+
+.visualizacao-cabecalho p {
+    margin:
+        3px
+        0
+        0;
+
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+.dimensoes-finais {
+    padding:
+        7px
+        10px;
+
+    background: #f3f3f3;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   PREVIEW
+   ========================================= */
+
+.preview-scroll {
+    width: 100%;
+
+    overflow: auto;
+
+    padding:
+        5px
+        5px
+        9px;
+}
+
+
+/* =========================================
+   MESA
+   ========================================= */
+
+.mesa-medicao {
+    position: relative;
+
+    flex: none;
+
+    background: #fff;
+
+    border:
+        1px solid #ddd;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 3px 10px
+        rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================================
+   RÉGUAS
+   ========================================= */
+
+.canto-regua {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 38px;
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #f5f5f5;
+
+    border-right:
+        1px solid #d5d5d5;
+
+    border-bottom:
+        1px solid #d5d5d5;
+
+    color: #888;
+
+    font-size: 10px;
+
+    z-index: 5;
+}
+
+
+.regua-horizontal {
+    position: absolute;
+
+    left: 38px;
+    top: 0;
+
+    height: 30px;
+
+    background: #f8f8f8;
+
+    border-bottom:
+        1px solid #d5d5d5;
+
+    overflow: hidden;
+
+    z-index: 4;
+}
+
+
+.regua-vertical {
+    position: absolute;
+
+    left: 0;
+    top: 30px;
+
+    width: 38px;
+
+    background: #f8f8f8;
+
+    border-right:
+        1px solid #d5d5d5;
+
+    overflow: hidden;
+
+    z-index: 4;
+}
+
+
+/* =========================================
+   TICKS
+   ========================================= */
+
+.tick-horizontal {
+    position: absolute;
+
+    bottom: 0;
+
+    width: 1px;
+    height: 5px;
+
+    background: #bbb;
+}
+
+
+.tick-horizontal.medio {
+    height: 9px;
+}
+
+
+.tick-horizontal.maior {
+    height: 13px;
+
+    background: #999;
+}
+
+
+.tick-horizontal .label {
+    position: absolute;
+
+    top: -14px;
+    left: 0;
+
+    transform:
+        translateX(-50%);
+
+    color: #888;
+
+    font-size: 10px;
+
+    white-space: nowrap;
+}
+
+
+.tick-vertical {
+    position: absolute;
+
+    right: 0;
+
+    height: 1px;
+    width: 5px;
+
+    background: #bbb;
+}
+
+
+.tick-vertical.medio {
+    width: 9px;
+}
+
+
+.tick-vertical.maior {
+    width: 13px;
+
+    background: #999;
+}
+
+
+.tick-vertical .label {
+    position: absolute;
+
+    right: 16px;
+    top: -6px;
+
+    color: #888;
+
+    font-size: 10px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   GRADE
+   ========================================= */
+
+.area-medicao {
+    position: absolute;
+
+    left: 38px;
+    top: 30px;
+
+    overflow: hidden;
+
+    background-color: #fff;
+
+    background-image:
+
+        linear-gradient(
+            to right,
+            #cfcfcf 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            to bottom,
+            #cfcfcf 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            to right,
+            #e1e1e1 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            to bottom,
+            #e1e1e1 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            to right,
+            #f0f0f0 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            to bottom,
+            #f0f0f0 1px,
+            transparent 1px
+        );
+
+
+    background-size:
+
+        var(--grid-10)
+        var(--grid-10),
+
+        var(--grid-10)
+        var(--grid-10),
+
+        var(--grid-5)
+        var(--grid-5),
+
+        var(--grid-5)
+        var(--grid-5),
+
+        var(--grid-1)
+        var(--grid-1),
+
+        var(--grid-1)
+        var(--grid-1);
+}
+
+
+/* =========================================
+   PEÇA
+   ========================================= */
+
+.peca-preview {
+    position: absolute;
+
+    z-index: 2;
+}
+
+
+.peca-preview svg {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================
+   MEDIDAS
+   ========================================= */
+
+.medidas-preview {
+    position: absolute;
+
+    left: 12px;
+    bottom: 10px;
+
+    z-index: 3;
+
+    padding:
+        5px
+        8px;
+
+    background:
+        rgba(255, 255, 255, 0.92);
+
+    border-radius: 5px;
+
+    font-size: 12px;
+
+    font-weight: 500;
+}
+
+
+/* =========================================
+   DOWNLOAD
+   ========================================= */
+
+.acoes-preview {
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 7px;
+}
+
+
+button {
+    min-height: 40px;
+
+    padding:
+        9px
+        22px;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    background: #222;
+
+    color: #fff;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+
+button:hover:not(:disabled) {
+    background: #3c3c3c;
+}
+
+
+button:disabled {
+    background: #aaa;
+
+    cursor: default;
+}
+
+
+.mensagem {
+    min-height: 17px;
+
+    margin-top: 5px;
+
+    color: #666;
+
+    font-size: 11px;
+
+    text-align: right;
+}
+
+
+.legenda {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 13px;
+
+    margin-top: 3px;
+
+    font-size: 11px;
+}
+
+
+.legenda .corte {
+    color: #d00000;
+}
+
+
+.legenda .gravacao {
+    color: #111;
+}
+
+
+/* =========================================
+   CONTROLES
+   ========================================= */
+
+.controles {
+    padding: 15px;
+
+    background: #fafafa;
+
+    border:
+        1px solid #eeeeee;
+
+    border-radius: 10px;
+}
+
+
+.grupo-controle {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    margin-bottom: 10px;
+}
+
+
+.grupo-controle label {
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+
+.grupo-controle input,
+.grupo-controle select {
+    width: 100%;
+
+    height: 34px;
+
+    padding:
+        5px
+        8px;
+
+    border:
+        1px solid #c9c9c9;
+
+    border-radius: 5px;
+
+    background: #fff;
+
+    font-size: 13px;
+}
+
+
+.grupo-controle input:focus,
+.grupo-controle select:focus {
+    outline: none;
+
+    border-color: #555;
+}
+
+
+.grupo-controle input[type="range"] {
+    height: auto;
+
+    padding: 0;
+
+    border: 0;
+}
+
+
+.grupo-controle small {
+    color: #777;
+
+    font-size: 11px;
+}
+
+
+/* =========================================
+   ÍCONE SELECIONADO
+   ========================================= */
+
+.bloco.selecionado {
+    margin-bottom: 10px;
+}
+
+
+.titulo-linha {
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 13px;
+}
+
+
+.icone-selecionado {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    height: 52px;
+
+    margin-top: 5px;
+
+    background: #eee;
+
+    border-radius: 7px;
+
+    font-size: 32px;
+}
+
+
+/* =========================================
+   GRADE DE ÍCONES
+   ========================================= */
+
+.grade-icones {
+    display: grid;
+
+    grid-template-columns:
+        repeat(6, 1fr);
+
+    gap: 5px;
+
+    max-height: 150px;
+
+    margin-bottom: 11px;
+
+    padding: 5px;
+
+    overflow-y: auto;
+
+    background: #fff;
+
+    border:
+        1px solid #ddd;
+
+    border-radius: 6px;
+}
+
+
+.botao-icone {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 0;
+    min-height: 42px;
+
+    padding: 3px;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 6px;
+
+    background: #f4f4f4;
+
+    color: #111;
+
+    font-size: 24px;
+
+    cursor: pointer;
+}
+
+
+.botao-icone:hover {
+    background: #e8e8e8;
+}
+
+
+.botao-icone.ativo {
+    border-color: #222;
+
+    background: #ddd;
+}
+
+
+/* =========================================
+   PARÂMETROS
+   ========================================= */
+
+.separador {
+    margin:
+        4px
+        0
+        10px;
+
+    padding-top: 10px;
+
+    border-top:
+        1px solid #e4e4e4;
+
+    color: #666;
+
+    font-size: 11px;
+    font-weight: bold;
+
+    text-transform: uppercase;
+}
+
+
+.grade-parametros {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap:
+        2px
+        10px;
+}
+
+
+.campo-unidade {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        35px;
+
+    gap: 4px;
+}
+
+
+.campo-unidade span {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    height: 34px;
+
+    background: #eee;
+
+    border-radius: 5px;
+
+    color: #666;
+
+    font-size: 11px;
+}
+
+
+.slider-posicao {
+    margin-top: 2px;
+}
+
+
+/* =========================================
+   AVISO
+   ========================================= */
+
+.aviso {
+    margin-top: 8px;
+
+    padding: 8px 10px;
+
+    background: #fff8df;
+
+    border:
+        1px solid #eadba0;
+
+    border-radius: 6px;
+
+    color: #705c17;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================
+   RESPONSIVO
+   ========================================= */
+
+@media (max-width: 900px) {
+
+    body {
+        padding: 8px;
+    }
+
+
+    .container {
+        padding: 18px;
+    }
+
+
+    .painel {
+        grid-template-columns: 1fr;
+    }
+
+
+    .controles {
+        order: -1;
+    }
+
+
+    .cabecalho h1 {
+        font-size: 24px;
+    }
+
+
+    .visualizacao-cabecalho {
+        flex-direction: column;
+    }
+
+
+    .grade-icones {
+        grid-template-columns:
+            repeat(8, 1fr);
+    }
+}
+
+
+@media (max-width: 550px) {
+
+    .grade-icones {
+        grid-template-columns:
+            repeat(6, 1fr);
+    }
+
+
+    .grade-parametros {
+        grid-template-columns: 1fr;
+    }
+}

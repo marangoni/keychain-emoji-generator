@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Gerador de chaveiros com emoji - NuRIA</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css?v=1"
+    >
+</head>
+
+
+<body>
+
+    <main class="container">
+
+        <!-- ===================================== -->
+        <!-- CABEÇALHO                             -->
+        <!-- ===================================== -->
+
+        <header class="cabecalho">
+
+            <h1>
+                Gerador de chaveiros com emoji - NuRIA
+            </h1>
+
+            <p>
+                Escolha um desenho, ajuste as dimensões e gere
+                o SVG para fabricação.
+            </p>
+
+        </header>
+
+
+        <!-- ===================================== -->
+        <!-- CONTEÚDO PRINCIPAL                    -->
+        <!-- ===================================== -->
+
+        <div class="painel">
+
+
+            <!-- ================================= -->
+            <!-- VISUALIZAÇÃO                      -->
+            <!-- ================================= -->
+
+            <section class="visualizacao">
+
+                <div class="visualizacao-cabecalho">
+
+                    <div>
+
+                        <h2>
+                            Visualização
+                        </h2>
+
+                        <p>
+                            Grade dimensional em milímetros.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        id="dimensoesFinais"
+                        class="dimensoes-finais"
+                    >
+                        Dimensões finais: —
+                    </div>
+
+                </div>
+
+
+                <!-- PRANCHETA -->
+
+                <div class="preview-scroll">
+
+                    <div
+                        id="mesaMedicao"
+                        class="mesa-medicao"
+                    >
+
+                        <div class="canto-regua">
+                            mm
+                        </div>
+
+
+                        <div
+                            id="reguaHorizontal"
+                            class="regua-horizontal"
+                        ></div>
+
+
+                        <div
+                            id="reguaVertical"
+                            class="regua-vertical"
+                        ></div>
+
+
+                        <div
+                            id="areaMedicao"
+                            class="area-medicao"
+                        >
+
+                            <div
+                                id="pecaPreview"
+                                class="peca-preview"
+                            ></div>
+
+
+                            <div
+                                id="medidasPreview"
+                                class="medidas-preview"
+                            >
+                                —
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DOWNLOAD -->
+
+                <div class="acoes-preview">
+
+                    <button
+                        id="baixar"
+                        disabled
+                    >
+                        Baixar SVG
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="mensagem"
+                    class="mensagem"
+                ></div>
+
+
+                <!-- LEGENDA -->
+
+                <div class="legenda">
+
+                    <span class="corte">
+                        ● Corte
+                    </span>
+
+                    <span class="gravacao">
+                        ● Gravação
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================================= -->
+            <!-- CONTROLES                         -->
+            <!-- ================================= -->
+
+            <section class="controles">
+
+
+                <!-- EMOJI SELECIONADO -->
+
+                <div class="bloco selecionado">
+
+                    <div class="titulo-linha">
+
+                        <span>
+                            Desenho
+                        </span>
+
+                        <strong id="nomeIconeSelecionado">
+                            Gato
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        id="iconeSelecionado"
+                        class="icone-selecionado"
+                    >
+                        🐱
+                    </div>
+
+                </div>
+
+
+                <!-- BUSCA -->
+
+                <div class="grupo-controle">
+
+                    <label for="buscaIcone">
+                        Buscar
+                    </label>
+
+                    <input
+                        type="search"
+                        id="buscaIcone"
+                        placeholder="Ex.: gato, coração, robô..."
+                    >
+
+                </div>
+
+
+                <!-- CATEGORIA -->
+
+                <div class="grupo-controle">
+
+                    <label for="categoriaIcone">
+                        Categoria
+                    </label>
+
+                    <select id="categoriaIcone">
+
+                        <option value="todos">
+                            Todos
+                        </option>
+
+                        <option value="animais">
+                            Animais
+                        </option>
+
+                        <option value="comida">
+                            Comida
+                        </option>
+
+                        <option value="simbolos">
+                            Símbolos
+                        </option>
+
+                        <option value="diversao">
+                            Diversão
+                        </option>
+
+                        <option value="tecnologia">
+                            Tecnologia
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- GRADE DE ÍCONES -->
+
+                <div
+                    id="gradeIcones"
+                    class="grade-icones"
+                ></div>
+
+
+                <!-- ================================= -->
+                <!-- GEOMETRIA                         -->
+                <!-- ================================= -->
+
+                <div class="separador">
+                    Dimensões
+                </div>
+
+
+                <div class="grade-parametros">
+
+
+                    <!-- TAMANHO -->
+
+                    <div class="grupo-controle">
+
+                        <label for="tamanhoEmoji">
+                            Altura do desenho
+                        </label>
+
+                        <div class="campo-unidade">
+
+                            <input
+                                type="number"
+                                id="tamanhoEmoji"
+                                value="35"
+                                min="15"
+                                max="100"
+                                step="1"
+                            >
+
+                            <span>
+                                mm
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BORDA -->
+
+                    <div class="grupo-controle">
+
+                        <label for="borda">
+                            Borda
+                        </label>
+
+                        <div class="campo-unidade">
+
+                            <input
+                                type="number"
+                                id="borda"
+                                value="3"
+                                min="0.5"
+                                max="15"
+                                step="0.5"
+                            >
+
+                            <span>
+                                mm
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FURO -->
+
+                    <div class="grupo-controle">
+
+                        <label for="furo">
+                            Furo
+                        </label>
+
+                        <div class="campo-unidade">
+
+                            <input
+                                type="number"
+                                id="furo"
+                                value="5"
+                                min="2"
+                                max="15"
+                                step="0.5"
+                            >
+
+                            <span>
+                                mm
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ARGOLA -->
+
+                    <div class="grupo-controle">
+
+                        <label for="espessuraArgola">
+                            Espessura da argola
+                        </label>
+
+                        <div class="campo-unidade">
+
+                            <input
+                                type="number"
+                                id="espessuraArgola"
+                                value="3"
+                                min="1"
+                                max="10"
+                                step="0.5"
+                            >
+
+                            <span>
+                                mm
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- POSIÇÃO -->
+
+                <div class="grupo-controle slider-posicao">
+
+                    <label for="posicaoArgola">
+
+                        Posição da argola:
+
+                        <strong id="valorPosicaoArgola">
+                            0.0%
+                        </strong>
+
+                    </label>
+
+
+                    <input
+                        type="range"
+                        id="posicaoArgola"
+                        min="0"
+                        max="100"
+                        value="0"
+                        step="0.1"
+                    >
+
+                    <small>
+                        Deslize para mover a argola ao redor da peça.
+                    </small>
+
+                </div>
+
+
+                <!-- AVISO -->
+
+                <div class="aviso">
+
+                    O desenho preto representa a gravação.
+                    Quanto maior a quantidade de áreas gravadas,
+                    maior tende a ser o tempo de fabricação.
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- CLIPPER -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/clipper-lib@6.4.2/clipper.js"
+    ></script>
+
+
+    <!-- GERADOR -->
+
+    <script src="script.js?v=1"></script>
+
+</body>
+
+</html>
