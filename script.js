@@ -1,23 +1,21 @@
 // =====================================================
-// Gerador de chaveiros com emoji - NuRIA
+// Gerador de chaveiros e cards com emoji - NuRIA
+// Versão 7
 //
-// Versão PathKit.
+// vermelho = corte
+// azul     = gravação
+// preto    = preenchimento opcional
 //
-// Receita reproduzida a partir do projeto de referência:
-//
-// Emoji 1:
-//   Emoji -> scale -> Expand(round) -> RemoveHoles
-//         -> AddHole -> stroke vermelho
-//
-// Emoji 2:
-//   Emoji -> scale -> fill de gravação
-//
-// Nesta versão:
-//   vermelho = corte
-//   azul     = gravação padrão
-//   preto    = opção alternativa de preenchimento
-//
-// A geometria é vetorial do início ao fim.
+// V7:
+// - Chaveiro ou Card
+// - Card com argola opcional
+// - Identificação opcional do autor
+// - Nome do autor em azul, 5 mm abaixo da peça
+// - Nome de arquivo:
+//   chaveiro-emoji-Herbert.svg
+//   chaveiro-emoji-aluno.svg
+//   emoji-card-Herbert.svg
+//   emoji-card-aluno.svg
 // =====================================================
 
 
@@ -25,177 +23,110 @@
 // DOM
 // =====================================================
 
-const selectColecao =
-    document.getElementById("colecaoEmoji");
+const selectColecao = document.getElementById("colecaoEmoji");
+const descricaoColecao = document.getElementById("descricaoColecao");
+const creditoColecao = document.getElementById("creditoColecao");
 
-const descricaoColecao =
-    document.getElementById("descricaoColecao");
+const inputBusca = document.getElementById("buscaIcone");
+const selectCategoria = document.getElementById("categoriaIcone");
+const gradeIcones = document.getElementById("gradeIcones");
+const contadorIcones = document.getElementById("contadorIcones");
+const iconeSelecionado = document.getElementById("iconeSelecionado");
+const nomeIconeSelecionado = document.getElementById("nomeIconeSelecionado");
 
-const creditoColecao =
-    document.getElementById("creditoColecao");
+const formatoChaveiro = document.getElementById("formatoChaveiro");
+const formatoCard = document.getElementById("formatoCard");
+const controlesChaveiro = document.getElementById("controlesChaveiro");
+const controlesCard = document.getElementById("controlesCard");
+const controlesArgola = document.getElementById("controlesArgola");
 
+const inputTamanho = document.getElementById("tamanhoEmoji");
+const inputBorda = document.getElementById("borda");
 
-const inputBusca =
-    document.getElementById("buscaIcone");
+const inputCardLargura = document.getElementById("cardLargura");
+const inputCardAltura = document.getElementById("cardAltura");
+const inputCardRaio = document.getElementById("cardRaio");
+const inputCardMargem = document.getElementById("cardMargem");
+const inputCardArgola = document.getElementById("cardArgola");
 
-const selectCategoria =
-    document.getElementById("categoriaIcone");
+const inputFuro = document.getElementById("furo");
+const inputEspessuraArgola = document.getElementById("espessuraArgola");
+const inputPosicaoArgola = document.getElementById("posicaoArgola");
+const valorPosicaoArgola = document.getElementById("valorPosicaoArgola");
 
-const gradeIcones =
-    document.getElementById("gradeIcones");
+const selectEstiloEmoji = document.getElementById("estiloEmoji");
+const inputTracoEmoji = document.getElementById("tracoEmoji");
+const controleTraco = document.getElementById("controleTraco");
 
-const contadorIcones =
-    document.getElementById("contadorIcones");
+const inputIdentificarAutor = document.getElementById("identificarAutor");
+const inputNomeAutor = document.getElementById("nomeAutor");
 
-const iconeSelecionado =
-    document.getElementById("iconeSelecionado");
+const dimensoesFinais = document.getElementById("dimensoesFinais");
+const botaoBaixar = document.getElementById("baixar");
+const mensagem = document.getElementById("mensagem");
+const statusPathKit = document.getElementById("statusPathKit");
 
-const nomeIconeSelecionado =
-    document.getElementById("nomeIconeSelecionado");
-
-
-const inputTamanho =
-    document.getElementById("tamanhoEmoji");
-
-const inputBorda =
-    document.getElementById("borda");
-
-const inputFuro =
-    document.getElementById("furo");
-
-const inputEspessuraArgola =
-    document.getElementById("espessuraArgola");
-
-const inputPosicaoArgola =
-    document.getElementById("posicaoArgola");
-
-const valorPosicaoArgola =
-    document.getElementById("valorPosicaoArgola");
-
-const selectEstiloEmoji =
-    document.getElementById("estiloEmoji");
-
-const inputTracoEmoji =
-    document.getElementById("tracoEmoji");
-
-const controleTraco =
-    document.getElementById("controleTraco");
-
-
-const dimensoesFinais =
-    document.getElementById("dimensoesFinais");
-
-const botaoBaixar =
-    document.getElementById("baixar");
-
-const mensagem =
-    document.getElementById("mensagem");
-
-const statusPathKit =
-    document.getElementById("statusPathKit");
-
-
-const mesaMedicao =
-    document.getElementById("mesaMedicao");
-
-const reguaHorizontal =
-    document.getElementById("reguaHorizontal");
-
-const reguaVertical =
-    document.getElementById("reguaVertical");
-
-const areaMedicao =
-    document.getElementById("areaMedicao");
-
-const pecaPreview =
-    document.getElementById("pecaPreview");
-
-const medidasPreview =
-    document.getElementById("medidasPreview");
+const mesaMedicao = document.getElementById("mesaMedicao");
+const reguaHorizontal = document.getElementById("reguaHorizontal");
+const reguaVertical = document.getElementById("reguaVertical");
+const areaMedicao = document.getElementById("areaMedicao");
+const pecaPreview = document.getElementById("pecaPreview");
+const medidasPreview = document.getElementById("medidasPreview");
 
 
 // =====================================================
 // CONFIGURAÇÕES
 // =====================================================
 
-// Mesmo conjunto identificado no projeto de referência.
-// Para uma versão publicada, prefira hospedar os SVGs Noto
-// no próprio projeto, em vez de depender deste endpoint.
-
 const COLECOES = {
-
     noto: {
-
-        id:
-            "noto",
-
-        nome:
-            "Noto Emoji 600",
-
+        id: "noto",
+        nome: "Noto Emoji 600",
         descricao:
             "Noto Emoji monocromático — desenho semelhante ao gerador de referência.",
-
         credito:
             "Coleção atual: Noto Emoji 600.",
-
         base:
             "https://assets.cuttle.xyz/noto-emoji-600",
-
         arquivo:
-            hex =>
-                `${hex.toLowerCase()}.svg`
+            hex => `${hex.toLowerCase()}.svg`
     },
 
-
     openmoji: {
-
-        id:
-            "openmoji",
-
-        nome:
-            "OpenMoji Black",
-
+        id: "openmoji",
+        nome: "OpenMoji Black",
         descricao:
             "OpenMoji Black — alternativa monocromática com desenho diferente e ampla variedade.",
-
         credito:
             "Coleção atual: OpenMoji Black — CC BY-SA 4.0.",
-
         base:
             "https://cdn.jsdelivr.net/npm/openmoji@17.0.0/black/svg",
-
         arquivo:
-            hex =>
-                `${hex.toUpperCase()}.svg`
+            hex => `${hex.toUpperCase()}.svg`
     }
 };
 
 
-// PathKit fica no CDN para NÃO enviar pathkit.wasm para
-// o GitHub do usuário.
-
 const PATHKIT_CDN =
     "https://cdn.jsdelivr.net/npm/pathkit-wasm@1.0.0/bin/";
 
+const PX_POR_MM = 5;
 
-const PX_POR_MM =
-    5;
+const LARGURA_REGUA_VERTICAL = 38;
+const ALTURA_REGUA_HORIZONTAL = 30;
 
-const LARGURA_REGUA_VERTICAL =
-    38;
+const MARGEM_PRANCHETA_MM = 8;
 
-const ALTURA_REGUA_HORIZONTAL =
-    30;
-
-const MARGEM_PRANCHETA_MM =
-    10;
+const ESPESSURA_CORTE_MM = 0.15;
+const MARGEM_SVG_DOWNLOAD_MM = 2;
 
 
-// Linha vermelha fina apenas para classificação
-// no software de corte.
+// Autor: mesmo padrão usado no gerador de futebol.
 
-const ESPESSURA_CORTE_MM =
-    0.15;
+const TAMANHO_AUTOR_MM = 2.82;
+const TAMANHO_MIN_AUTOR_MM = 1.8;
+const DISTANCIA_AUTOR_CORTE_MM = 5;
+const MARGEM_AUTOR_LATERAL_MM = 2;
 
 
 // =====================================================
@@ -209,7 +140,6 @@ function icone(
     categoria,
     keywords = ""
 ) {
-
     return {
         id,
         nome,
@@ -222,10 +152,7 @@ function icone(
 
 const ICONES = [
 
-    // =================================================
     // ROSTOS
-    // =================================================
-
     icone("grinning", "Rosto sorridente", "1f600", "rostos", "grinning sorriso feliz"),
     icone("smiley", "Rosto sorridente com olhos grandes", "1f603", "rostos", "sorriso feliz olhos"),
     icone("smile-open", "Rosto sorridente alegre", "1f604", "rostos", "sorriso feliz"),
@@ -270,10 +197,7 @@ const ICONES = [
     icone("nerd", "Nerd", "1f913", "rostos", "nerd óculos"),
     icone("monocle", "Monóculo", "1f9d0", "rostos", "monóculo"),
 
-    // =================================================
     // GATOS
-    // =================================================
-
     icone("cat-grin", "Gato sorridente", "1f638", "animais", "gato cat gatinho sorriso sorridente"),
     icone("cat-smile", "Gato feliz", "1f63a", "animais", "gato feliz"),
     icone("cat-joy", "Gato rindo", "1f639", "animais", "gato rindo"),
@@ -284,10 +208,7 @@ const ICONES = [
     icone("cat-cry", "Gato chorando", "1f63f", "animais", "gato choro"),
     icone("cat-angry", "Gato bravo", "1f63e", "animais", "gato bravo"),
 
-    // =================================================
     // ANIMAIS
-    // =================================================
-
     icone("dog", "Cachorro", "1f436", "animais", "cachorro cao cão dog"),
     icone("cat", "Gato", "1f431", "animais", "gato cat"),
     icone("mouse", "Rato", "1f42d", "animais", "rato mouse"),
@@ -335,10 +256,7 @@ const ICONES = [
     icone("shark", "Tubarão", "1f988", "animais", "tubarão tubarao shark"),
     icone("crocodile", "Crocodilo", "1f40a", "animais", "crocodilo"),
 
-    // =================================================
-    // PESSOAS / PERSONAGENS
-    // =================================================
-
+    // PESSOAS
     icone("baby", "Bebê", "1f476", "pessoas", "bebê bebe baby"),
     icone("boy", "Menino", "1f466", "pessoas", "menino boy"),
     icone("girl", "Menina", "1f467", "pessoas", "menina girl"),
@@ -353,10 +271,7 @@ const ICONES = [
     icone("angel", "Anjinho", "1f47c", "pessoas", "anjo angel"),
     icone("princess", "Princesa", "1f478", "pessoas", "princesa princess"),
 
-    // =================================================
     // COMIDA
-    // =================================================
-
     icone("apple-red", "Maçã", "1f34e", "comida", "maçã maca apple"),
     icone("apple-green", "Maçã verde", "1f34f", "comida", "maçã verde apple"),
     icone("pear", "Pera", "1f350", "comida", "pera pear"),
@@ -391,10 +306,7 @@ const ICONES = [
     icone("cake", "Bolo de aniversário", "1f382", "comida", "bolo aniversário aniversario cake"),
     icone("coffee", "Café", "2615", "comida", "café cafe coffee"),
 
-    // =================================================
     // NATUREZA
-    // =================================================
-
     icone("sun", "Sol", "2600", "natureza", "sol sun"),
     icone("moon", "Lua", "1f319", "natureza", "lua moon"),
     icone("cloud", "Nuvem", "2601", "natureza", "nuvem cloud"),
@@ -409,10 +321,7 @@ const ICONES = [
     icone("cactus", "Cacto", "1f335", "natureza", "cacto cactus"),
     icone("leaf", "Folha", "1f343", "natureza", "folha leaf"),
 
-    // =================================================
     // SÍMBOLOS
-    // =================================================
-
     icone("heart", "Coração", "2764", "simbolos", "coração coracao heart amor"),
     icone("star", "Estrela", "2b50", "simbolos", "estrela star"),
     icone("sparkles", "Brilhos", "2728", "simbolos", "brilho sparkles"),
@@ -430,10 +339,7 @@ const ICONES = [
     icone("music-notes", "Notas musicais", "1f3b6", "simbolos", "música musica notas"),
     icone("hundred", "Cem", "1f4af", "simbolos", "100 cem hundred"),
 
-    // =================================================
     // TECNOLOGIA / OBJETOS
-    // =================================================
-
     icone("robot", "Robô", "1f916", "tecnologia", "robô robo robot ia"),
     icone("bulb", "Lâmpada", "1f4a1", "tecnologia", "lâmpada lampada ideia luz"),
     icone("gear", "Engrenagem", "2699", "tecnologia", "engrenagem gear mecânica mecanica"),
@@ -452,10 +358,7 @@ const ICONES = [
     icone("microscope", "Microscópio", "1f52c", "tecnologia", "microscópio microscopio ciência ciencia"),
     icone("telescope", "Telescópio", "1f52d", "tecnologia", "telescópio telescopio astronomia"),
 
-    // =================================================
     // TRANSPORTE
-    // =================================================
-
     icone("car", "Carro", "1f697", "transporte", "carro car"),
     icone("taxi", "Táxi", "1f695", "transporte", "táxi taxi carro"),
     icone("bus", "Ônibus", "1f68c", "transporte", "ônibus onibus bus"),
@@ -467,10 +370,7 @@ const ICONES = [
     icone("ship", "Navio", "1f6a2", "transporte", "navio ship"),
     icone("train", "Trem", "1f686", "transporte", "trem train"),
 
-    // =================================================
     // DIVERSÃO / ESPORTES
-    // =================================================
-
     icone("ghost", "Fantasma", "1f47b", "diversao", "fantasma ghost halloween"),
     icone("skull", "Caveira", "1f480", "diversao", "caveira skull"),
     icone("alien", "Alienígena", "1f47d", "diversao", "alien alienígena alienigena"),
@@ -496,36 +396,306 @@ const ICONES = [
 // ESTADO
 // =====================================================
 
-let PathKit =
-    null;
+let PathKit = null;
+let pathKitPromise = null;
 
-let idIconeSelecionado =
-    "cat-grin";
+let idIconeSelecionado = "cat-grin";
 
-let svgGerado =
-    "";
+let svgGerado = "";
+let frameAtualizacao = null;
+let geracaoAtual = 0;
 
-let frameAtualizacao =
-    null;
-
-let geracaoAtual =
-    0;
+let ultimoAnguloChaveiro = -45;
+let ultimoAnguloCard = -90;
 
 
-// Cache somente de strings SVG / path.
+// Cache somente de strings SVG/path.
 // Não mantemos SkPath no cache para evitar vazamento
 // de memória na heap WASM.
 
-const cacheEmoji =
-    new Map();
+const cacheEmoji = new Map();
 
 
 // =====================================================
-// URL
+// HELPERS
+// =====================================================
+
+function definirMensagem(
+    texto,
+    erro = false
+) {
+    mensagem.textContent = texto;
+
+    mensagem.style.color =
+        erro
+            ? "#a22"
+            : "#666";
+}
+
+
+function atualizarStatusMotor(
+    texto,
+    tipo = ""
+) {
+    statusPathKit.textContent = texto;
+
+    statusPathKit.classList.remove(
+        "ok",
+        "erro"
+    );
+
+    if (tipo) {
+        statusPathKit.classList.add(tipo);
+    }
+}
+
+
+function formatoAtual() {
+    return formatoCard.checked
+        ? "card"
+        : "chaveiro";
+}
+
+
+function cardTemArgola() {
+    return (
+        formatoAtual() === "card" &&
+        inputCardArgola.checked
+    );
+}
+
+
+function pecaTemArgola() {
+    return (
+        formatoAtual() === "chaveiro" ||
+        cardTemArgola()
+    );
+}
+
+
+// =====================================================
+// NOME DO ARQUIVO
+// =====================================================
+
+function normalizarNomeArquivo(texto) {
+    return String(texto || "")
+        .trim()
+        .replace(/\s+/g, "-")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^A-Za-z0-9_-]+/g, "")
+        .replace(/-{2,}/g, "-")
+        .replace(/^[-_]+|[-_]+$/g, "");
+}
+
+
+function obterAutorArquivo() {
+    if (!inputIdentificarAutor.checked) {
+        return "aluno";
+    }
+
+    return (
+        normalizarNomeArquivo(
+            inputNomeAutor.value
+        ) ||
+        "aluno"
+    );
+}
+
+
+function gerarNomeArquivoDownload() {
+    const autor =
+        obterAutorArquivo();
+
+    if (formatoAtual() === "card") {
+        return `emoji-card-${autor}.svg`;
+    }
+
+    return `chaveiro-emoji-${autor}.svg`;
+}
+
+
+// =====================================================
+// AUTOR
+// =====================================================
+
+function escaparXml(texto) {
+    return String(texto || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;");
+}
+
+
+function obterNomeAutor() {
+    if (!inputIdentificarAutor.checked) {
+        return "";
+    }
+
+    return inputNomeAutor.value
+        .trim()
+        .replace(/\s+/g, " ");
+}
+
+
+const canvasMedicaoTexto =
+    document.createElement("canvas");
+
+const contextoMedicaoTexto =
+    canvasMedicaoTexto.getContext("2d");
+
+
+function calcularFonteAutor(
+    texto,
+    larguraDisponivelMm
+) {
+    if (
+        !texto ||
+        larguraDisponivelMm <= 0
+    ) {
+        return TAMANHO_AUTOR_MM;
+    }
+
+    const fontePx =
+        8 * 96 / 72;
+
+    contextoMedicaoTexto.font =
+        `${fontePx}px Arial, Helvetica, sans-serif`;
+
+    const larguraPx =
+        contextoMedicaoTexto
+            .measureText(texto)
+            .width;
+
+    const larguraMm =
+        larguraPx *
+        25.4 /
+        96;
+
+    if (
+        larguraMm <=
+        larguraDisponivelMm
+    ) {
+        return TAMANHO_AUTOR_MM;
+    }
+
+    const escala =
+        larguraDisponivelMm /
+        larguraMm;
+
+    return Math.max(
+        TAMANHO_MIN_AUTOR_MM,
+        TAMANHO_AUTOR_MM *
+        escala
+    );
+}
+
+
+function dadosAutor(
+    bounds
+) {
+    const nome =
+        obterNomeAutor();
+
+    if (!nome) {
+        return null;
+    }
+
+    const larguraDisponivel =
+        Math.max(
+            1,
+            bounds.width -
+            MARGEM_AUTOR_LATERAL_MM *
+            2
+        );
+
+    const tamanhoFonte =
+        calcularFonteAutor(
+            nome,
+            larguraDisponivel
+        );
+
+    return {
+        nome,
+        x:
+            bounds.minX +
+            bounds.width / 2,
+        y:
+            bounds.maxY +
+            DISTANCIA_AUTOR_CORTE_MM,
+        tamanhoFonte
+    };
+}
+
+
+function markupAutor(
+    bounds
+) {
+    const dados =
+        dadosAutor(bounds);
+
+    if (!dados) {
+        return "";
+    }
+
+    return `
+<text
+    id="autor"
+    x="${dados.x}"
+    y="${dados.y}"
+    fill="#0000FF"
+    stroke="none"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="${dados.tamanhoFonte}"
+    font-weight="normal"
+    text-anchor="middle"
+    dominant-baseline="hanging"
+>${escaparXml(dados.nome)}</text>
+    `.trim();
+}
+
+
+function boundsVisual(
+    boundsCorte
+) {
+    const autor =
+        dadosAutor(boundsCorte);
+
+    if (!autor) {
+        return {
+            ...boundsCorte
+        };
+    }
+
+    const maxY =
+        autor.y +
+        autor.tamanhoFonte +
+        1;
+
+    return {
+        minX:
+            boundsCorte.minX,
+        minY:
+            boundsCorte.minY,
+        maxX:
+            boundsCorte.maxX,
+        maxY,
+        width:
+            boundsCorte.width,
+        height:
+            maxY -
+            boundsCorte.minY
+    };
+}
+
+
+// =====================================================
+// URL / COLEÇÃO
 // =====================================================
 
 function obterColecaoSelecionada() {
-
     return (
         COLECOES[
             selectColecao.value
@@ -538,10 +708,8 @@ function obterColecaoSelecionada() {
 function chaveCacheEmoji(
     item
 ) {
-
     const colecao =
         obterColecaoSelecionada();
-
 
     return (
         colecao.id +
@@ -554,10 +722,8 @@ function chaveCacheEmoji(
 function urlIcone(
     item
 ) {
-
     const colecao =
         obterColecaoSelecionada();
-
 
     return (
         colecao.base +
@@ -570,14 +736,11 @@ function urlIcone(
 
 
 function atualizarInformacoesColecao() {
-
     const colecao =
         obterColecaoSelecionada();
 
-
     descricaoColecao.textContent =
         colecao.descricao;
-
 
     creditoColecao.textContent =
         colecao.credito;
@@ -585,48 +748,41 @@ function atualizarInformacoesColecao() {
 
 
 // =====================================================
-// CATÁLOGO
+// CATÁLOGO / UI DE ÍCONES
 // =====================================================
 
 function obterIconeSelecionado() {
-
     return ICONES.find(
         item =>
             item.id ===
             idIconeSelecionado
-    );
+    ) || ICONES[0];
 }
 
 
 function atualizarCabecalhoIcone() {
-
     const item =
         obterIconeSelecionado();
-
 
     nomeIconeSelecionado.textContent =
         item.nome;
 
-
-iconeSelecionado.innerHTML =
+    iconeSelecionado.innerHTML =
         `
             <img
                 src="${urlIcone(item)}"
-                alt="${item.nome}"
+                alt="${escaparXml(item.nome)}"
             >
         `;
-
 
     const imagem =
         iconeSelecionado.querySelector(
             "img"
         );
 
-
     imagem.addEventListener(
         "error",
         () => {
-
             iconeSelecionado.innerHTML =
                 `
                     <div class="icone-indisponivel">
@@ -635,53 +791,45 @@ iconeSelecionado.innerHTML =
                 `;
         },
         {
-            once:
-                true
+            once: true
         }
     );
 }
 
 
 function renderizarGradeIcones() {
-
     const busca =
         inputBusca.value
             .trim()
             .toLowerCase();
 
-
     const categoria =
         selectCategoria.value;
-
 
     gradeIcones.innerHTML =
         "";
 
-
     const filtrados =
         ICONES.filter(
             item => {
-
                 const okCategoria =
                     categoria === "todos" ||
                     item.categoria ===
                     categoria;
-
 
                 const texto =
                     (
                         item.nome +
                         " " +
                         item.keywords
-                    ).toLowerCase();
-
+                    )
+                        .toLowerCase();
 
                 const okBusca =
                     !busca ||
                     texto.includes(
                         busca
                     );
-
 
                 return (
                     okCategoria &&
@@ -690,62 +838,50 @@ function renderizarGradeIcones() {
             }
         );
 
-
     contadorIcones.textContent =
         `${filtrados.length} de ${ICONES.length} ícones`;
-
 
     for (
         const item
         of filtrados
     ) {
-
         const botao =
             document.createElement(
                 "button"
             );
 
-
         botao.type =
             "button";
 
-
         botao.className =
             "botao-icone";
-
 
         if (
             item.id ===
             idIconeSelecionado
         ) {
-
             botao.classList.add(
                 "ativo"
             );
         }
 
-
         botao.title =
             item.nome;
-
 
         botao.innerHTML =
             `
                 <img
                     src="${urlIcone(item)}"
-                    alt="${item.nome}"
+                    alt="${escaparXml(item.nome)}"
                     loading="lazy"
                 >
             `;
 
-
         botao.addEventListener(
             "click",
             () => {
-
                 idIconeSelecionado =
                     item.id;
-
 
                 atualizarCabecalhoIcone();
 
@@ -755,31 +891,25 @@ function renderizarGradeIcones() {
             }
         );
 
-
         const miniatura =
             botao.querySelector(
                 "img"
             );
 
-
         miniatura.addEventListener(
             "error",
             () => {
-
                 botao.classList.add(
                     "indisponivel"
                 );
-
 
                 botao.title =
                     `${item.nome} — indisponível nesta coleção`;
             },
             {
-                once:
-                    true
+                once: true
             }
         );
-
 
         gradeIcones.appendChild(
             botao
@@ -793,69 +923,83 @@ function renderizarGradeIcones() {
 // =====================================================
 
 async function inicializarPathKit() {
+    if (PathKit) {
+        return PathKit;
+    }
 
-    statusPathKit.textContent =
-        "Carregando motor vetorial...";
+    if (pathKitPromise) {
+        return pathKitPromise;
+    }
 
+    atualizarStatusMotor(
+        "Carregando motor vetorial..."
+    );
 
     if (
         typeof PathKitInit !==
         "function"
     ) {
-
         throw new Error(
             "PathKit não foi carregado pelo CDN."
         );
     }
 
-
-    PathKit =
-        await PathKitInit({
-
-            locateFile: file =>
-                PATHKIT_CDN +
-                file
+    pathKitPromise =
+        PathKitInit({
+            locateFile:
+                file =>
+                    PATHKIT_CDN +
+                    file
         });
 
+    try {
+        PathKit =
+            await pathKitPromise;
 
-    statusPathKit.textContent =
-        "Motor vetorial pronto";
+        atualizarStatusMotor(
+            "Motor vetorial pronto",
+            "ok"
+        );
 
-    statusPathKit.classList.add(
-        "ok"
-    );
+        return PathKit;
+    }
+
+    catch (erro) {
+        pathKitPromise = null;
+
+        atualizarStatusMotor(
+            "Falha no motor vetorial",
+            "erro"
+        );
+
+        throw erro;
+    }
 }
 
 
 // =====================================================
-// CORES / ESTILO SVG
+// CORES
 // =====================================================
 
 function corNormalizada(
     valor
 ) {
-
-    return (
+    return String(
         valor || ""
     )
         .trim()
         .toLowerCase()
-        .replace(
-            /\s+/g,
-            ""
-        );
+        .replace(/\s+/g, "");
 }
 
 
 function corNenhuma(
     valor
 ) {
-
     const v =
         corNormalizada(
             valor
         );
-
 
     return (
         !v ||
@@ -869,12 +1013,10 @@ function corNenhuma(
 function corBranca(
     valor
 ) {
-
     const v =
         corNormalizada(
             valor
         );
-
 
     return (
         v === "#fff" ||
@@ -887,7 +1029,7 @@ function corBranca(
 
 
 // =====================================================
-// SVG PRIMITIVE -> SKPATH
+// SVG PRIMITIVE -> PATHKIT
 // =====================================================
 
 function numeroAtributo(
@@ -895,14 +1037,12 @@ function numeroAtributo(
     nome,
     padrao = 0
 ) {
-
     const valor =
         parseFloat(
             elemento.getAttribute(
                 nome
             )
         );
-
 
     return Number.isFinite(
         valor
@@ -915,40 +1055,32 @@ function numeroAtributo(
 function pontosSvg(
     valor
 ) {
+    if (!valor) {
+        return [];
+    }
 
     const numeros =
-        (
-            valor || ""
-        )
+        valor
             .trim()
-            .split(
-                /[\s,]+/
-            )
+            .split(/[\s,]+/)
             .map(Number)
-            .filter(
-                Number.isFinite
-            );
-
+            .filter(Number.isFinite);
 
     const resultado =
         [];
-
 
     for (
         let i = 0;
         i + 1 < numeros.length;
         i += 2
     ) {
-
         resultado.push({
             x:
                 numeros[i],
-
             y:
                 numeros[i + 1]
         });
     }
-
 
     return resultado;
 }
@@ -957,57 +1089,41 @@ function pontosSvg(
 function criarPathElemento(
     elemento
 ) {
-
     const tag =
         elemento.tagName
             .toLowerCase();
 
-
     if (
         tag === "path"
     ) {
-
         const d =
             elemento.getAttribute(
                 "d"
             );
 
-
-        if (
-            !d
-        ) {
-
+        if (!d) {
             return null;
         }
-
 
         return PathKit.FromSVGString(
             d
         );
     }
 
-
-    const path =
-        PathKit.NewPath();
-
-
     if (
         tag === "circle"
     ) {
-
         const cx =
             numeroAtributo(
                 elemento,
                 "cx"
             );
 
-
         const cy =
             numeroAtributo(
                 elemento,
                 "cy"
             );
-
 
         const r =
             numeroAtributo(
@@ -1015,34 +1131,22 @@ function criarPathElemento(
                 "r"
             );
 
-
-        path.arc(
-            cx,
-            cy,
-            r,
-            0,
-            Math.PI * 2,
-            false
-        );
-
-
-        path.close();
-
-
-        return path;
+        return PathKit.FromSVGString(`
+            M ${cx-r} ${cy}
+            A ${r} ${r} 0 1 0 ${cx+r} ${cy}
+            A ${r} ${r} 0 1 0 ${cx-r} ${cy}
+            Z
+        `);
     }
-
 
     if (
         tag === "ellipse"
     ) {
-
         const cx =
             numeroAtributo(
                 elemento,
                 "cx"
             );
-
 
         const cy =
             numeroAtributo(
@@ -1050,13 +1154,11 @@ function criarPathElemento(
                 "cy"
             );
 
-
         const rx =
             numeroAtributo(
                 elemento,
                 "rx"
             );
-
 
         const ry =
             numeroAtributo(
@@ -1064,95 +1166,87 @@ function criarPathElemento(
                 "ry"
             );
 
-
-        path.ellipse(
-            cx,
-            cy,
-            rx,
-            ry,
-            0,
-            0,
-            Math.PI * 2,
-            false
-        );
-
-
-        path.close();
-
-
-        return path;
+        return PathKit.FromSVGString(`
+            M ${cx-rx} ${cy}
+            A ${rx} ${ry} 0 1 0 ${cx+rx} ${cy}
+            A ${rx} ${ry} 0 1 0 ${cx-rx} ${cy}
+            Z
+        `);
     }
-
 
     if (
         tag === "rect"
     ) {
-
-        path.rect(
+        const x =
             numeroAtributo(
                 elemento,
                 "x"
-            ),
+            );
 
+        const y =
             numeroAtributo(
                 elemento,
                 "y"
-            ),
+            );
 
+        const w =
             numeroAtributo(
                 elemento,
                 "width"
-            ),
+            );
 
+        const h =
             numeroAtributo(
                 elemento,
                 "height"
-            )
-        );
+            );
 
-
-        return path;
+        return PathKit.FromSVGString(`
+            M ${x} ${y}
+            L ${x+w} ${y}
+            L ${x+w} ${y+h}
+            L ${x} ${y+h}
+            Z
+        `);
     }
-
 
     if (
         tag === "line"
     ) {
-
-        path
-            .moveTo(
-                numeroAtributo(
-                    elemento,
-                    "x1"
-                ),
-
-                numeroAtributo(
-                    elemento,
-                    "y1"
-                )
-            )
-            .lineTo(
-                numeroAtributo(
-                    elemento,
-                    "x2"
-                ),
-
-                numeroAtributo(
-                    elemento,
-                    "y2"
-                )
+        const x1 =
+            numeroAtributo(
+                elemento,
+                "x1"
             );
 
+        const y1 =
+            numeroAtributo(
+                elemento,
+                "y1"
+            );
 
-        return path;
+        const x2 =
+            numeroAtributo(
+                elemento,
+                "x2"
+            );
+
+        const y2 =
+            numeroAtributo(
+                elemento,
+                "y2"
+            );
+
+        return PathKit.FromSVGString(`
+            M ${x1} ${y1}
+            L ${x2} ${y2}
+        `);
     }
-
 
     if (
         tag === "polygon" ||
         tag === "polyline"
     ) {
-
         const pontos =
             pontosSvg(
                 elemento.getAttribute(
@@ -1160,115 +1254,95 @@ function criarPathElemento(
                 )
             );
 
-
-        if (
-            !pontos.length
-        ) {
-
-            path.delete();
-
+        if (!pontos.length) {
             return null;
         }
 
-
-        path.moveTo(
-            pontos[0].x,
-            pontos[0].y
-        );
-
+        let d =
+            `M ${pontos[0].x} ${pontos[0].y}`;
 
         for (
             let i = 1;
             i < pontos.length;
             i++
         ) {
-
-            path.lineTo(
-                pontos[i].x,
-                pontos[i].y
-            );
+            d +=
+                ` L ${pontos[i].x} ${pontos[i].y}`;
         }
-
 
         if (
             tag === "polygon"
         ) {
-
-            path.close();
+            d += " Z";
         }
 
-
-        return path;
+        return PathKit.FromSVGString(
+            d
+        );
     }
-
-
-    path.delete();
 
     return null;
 }
 
 
 // =====================================================
-// CTM DO ELEMENTO -> MATRIZ PATHKIT
+// MATRIZ RELATIVA
 // =====================================================
 
 function matrizRelativa(
     root,
     elemento
 ) {
+    try {
+        const rootCTM =
+            root.getCTM();
 
-    const rootCTM =
-        root.getCTM();
+        const elementCTM =
+            elemento.getCTM();
 
+        if (
+            !rootCTM ||
+            !elementCTM
+        ) {
+            throw new Error(
+                "CTM indisponível"
+            );
+        }
 
-    const elementCTM =
-        elemento.getCTM();
+        const relativa =
+            rootCTM
+                .inverse()
+                .multiply(
+                    elementCTM
+                );
 
+        return [
+            relativa.a,
+            relativa.c,
+            relativa.e,
 
-    if (
-        !rootCTM ||
-        !elementCTM
-    ) {
+            relativa.b,
+            relativa.d,
+            relativa.f,
 
+            0,
+            0,
+            1
+        ];
+    }
+
+    catch {
         return [
             1, 0, 0,
             0, 1, 0,
             0, 0, 1
         ];
     }
-
-
-    const relativa =
-        rootCTM
-            .inverse()
-            .multiply(
-                elementCTM
-            );
-
-
-    // PathKit:
-    // [scaleX, skewX, transX,
-    //  skewY, scaleY, transY,
-    //  pers0, pers1, pers2]
-
-    return [
-        relativa.a,
-        relativa.c,
-        relativa.e,
-
-        relativa.b,
-        relativa.d,
-        relativa.f,
-
-        0,
-        0,
-        1
-    ];
 }
 
 
 // =====================================================
-// COMPOSIÇÃO DE PATHS
+// BOOLEANAS PATHKIT
 // =====================================================
 
 function opNovo(
@@ -1276,24 +1350,38 @@ function opNovo(
     b,
     operacao
 ) {
+    if (
+        typeof PathKit.MakeFromOp ===
+        "function"
+    ) {
+        const resultado =
+            PathKit.MakeFromOp(
+                a,
+                b,
+                operacao
+            );
+
+        if (resultado) {
+            return resultado;
+        }
+    }
 
     const resultado =
-        PathKit.MakeFromOp(
-            a,
+        a.copy();
+
+    const ok =
+        resultado.op(
             b,
             operacao
         );
 
-
-    if (
-        !resultado
-    ) {
+    if (ok === false) {
+        resultado.delete();
 
         throw new Error(
             "Falha numa operação geométrica do PathKit."
         );
     }
-
 
     return resultado;
 }
@@ -1303,14 +1391,9 @@ function unirNoAcumulador(
     acumulado,
     geometria
 ) {
-
-    if (
-        !acumulado
-    ) {
-
+    if (!acumulado) {
         return geometria.copy();
     }
-
 
     const novo =
         opNovo(
@@ -1319,9 +1402,7 @@ function unirNoAcumulador(
             PathKit.PathOp.UNION
         );
 
-
     acumulado.delete();
-
 
     return novo;
 }
@@ -1331,14 +1412,9 @@ function subtrairDoAcumulador(
     acumulado,
     geometria
 ) {
-
-    if (
-        !acumulado
-    ) {
-
+    if (!acumulado) {
         return null;
     }
-
 
     const novo =
         opNovo(
@@ -1347,32 +1423,27 @@ function subtrairDoAcumulador(
             PathKit.PathOp.DIFFERENCE
         );
 
-
     acumulado.delete();
-
 
     return novo;
 }
 
 
 // =====================================================
-// SVG MONOCROMÁTICO -> UM PATH VETORIAL
-//
-// A ordem visual é respeitada:
-// - preto/forma visível = UNION
-// - branco = DIFFERENCE
-//
-// Para o Noto 600 normalmente o arquivo já é simples,
-// mas esta rotina é mais robusta.
+// SVG -> GEOMETRIAS PATHKIT
 // =====================================================
 
 function svgParaGeometriasPathKit(
     svgText
 ) {
+    if (!PathKit) {
+        throw new Error(
+            "O motor vetorial ainda não está pronto."
+        );
+    }
 
     const parser =
         new DOMParser();
-
 
     const doc =
         parser.parseFromString(
@@ -1380,34 +1451,23 @@ function svgParaGeometriasPathKit(
             "image/svg+xml"
         );
 
-
-    const svgOriginal =
-        doc.documentElement;
-
-
     if (
-        svgOriginal.nodeName
-            .toLowerCase() !==
-        "svg"
+        doc.querySelector(
+            "parsererror"
+        )
     ) {
-
         throw new Error(
-            "O arquivo recebido não é um SVG válido."
+            "O emoji não pôde ser interpretado como SVG."
         );
     }
-
-
-    // Coloca uma cópia temporariamente no DOM para
-    // resolver transforms e estilos herdados.
 
     const suporte =
         document.createElement(
             "div"
         );
 
-
     suporte.style.position =
-        "absolute";
+        "fixed";
 
     suporte.style.left =
         "-100000px";
@@ -1415,39 +1475,40 @@ function svgParaGeometriasPathKit(
     suporte.style.top =
         "0";
 
-    suporte.style.visibility =
-        "hidden";
+    suporte.style.width =
+        "1200px";
+
+    suporte.style.height =
+        "1200px";
+
+    suporte.style.opacity =
+        "0";
 
     suporte.style.pointerEvents =
         "none";
 
+    suporte.style.overflow =
+        "hidden";
 
     suporte.innerHTML =
         svgText;
 
-
     document.body.appendChild(
         suporte
     );
-
 
     const root =
         suporte.querySelector(
             "svg"
         );
 
-
-    if (
-        !root
-    ) {
-
+    if (!root) {
         suporte.remove();
 
         throw new Error(
             "SVG sem elemento raiz."
         );
     }
-
 
     const viewBox =
         (
@@ -1457,11 +1518,8 @@ function svgParaGeometriasPathKit(
             "0 0 100 100"
         )
             .trim()
-            .split(
-                /[\s,]+/
-            )
+            .split(/[\s,]+/)
             .map(Number);
-
 
     const vbW =
         Number.isFinite(
@@ -1470,7 +1528,6 @@ function svgParaGeometriasPathKit(
             ? viewBox[2]
             : 100;
 
-
     const vbH =
         Number.isFinite(
             viewBox[3]
@@ -1478,36 +1535,24 @@ function svgParaGeometriasPathKit(
             ? viewBox[3]
             : 100;
 
-
     root.setAttribute(
         "width",
-        String(
-            vbW
-        )
+        String(vbW)
     );
-
 
     root.setAttribute(
         "height",
-        String(
-            vbH
-        )
+        String(vbH)
     );
 
+    root.getBoundingClientRect();
 
     const elementos =
         Array.from(
             root.querySelectorAll(
-                "path, circle, ellipse, rect, line, polygon, polyline"
+                "path,circle,ellipse,rect,line,polygon,polyline"
             )
         );
-
-
-    // "completo" é a geometria visual total do emoji.
-    // "preenchimentos" mantém apenas as regiões que no
-    // SVG original eram realmente preenchidas.
-    // "tracos" mantém apenas os strokes originais,
-    // convertidos em áreas vetoriais.
 
     let completo =
         null;
@@ -1522,20 +1567,17 @@ function svgParaGeometriasPathKit(
     function aplicarMascaraBranca(
         geometria
     ) {
-
         completo =
             subtrairDoAcumulador(
                 completo,
                 geometria
             );
 
-
         preenchimentos =
             subtrairDoAcumulador(
                 preenchimentos,
                 geometria
             );
-
 
         tracos =
             subtrairDoAcumulador(
@@ -1546,59 +1588,60 @@ function svgParaGeometriasPathKit(
 
 
     try {
-
         for (
             const elemento
             of elementos
         ) {
+            if (
+                elemento.closest(
+                    "defs,clipPath,mask,symbol,marker,pattern"
+                )
+            ) {
+                continue;
+            }
 
             const estilo =
                 getComputedStyle(
                     elemento
                 );
 
+            if (
+                estilo.display === "none" ||
+                estilo.visibility === "hidden"
+            ) {
+                continue;
+            }
 
             const opacity =
                 parseFloat(
                     estilo.opacity
                 );
 
-
             if (
-                Number.isFinite(
-                    opacity
-                ) &&
+                Number.isFinite(opacity) &&
                 opacity <= 0
             ) {
-
                 continue;
             }
-
 
             const fill =
                 estilo.fill;
 
-
             const stroke =
                 estilo.stroke;
-
 
             const fillOpacity =
                 parseFloat(
                     estilo.fillOpacity
                 );
 
-
             const strokeOpacity =
                 parseFloat(
                     estilo.strokeOpacity
                 );
 
-
             const temFill =
-                !corNenhuma(
-                    fill
-                ) &&
+                !corNenhuma(fill) &&
                 (
                     !Number.isFinite(
                         fillOpacity
@@ -1606,41 +1649,39 @@ function svgParaGeometriasPathKit(
                     fillOpacity > 0
                 );
 
+            const larguraStroke =
+                parseFloat(
+                    estilo.strokeWidth
+                );
 
             const temStroke =
-                !corNenhuma(
-                    stroke
-                ) &&
+                !corNenhuma(stroke) &&
                 (
                     !Number.isFinite(
                         strokeOpacity
                     ) ||
                     strokeOpacity > 0
-                );
-
+                ) &&
+                Number.isFinite(
+                    larguraStroke
+                ) &&
+                larguraStroke > 0;
 
             if (
                 !temFill &&
                 !temStroke
             ) {
-
                 continue;
             }
-
 
             const base =
                 criarPathElemento(
                     elemento
                 );
 
-
-            if (
-                !base
-            ) {
-
+            if (!base) {
                 continue;
             }
-
 
             const matriz =
                 matrizRelativa(
@@ -1648,92 +1689,47 @@ function svgParaGeometriasPathKit(
                     elemento
                 );
 
+            try {
+                if (temFill) {
+                    const preenchido =
+                        base.copy();
 
-            // =====================================
-            // FILL ORIGINAL
-            // =====================================
-
-            if (
-                temFill
-            ) {
-
-                const preenchimento =
-                    base.copy();
-
-
-                preenchimento.transform(
-                    matriz
-                );
-
-
-                if (
-                    corBranca(
-                        fill
-                    )
-                ) {
-
-                    // Uma área branca no SVG monocromático
-                    // funciona visualmente como recorte.
-
-                    aplicarMascaraBranca(
-                        preenchimento
-                    );
-                }
-
-                else {
-
-                    preenchimentos =
-                        unirNoAcumulador(
-                            preenchimentos,
-                            preenchimento
-                        );
-
-
-                    completo =
-                        unirNoAcumulador(
-                            completo,
-                            preenchimento
-                        );
-                }
-
-
-                preenchimento.delete();
-            }
-
-
-            // =====================================
-            // STROKE ORIGINAL
-            //
-            // O stroke é convertido em uma área
-            // preenchida para preservar exatamente sua
-            // espessura no SVG final.
-            // =====================================
-
-            if (
-                temStroke
-            ) {
-
-                const largura =
-                    parseFloat(
-                        estilo.strokeWidth
+                    preenchido.transform(
+                        matriz
                     );
 
+                    if (
+                        corBranca(fill)
+                    ) {
+                        aplicarMascaraBranca(
+                            preenchido
+                        );
+                    }
 
-                if (
-                    Number.isFinite(
-                        largura
-                    ) &&
-                    largura > 0
-                ) {
+                    else {
+                        preenchimentos =
+                            unirNoAcumulador(
+                                preenchimentos,
+                                preenchido
+                            );
 
+                        completo =
+                            unirNoAcumulador(
+                                completo,
+                                preenchido
+                            );
+                    }
+
+                    preenchido.delete();
+                }
+
+                if (temStroke) {
                     const contorno =
                         base.copy();
 
-
                     contorno.stroke({
-
                         width:
-                            largura,
+                            larguraStroke,
 
                         join:
                             PathKit
@@ -1743,34 +1739,30 @@ function svgParaGeometriasPathKit(
                         cap:
                             PathKit
                                 .StrokeCap
-                                .ROUND
-                    });
+                                .ROUND,
 
+                        res_scale:
+                            2
+                    });
 
                     contorno.transform(
                         matriz
                     );
 
-
                     if (
-                        corBranca(
-                            stroke
-                        )
+                        corBranca(stroke)
                     ) {
-
                         aplicarMascaraBranca(
                             contorno
                         );
                     }
 
                     else {
-
                         tracos =
                             unirNoAcumulador(
                                 tracos,
                                 contorno
                             );
-
 
                         completo =
                             unirNoAcumulador(
@@ -1779,57 +1771,39 @@ function svgParaGeometriasPathKit(
                             );
                     }
 
-
                     contorno.delete();
                 }
             }
 
-
-            base.delete();
+            finally {
+                base.delete();
+            }
         }
 
-
-        if (
-            !completo
-        ) {
-
+        if (!completo) {
             throw new Error(
-                "Nenhuma geometria utilizável foi encontrada no emoji."
+                "Nenhuma geometria vetorial utilizável foi encontrada no emoji."
             );
         }
 
-
         completo.simplify();
 
-
-        if (
-            preenchimentos
-        ) {
-
+        if (preenchimentos) {
             preenchimentos.simplify();
         }
 
-
-        if (
-            tracos
-        ) {
-
+        if (tracos) {
             tracos.simplify();
         }
 
-
         return {
-
             completo,
-
             preenchimentos,
-
             tracos
         };
     }
 
     finally {
-
         suporte.remove();
     }
 }
@@ -1842,32 +1816,27 @@ function svgParaGeometriasPathKit(
 async function carregarEmoji(
     item
 ) {
-
     const chaveCache =
         chaveCacheEmoji(
             item
         );
-
 
     if (
         cacheEmoji.has(
             chaveCache
         )
     ) {
-
         return cacheEmoji.get(
             chaveCache
         );
     }
 
-
     const colecao =
         obterColecaoSelecionada();
 
-
-    mensagem.textContent =
-        `Carregando ${item.nome} — ${colecao.nome}...`;
-
+    definirMensagem(
+        `Carregando ${item.nome} — ${colecao.nome}...`
+    );
 
     const resposta =
         await fetch(
@@ -1876,125 +1845,94 @@ async function carregarEmoji(
             )
         );
 
-
-    if (
-        !resposta.ok
-    ) {
-
+    if (!resposta.ok) {
         throw new Error(
             `O ícone ${item.nome} não está disponível em ${colecao.nome} (HTTP ${resposta.status}).`
         );
     }
 
-
     const svgText =
         await resposta.text();
-
 
     const geometrias =
         svgParaGeometriasPathKit(
             svgText
         );
 
+    try {
+        const dCompleto =
+            geometrias.completo
+                .toSVGString();
 
-    const dCompleto =
-        geometrias.completo
-            .toSVGString();
+        const dPreenchimentos =
+            geometrias.preenchimentos
+                ? geometrias.preenchimentos
+                    .toSVGString()
+                : "";
 
+        const dTracos =
+            geometrias.tracos
+                ? geometrias.tracos
+                    .toSVGString()
+                : "";
 
-    const dPreenchimentos =
-        geometrias.preenchimentos
-            ? geometrias.preenchimentos
-                .toSVGString()
-            : "";
+        const bounds =
+            geometrias.completo
+                .computeTightBounds();
 
+        const resultado = {
+            svgText,
+            dCompleto,
+            dPreenchimentos,
+            dTracos,
+            bounds
+        };
 
-    const dTracos =
-        geometrias.tracos
-            ? geometrias.tracos
-                .toSVGString()
-            : "";
+        cacheEmoji.set(
+            chaveCache,
+            resultado
+        );
 
-
-    const bounds =
-        geometrias.completo
-            .computeTightBounds();
-
-
-    geometrias.completo.delete();
-
-
-    if (
-        geometrias.preenchimentos
-    ) {
-
-        geometrias.preenchimentos
-            .delete();
+        return resultado;
     }
 
+    finally {
+        geometrias.completo.delete();
 
-    if (
-        geometrias.tracos
-    ) {
+        if (
+            geometrias.preenchimentos
+        ) {
+            geometrias.preenchimentos
+                .delete();
+        }
 
-        geometrias.tracos
-            .delete();
+        if (
+            geometrias.tracos
+        ) {
+            geometrias.tracos
+                .delete();
+        }
     }
-
-
-    const resultado = {
-
-        svgText,
-
-        dCompleto,
-
-        dPreenchimentos,
-
-        dTracos,
-
-        bounds
-    };
-
-
-    cacheEmoji.set(
-        chaveCache,
-        resultado
-    );
-
-
-    return resultado;
 }
 
 
 // =====================================================
-// ESCALA DO EMOJI
-//
-// O parâmetro "size" do projeto original é descrito como
-// tamanho aproximado em largura/altura.
-//
-// Aqui o maior lado do emoji passa a medir "size" mm.
+// CONJUNTO DE PATHS
 // =====================================================
 
-function criarEmojiEscalado(
-    dados,
-    tamanhoMm
+function reconstruirEmoji(
+    dados
 ) {
-
     const completo =
         PathKit.FromSVGString(
             dados.dCompleto
         );
 
-
-    if (
-        !completo
-    ) {
-
+    if (!completo) {
         throw new Error(
             "Não foi possível reconstruir o path do emoji."
         );
     }
-
 
     const preenchimentos =
         dados.dPreenchimentos
@@ -2003,7 +1941,6 @@ function criarEmojiEscalado(
             )
             : null;
 
-
     const tracos =
         dados.dTracos
             ? PathKit.FromSVGString(
@@ -2011,20 +1948,70 @@ function criarEmojiEscalado(
             )
             : null;
 
+    return {
+        completo,
+        preenchimentos,
+        tracos
+    };
+}
+
+
+function transformarConjunto(
+    conjunto,
+    matriz
+) {
+    conjunto.completo.transform(
+        matriz
+    );
+
+    if (
+        conjunto.preenchimentos
+    ) {
+        conjunto.preenchimentos
+            .transform(
+                matriz
+            );
+    }
+
+    if (
+        conjunto.tracos
+    ) {
+        conjunto.tracos
+            .transform(
+                matriz
+            );
+    }
+
+    return conjunto;
+}
+
+
+// =====================================================
+// ESCALA DO EMOJI - CHAVEIRO
+//
+// O maior lado passa a medir "tamanhoMm".
+// =====================================================
+
+function criarEmojiEscalado(
+    dados,
+    tamanhoMm
+) {
+    const conjunto =
+        reconstruirEmoji(
+            dados
+        );
 
     const b =
-        completo.computeTightBounds();
-
+        conjunto.completo
+            .computeTightBounds();
 
     const largura =
         b.fRight -
         b.fLeft;
 
-
     const altura =
         b.fBottom -
         b.fTop;
-
 
     const maiorLado =
         Math.max(
@@ -2032,135 +2019,194 @@ function criarEmojiEscalado(
             altura
         );
 
-
     if (
         maiorLado <= 0
     ) {
-
-        completo.delete();
-
-
-        if (
-            preenchimentos
-        ) {
-
-            preenchimentos.delete();
-        }
-
-
-        if (
-            tracos
-        ) {
-
-            tracos.delete();
-        }
-
+        destruirConjunto(
+            conjunto
+        );
 
         throw new Error(
             "Emoji com dimensões inválidas."
         );
     }
 
-
     const escala =
         tamanhoMm /
         maiorLado;
-
 
     const cx =
         (
             b.fLeft +
             b.fRight
-        ) /
-        2;
-
+        ) / 2;
 
     const cy =
         (
             b.fTop +
             b.fBottom
-        ) /
-        2;
+        ) / 2;
 
-
-    const matriz = [
-
-        escala,
-        0,
-        -cx *
+    return transformarConjunto(
+        conjunto,
+        [
             escala,
+            0,
+            -cx * escala,
 
-        0,
-        escala,
-        -cy *
+            0,
             escala,
+            -cy * escala,
 
-        0,
-        0,
-        1
-    ];
-
-
-    completo.transform(
-        matriz
+            0,
+            0,
+            1
+        ]
     );
+}
 
+
+// =====================================================
+// ESCALA DO EMOJI - CARD
+// =====================================================
+
+function criarEmojiCard(
+    dados,
+    larguraCard,
+    alturaCard,
+    margem
+) {
+    const conjunto =
+        reconstruirEmoji(
+            dados
+        );
+
+    const b =
+        conjunto.completo
+            .computeTightBounds();
+
+    const largura =
+        b.fRight -
+        b.fLeft;
+
+    const altura =
+        b.fBottom -
+        b.fTop;
 
     if (
-        preenchimentos
+        largura <= 0 ||
+        altura <= 0
     ) {
+        destruirConjunto(
+            conjunto
+        );
 
-        preenchimentos.transform(
-            matriz
+        throw new Error(
+            "Emoji com dimensões inválidas."
         );
     }
 
+    const larguraDisponivel =
+        larguraCard -
+        margem * 2;
+
+    const alturaDisponivel =
+        alturaCard -
+        margem * 2;
 
     if (
-        tracos
+        larguraDisponivel <= 0 ||
+        alturaDisponivel <= 0
     ) {
+        destruirConjunto(
+            conjunto
+        );
 
-        tracos.transform(
-            matriz
+        throw new Error(
+            "A margem interna do card é maior que a área disponível."
         );
     }
 
+    const escala =
+        Math.min(
+            larguraDisponivel /
+            largura,
+            alturaDisponivel /
+            altura
+        );
 
-    return {
+    const cx =
+        (
+            b.fLeft +
+            b.fRight
+        ) / 2;
 
-        completo,
+    const cy =
+        (
+            b.fTop +
+            b.fBottom
+        ) / 2;
 
-        preenchimentos,
+    return transformarConjunto(
+        conjunto,
+        [
+            escala,
+            0,
+            -cx * escala,
 
-        tracos
-    };
+            0,
+            escala,
+            -cy * escala,
+
+            0,
+            0,
+            1
+        ]
+    );
+}
+
+
+function destruirConjunto(
+    conjunto
+) {
+    if (!conjunto) {
+        return;
+    }
+
+    if (
+        conjunto.completo
+    ) {
+        conjunto.completo.delete();
+    }
+
+    if (
+        conjunto.preenchimentos
+    ) {
+        conjunto.preenchimentos.delete();
+    }
+
+    if (
+        conjunto.tracos
+    ) {
+        conjunto.tracos.delete();
+    }
 }
 
 
 // =====================================================
 // EXPAND / OUTLINE
-//
-// ExpandDefinition1(distance, join="round")
-//
-// Para expandir D para fora:
-// 1. stroke de largura 2D
-// 2. UNION com a forma original
 // =====================================================
 
 function expandirPath(
     original,
     distancia
 ) {
-
     const expandido =
         original.copy();
 
-
     expandido.stroke({
-
         width:
-            distancia *
-            2,
+            distancia * 2,
 
         join:
             PathKit
@@ -2176,7 +2222,6 @@ function expandirPath(
             2
     });
 
-
     const unido =
         opNovo(
             expandido,
@@ -2184,12 +2229,9 @@ function expandirPath(
             PathKit.PathOp.UNION
         );
 
-
     expandido.delete();
 
-
     unido.simplify();
-
 
     return unido;
 }
@@ -2197,77 +2239,58 @@ function expandirPath(
 
 // =====================================================
 // REMOVE HOLES
-//
-// Divide o path em contornos e trata cada contorno como
-// uma área preenchida independente.
-//
-// Ao fazer UNION de todos eles, os contornos que antes
-// representavam "buracos" passam a ser preenchidos.
 // =====================================================
 
 function separarContornos(
     cmds
 ) {
-
     const contornos =
         [];
 
-
     let atual =
         [];
-
 
     for (
         const cmd
         of cmds
     ) {
-
         if (
             cmd[0] ===
             PathKit.MOVE_VERB &&
             atual.length
         ) {
-
             contornos.push(
                 atual
             );
 
-
             atual =
                 [];
         }
-
 
         atual.push(
             cmd
         );
 
-
         if (
             cmd[0] ===
             PathKit.CLOSE_VERB
         ) {
-
             contornos.push(
                 atual
             );
-
 
             atual =
                 [];
         }
     }
 
-
     if (
         atual.length
     ) {
-
         contornos.push(
             atual
         );
     }
-
 
     return contornos;
 }
@@ -2276,100 +2299,64 @@ function separarContornos(
 function removerHoles(
     path
 ) {
-
-    const cmds =
-        path.toCmds();
-
-
     const contornos =
         separarContornos(
-            cmds
+            path.toCmds()
         );
-
 
     let acumulado =
         null;
-
 
     for (
         const cmdsContorno
         of contornos
     ) {
-
         if (
             cmdsContorno.length < 2
         ) {
-
             continue;
         }
-
 
         const contorno =
             PathKit.FromCmds(
                 cmdsContorno
             );
 
-
-        if (
-            !contorno
-        ) {
-
+        if (!contorno) {
             continue;
         }
 
-
-        contorno.setFillType(
-            PathKit.FillType.WINDING
-        );
-
-
         if (
-            !acumulado
+            PathKit.FillType &&
+            PathKit.FillType.WINDING !==
+                undefined
         ) {
-
-            acumulado =
-                contorno.copy();
+            contorno.setFillType(
+                PathKit.FillType.WINDING
+            );
         }
 
-        else {
-
-            const novo =
-                opNovo(
-                    acumulado,
-                    contorno,
-                    PathKit.PathOp.UNION
-                );
-
-
-            acumulado.delete();
-
-
-            acumulado =
-                novo;
-        }
-
+        acumulado =
+            unirNoAcumulador(
+                acumulado,
+                contorno
+            );
 
         contorno.delete();
     }
 
-
-    if (
-        !acumulado
-    ) {
-
+    if (!acumulado) {
         return path.copy();
     }
 
-
     acumulado.simplify();
-
 
     return acumulado;
 }
 
 
 // =====================================================
-// CÍRCULO
+// FORMAS
 // =====================================================
 
 function criarCirculo(
@@ -2377,150 +2364,160 @@ function criarCirculo(
     cy,
     raio
 ) {
+    return PathKit.FromSVGString(`
+        M ${cx-raio} ${cy}
+        A ${raio} ${raio} 0 1 0 ${cx+raio} ${cy}
+        A ${raio} ${raio} 0 1 0 ${cx-raio} ${cy}
+        Z
+    `);
+}
 
-    const path =
-        PathKit.NewPath();
+
+function criarRetanguloArredondado(
+    x,
+    y,
+    largura,
+    altura,
+    raio
+) {
+    const r =
+        Math.max(
+            0,
+            Math.min(
+                raio,
+                largura / 2,
+                altura / 2
+            )
+        );
+
+    if (
+        r <= 0
+    ) {
+        return PathKit.FromSVGString(`
+            M ${x} ${y}
+            L ${x+largura} ${y}
+            L ${x+largura} ${y+altura}
+            L ${x} ${y+altura}
+            Z
+        `);
+    }
+
+    return PathKit.FromSVGString(`
+        M ${x+r} ${y}
+        L ${x+largura-r} ${y}
+        A ${r} ${r} 0 0 1 ${x+largura} ${y+r}
+        L ${x+largura} ${y+altura-r}
+        A ${r} ${r} 0 0 1 ${x+largura-r} ${y+altura}
+        L ${x+r} ${y+altura}
+        A ${r} ${r} 0 0 1 ${x} ${y+altura-r}
+        L ${x} ${y+r}
+        A ${r} ${r} 0 0 1 ${x+r} ${y}
+        Z
+    `);
+}
 
 
-    path.arc(
-        cx,
-        cy,
-        raio,
-        0,
-        Math.PI * 2,
-        false
+function criarCard(
+    largura,
+    altura,
+    raio
+) {
+    return criarRetanguloArredondado(
+        -largura / 2,
+        -altura / 2,
+        largura,
+        altura,
+        raio
     );
-
-
-    path.close();
-
-
-    return path;
 }
 
 
 // =====================================================
-// RAY CASTING PARA POSIÇÃO ANGULAR DO FURO
-//
-// Usa a própria geometria vetorial convertida em Path2D.
-// Procura a interseção mais externa da forma com um raio
-// que parte do centro do bounding box.
+// POSIÇÃO ANGULAR DA ARGOLA
 // =====================================================
 
 const contextoHitTest =
     document
-        .createElement(
-            "canvas"
-        )
-        .getContext(
-            "2d"
-        );
+        .createElement("canvas")
+        .getContext("2d");
 
 
 function encontrarBordaNoAngulo(
     path,
     anguloGraus
 ) {
-
     const bounds =
         path.computeTightBounds();
-
 
     const cx =
         (
             bounds.fLeft +
             bounds.fRight
-        ) /
-        2;
-
+        ) / 2;
 
     const cy =
         (
             bounds.fTop +
             bounds.fBottom
-        ) /
-        2;
-
-
-    const largura =
-        bounds.fRight -
-        bounds.fLeft;
-
-
-    const altura =
-        bounds.fBottom -
-        bounds.fTop;
-
-
-    const maxDist =
-        Math.hypot(
-            largura,
-            altura
-        ) *
-        1.2;
-
+        ) / 2;
 
     const rad =
         anguloGraus *
         Math.PI /
         180;
 
-
     const dx =
-        Math.cos(
-            rad
-        );
-
+        Math.cos(rad);
 
     const dy =
-        Math.sin(
-            rad
-        );
+        Math.sin(rad);
 
+    const largura =
+        bounds.fRight -
+        bounds.fLeft;
+
+    const altura =
+        bounds.fBottom -
+        bounds.fTop;
+
+    const maxDist =
+        Math.hypot(
+            largura,
+            altura
+        ) * 1.5 +
+        10;
 
     const path2D =
         path.toPath2D();
 
-
     const passos =
-        500;
-
+        900;
 
     let ultimoDentro =
         null;
 
-
     let primeiroForaDepois =
         null;
-
-
-    let jaEntrou =
-        false;
-
 
     for (
         let i = 0;
         i <= passos;
         i++
     ) {
-
-        const t =
+        const dist =
             maxDist *
             i /
             passos;
 
-
         const x =
             cx +
             dx *
-            t;
-
+            dist;
 
         const y =
             cy +
             dy *
-            t;
-
+            dist;
 
         const dentro =
             contextoHitTest
@@ -2531,69 +2528,49 @@ function encontrarBordaNoAngulo(
                     "nonzero"
                 );
 
-
-        if (
-            dentro
-        ) {
-
-            jaEntrou =
-                true;
-
-
+        if (dentro) {
             ultimoDentro =
-                t;
-
+                dist;
 
             primeiroForaDepois =
                 null;
         }
 
         else if (
-            jaEntrou &&
             ultimoDentro !== null
         ) {
-
             primeiroForaDepois =
-                t;
+                dist;
+
+            break;
         }
     }
-
 
     if (
         ultimoDentro === null
     ) {
-
-        // Fallback para a borda do bbox.
+        const escala =
+            Math.max(
+                largura,
+                altura
+            ) / 2;
 
         return {
-
             x:
                 cx +
                 dx *
-                Math.max(
-                    largura,
-                    altura
-                ) /
-                2,
-
+                escala,
             y:
                 cy +
                 dy *
-                Math.max(
-                    largura,
-                    altura
-                ) /
-                2,
-
+                escala,
             dx,
             dy
         };
     }
 
-
     let baixo =
         ultimoDentro;
-
 
     let alto =
         primeiroForaDepois ??
@@ -2604,32 +2581,26 @@ function encontrarBordaNoAngulo(
             passos
         );
 
-
     for (
         let i = 0;
         i < 24;
         i++
     ) {
-
         const meio =
             (
                 baixo +
                 alto
-            ) /
-            2;
-
+            ) / 2;
 
         const x =
             cx +
             dx *
             meio;
 
-
         const y =
             cy +
             dy *
             meio;
-
 
         if (
             contextoHitTest
@@ -2640,21 +2611,17 @@ function encontrarBordaNoAngulo(
                     "nonzero"
                 )
         ) {
-
             baixo =
                 meio;
         }
 
         else {
-
             alto =
                 meio;
         }
     }
 
-
     return {
-
         x:
             cx +
             dx *
@@ -2666,22 +2633,13 @@ function encontrarBordaNoAngulo(
             baixo,
 
         dx,
-
         dy
     };
 }
 
 
 // =====================================================
-// ADD HOLE
-//
-// outerRadius = holeSize / 2 + holeThickness
-//
-// O círculo externo é posicionado de forma que a parede
-// da argola penetre na peça aproximadamente pela sua
-// própria espessura. Depois:
-//   UNION(base, círculo externo)
-//   DIFFERENCE(resultado, círculo do furo)
+// ARGOLA + FURO
 // =====================================================
 
 function adicionarFuro(
@@ -2690,30 +2648,24 @@ function adicionarFuro(
     holeThickness,
     holePosition
 ) {
-
     const borda =
         encontrarBordaNoAngulo(
             base,
             holePosition
         );
 
-
     const raioInterno =
-        holeDiameter /
-        2;
-
+        holeDiameter / 2;
 
     const raioExterno =
         raioInterno +
         holeThickness;
-
 
     const sobreposicao =
         Math.max(
             0.6,
             holeThickness
         );
-
 
     const distanciaCentro =
         Math.max(
@@ -2722,18 +2674,15 @@ function adicionarFuro(
             sobreposicao
         );
 
-
     const cx =
         borda.x +
         borda.dx *
         distanciaCentro;
 
-
     const cy =
         borda.y +
         borda.dy *
         distanciaCentro;
-
 
     const externo =
         criarCirculo(
@@ -2742,7 +2691,6 @@ function adicionarFuro(
             raioExterno
         );
 
-
     const unido =
         opNovo(
             base,
@@ -2750,9 +2698,7 @@ function adicionarFuro(
             PathKit.PathOp.UNION
         );
 
-
     externo.delete();
-
 
     const interno =
         criarCirculo(
@@ -2761,7 +2707,6 @@ function adicionarFuro(
             raioInterno
         );
 
-
     const final =
         opNovo(
             unido,
@@ -2769,14 +2714,11 @@ function adicionarFuro(
             PathKit.PathOp.DIFFERENCE
         );
 
-
     unido.delete();
 
     interno.delete();
 
-
     final.simplify();
-
 
     return final;
 }
@@ -2789,13 +2731,10 @@ function adicionarFuro(
 function boundsPath(
     path
 ) {
-
     const b =
         path.computeTightBounds();
 
-
     return {
-
         minX:
             b.fLeft,
 
@@ -2820,124 +2759,99 @@ function boundsPath(
 
 
 // =====================================================
-// SVG DO EMOJI
+// GRAVAÇÃO DO EMOJI
 // =====================================================
 
 function markupEmoji(
     dPreenchimentos,
     dTracos,
     estilo,
-    traco
+    tracoEmoji
 ) {
-
     const partes =
         [];
 
+    const paths =
+        [];
 
-    // =============================================
-    // STROKES ORIGINAIS
-    //
-    // Eles já foram convertidos em áreas no PathKit.
-    // Portanto permanecem AZUIS e preservam a largura
-    // original do desenho.
-    //
-    // IMPORTANTE PARA OPENMOJI:
-    // muitos strokes são paths fechados. Ao expandir um
-    // stroke, surgem um contorno externo e um interno.
-    // fill-rule="evenodd" mantém o miolo vazado e evita
-    // que boca, olhos ou outros detalhes virem manchas
-    // azuis sólidas.
-    // =============================================
-
-    if (
-        dTracos
-    ) {
-
-        partes.push(`
-            <path
-                class="emoji-tracos"
-                d="${dTracos}"
-                fill="#0000FF"
-                stroke="none"
-                fill-rule="evenodd"
-            />
-        `);
+    if (dPreenchimentos) {
+        paths.push(
+            dPreenchimentos
+        );
     }
 
+    if (dTracos) {
+        paths.push(
+            dTracos
+        );
+    }
 
-    // =============================================
-    // REGIÕES ORIGINALMENTE PREENCHIDAS
-    //
-    // São exatamente estas regiões que podem ficar
-    // pretas: no gato 1F638, por exemplo, orelhas,
-    // marcas da testa e nariz.
-    //
-    // IMPORTANTE:
-    // usamos fill-rule="evenodd" no SVG final.
-    // Muitos Noto Emoji são compound paths: o cabelo,
-    // por exemplo, contém o contorno do rosto como um
-    // vazado interno. Com "nonzero", esses vazados
-    // podiam ser preenchidos e o emoji virava uma
-    // silhueta sólida.
-    // =============================================
+    if (!paths.length) {
+        return "";
+    }
 
     if (
-        dPreenchimentos
+        estilo ===
+        "filled-blue"
     ) {
-
-        if (
-            estilo === "outline-blue"
+        for (
+            const d
+            of paths
         ) {
-
             partes.push(`
-                <path
-                    class="emoji-preenchimentos"
-                    d="${dPreenchimentos}"
-                    fill="none"
-                    stroke="#0000FF"
-                    stroke-width="${traco}"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    fill-rule="evenodd"
-                />
-            `);
-        }
-
-        else if (
-            estilo === "outline-black"
-        ) {
-
-            partes.push(`
-                <path
-                    class="emoji-preenchimentos"
-                    d="${dPreenchimentos}"
-                    fill="#000000"
-                    stroke="#0000FF"
-                    stroke-width="${traco}"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    fill-rule="evenodd"
-                />
-            `);
-        }
-
-        else {
-
-            // Equivalente à camada roxa preenchida do
-            // Cuttle, porém em azul.
-
-            partes.push(`
-                <path
-                    class="emoji-preenchimentos"
-                    d="${dPreenchimentos}"
-                    fill="#0000FF"
-                    stroke="none"
-                    fill-rule="evenodd"
-                />
+<path
+    class="emoji-gravacao"
+    d="${d}"
+    fill="#0000FF"
+    stroke="none"
+    fill-rule="evenodd"
+/>
             `);
         }
     }
 
+    else if (
+        estilo ===
+        "outline-black"
+    ) {
+        for (
+            const d
+            of paths
+        ) {
+            partes.push(`
+<path
+    class="emoji-gravacao"
+    d="${d}"
+    fill="#000000"
+    stroke="#0000FF"
+    stroke-width="${tracoEmoji}"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill-rule="evenodd"
+/>
+            `);
+        }
+    }
+
+    else {
+        for (
+            const d
+            of paths
+        ) {
+            partes.push(`
+<path
+    class="emoji-gravacao"
+    d="${d}"
+    fill="none"
+    stroke="#0000FF"
+    stroke-width="${tracoEmoji}"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill-rule="evenodd"
+/>
+            `);
+        }
+    }
 
     return partes.join(
         "\n"
@@ -2952,10 +2866,8 @@ function markupEmoji(
 function gerarReguaHorizontal(
     larguraMm
 ) {
-
     reguaHorizontal.innerHTML =
         "";
-
 
     reguaHorizontal.style.width =
         `${
@@ -2963,45 +2875,36 @@ function gerarReguaHorizontal(
             PX_POR_MM
         }px`;
 
-
     for (
         let mm = 0;
         mm <= larguraMm;
         mm++
     ) {
-
         const marca =
             document.createElement(
                 "div"
             );
 
-
         marca.className =
             "tick-horizontal";
-
 
         if (
             mm % 10 === 0
         ) {
-
             marca.classList.add(
                 "maior"
             );
-
 
             const label =
                 document.createElement(
                     "span"
                 );
 
-
             label.className =
                 "label";
 
-
             label.textContent =
                 mm;
-
 
             marca.appendChild(
                 label
@@ -3011,19 +2914,16 @@ function gerarReguaHorizontal(
         else if (
             mm % 5 === 0
         ) {
-
             marca.classList.add(
                 "medio"
             );
         }
-
 
         marca.style.left =
             `${
                 mm *
                 PX_POR_MM
             }px`;
-
 
         reguaHorizontal.appendChild(
             marca
@@ -3035,10 +2935,8 @@ function gerarReguaHorizontal(
 function gerarReguaVertical(
     alturaMm
 ) {
-
     reguaVertical.innerHTML =
         "";
-
 
     reguaVertical.style.height =
         `${
@@ -3046,45 +2944,36 @@ function gerarReguaVertical(
             PX_POR_MM
         }px`;
 
-
     for (
         let mm = 0;
         mm <= alturaMm;
         mm++
     ) {
-
         const marca =
             document.createElement(
                 "div"
             );
 
-
         marca.className =
             "tick-vertical";
-
 
         if (
             mm % 10 === 0
         ) {
-
             marca.classList.add(
                 "maior"
             );
-
 
             const label =
                 document.createElement(
                     "span"
                 );
 
-
             label.className =
                 "label";
 
-
             label.textContent =
                 mm;
-
 
             marca.appendChild(
                 label
@@ -3094,19 +2983,16 @@ function gerarReguaVertical(
         else if (
             mm % 5 === 0
         ) {
-
             marca.classList.add(
                 "medio"
             );
         }
-
 
         marca.style.top =
             `${
                 mm *
                 PX_POR_MM
             }px`;
-
 
         reguaVertical.appendChild(
             marca
@@ -3121,18 +3007,15 @@ function gerarReguaVertical(
 
 function atualizarPrancheta(
     svgPreview,
-    larguraPecaMm,
-    alturaPecaMm
+    visualBounds,
+    boundsPeca
 ) {
-
     const larguraPranchetaMm =
         Math.max(
-
-            100,
-
+            60,
             Math.ceil(
                 (
-                    larguraPecaMm +
+                    visualBounds.width +
                     MARGEM_PRANCHETA_MM *
                     2
                 ) /
@@ -3140,16 +3023,13 @@ function atualizarPrancheta(
             ) *
             10
         );
-
 
     const alturaPranchetaMm =
         Math.max(
-
-            70,
-
+            60,
             Math.ceil(
                 (
-                    alturaPecaMm +
+                    visualBounds.height +
                     MARGEM_PRANCHETA_MM *
                     2
                 ) /
@@ -3157,17 +3037,14 @@ function atualizarPrancheta(
             ) *
             10
         );
-
 
     const larguraPx =
         larguraPranchetaMm *
         PX_POR_MM;
 
-
     const alturaPx =
         alturaPranchetaMm *
         PX_POR_MM;
-
 
     mesaMedicao.style.width =
         `${
@@ -3175,27 +3052,22 @@ function atualizarPrancheta(
             LARGURA_REGUA_VERTICAL
         }px`;
 
-
     mesaMedicao.style.height =
         `${
             alturaPx +
             ALTURA_REGUA_HORIZONTAL
         }px`;
 
-
     areaMedicao.style.width =
         `${larguraPx}px`;
 
-
     areaMedicao.style.height =
         `${alturaPx}px`;
-
 
     areaMedicao.style.setProperty(
         "--grid-1",
         `${PX_POR_MM}px`
     );
-
 
     areaMedicao.style.setProperty(
         "--grid-5",
@@ -3205,7 +3077,6 @@ function atualizarPrancheta(
         }px`
     );
 
-
     areaMedicao.style.setProperty(
         "--grid-10",
         `${
@@ -3214,24 +3085,19 @@ function atualizarPrancheta(
         }px`
     );
 
-
     const pecaWidth =
-        larguraPecaMm *
+        visualBounds.width *
         PX_POR_MM;
-
 
     const pecaHeight =
-        alturaPecaMm *
+        visualBounds.height *
         PX_POR_MM;
-
 
     pecaPreview.style.width =
         `${pecaWidth}px`;
 
-
     pecaPreview.style.height =
         `${pecaHeight}px`;
-
 
     pecaPreview.style.left =
         `${
@@ -3242,7 +3108,6 @@ function atualizarPrancheta(
             2
         }px`;
 
-
     pecaPreview.style.top =
         `${
             (
@@ -3252,27 +3117,19 @@ function atualizarPrancheta(
             2
         }px`;
 
-
     pecaPreview.innerHTML =
         svgPreview;
 
-
     medidasPreview.textContent =
         `↔ ${
-            larguraPecaMm.toFixed(
-                1
-            )
+            boundsPeca.width.toFixed(1)
         } mm   ↕ ${
-            alturaPecaMm.toFixed(
-                1
-            )
+            boundsPeca.height.toFixed(1)
         } mm`;
-
 
     gerarReguaHorizontal(
         larguraPranchetaMm
     );
-
 
     gerarReguaVertical(
         alturaPranchetaMm
@@ -3281,30 +3138,56 @@ function atualizarPrancheta(
 
 
 // =====================================================
+// VALIDAÇÕES
+// =====================================================
+
+function validarNumero(
+    valor,
+    mensagemErro,
+    aceitarZero = false
+) {
+    if (
+        !Number.isFinite(valor) ||
+        (
+            aceitarZero
+                ? valor < 0
+                : valor <= 0
+        )
+    ) {
+        throw new Error(
+            mensagemErro
+        );
+    }
+}
+
+
+function validarAutor() {
+    if (
+        inputIdentificarAutor.checked &&
+        !inputNomeAutor.value.trim()
+    ) {
+        throw new Error(
+            "Digite o nome do autor."
+        );
+    }
+}
+
+
+// =====================================================
 // GERAÇÃO
 // =====================================================
 
 async function gerarSvg() {
-
-    if (
-        !PathKit
-    ) {
-
-        return;
-    }
-
+    await inicializarPathKit();
 
     const minhaGeracao =
         ++geracaoAtual;
 
-
     const inicio =
         performance.now();
 
-
     botaoBaixar.disabled =
         true;
-
 
     let emoji =
         null;
@@ -3315,137 +3198,221 @@ async function gerarSvg() {
     let semHoles =
         null;
 
+    let base =
+        null;
+
     let corte =
         null;
 
-
     try {
-
         const item =
             obterIconeSelecionado();
 
+        const formato =
+            formatoAtual();
 
         const tamanho =
             Number(
                 inputTamanho.value
             );
 
-
         const outline =
             Number(
                 inputBorda.value
             );
 
+        const cardLargura =
+            Number(
+                inputCardLargura.value
+            );
+
+        const cardAltura =
+            Number(
+                inputCardAltura.value
+            );
+
+        const cardRaio =
+            Number(
+                inputCardRaio.value
+            );
+
+        const cardMargem =
+            Number(
+                inputCardMargem.value
+            );
 
         const holeDiameter =
             Number(
                 inputFuro.value
             );
 
-
         const holeOutline =
             Number(
                 inputEspessuraArgola.value
             );
-
 
         const holePosition =
             Number(
                 inputPosicaoArgola.value
             );
 
-
         const estilo =
             selectEstiloEmoji.value;
-
 
         const tracoEmoji =
             Number(
                 inputTracoEmoji.value
             );
 
-
         valorPosicaoArgola.textContent =
             `${holePosition.toFixed(0)}°`;
 
-
         if (
-            !Number.isFinite(
-                tamanho
-            ) ||
-            tamanho <= 0
+            formato === "chaveiro"
         ) {
-
-            throw new Error(
+            validarNumero(
+                tamanho,
                 "Tamanho inválido."
             );
-        }
 
-
-        if (
-            !Number.isFinite(
-                outline
-            ) ||
-            outline < 0
-        ) {
-
-            throw new Error(
-                "Outline inválido."
+            validarNumero(
+                outline,
+                "Outline inválido.",
+                true
             );
         }
 
+        else {
+            validarNumero(
+                cardLargura,
+                "Largura do card inválida."
+            );
+
+            validarNumero(
+                cardAltura,
+                "Altura do card inválida."
+            );
+
+            validarNumero(
+                cardRaio,
+                "Raio do card inválido.",
+                true
+            );
+
+            validarNumero(
+                cardMargem,
+                "Margem interna inválida."
+            );
+        }
 
         if (
-            !Number.isFinite(
-                holeDiameter
-            ) ||
-            holeDiameter <= 0
+            pecaTemArgola()
         ) {
-
-            throw new Error(
+            validarNumero(
+                holeDiameter,
                 "Diâmetro do furo inválido."
             );
-        }
 
-
-        if (
-            !Number.isFinite(
-                holeOutline
-            ) ||
-            holeOutline <= 0
-        ) {
-
-            throw new Error(
+            validarNumero(
+                holeOutline,
                 "Borda do furo inválida."
             );
         }
 
+        if (
+            estilo !== "filled-blue"
+        ) {
+            validarNumero(
+                tracoEmoji,
+                "Espessura do contorno azul inválida."
+            );
+        }
 
         const dados =
             await carregarEmoji(
                 item
             );
 
-
         if (
             minhaGeracao !==
             geracaoAtual
         ) {
-
             return;
         }
 
+        // =========================================
+        // EMOJI / BASE
+        // =========================================
+
+        if (
+            formato === "chaveiro"
+        ) {
+            emoji =
+                criarEmojiEscalado(
+                    dados,
+                    tamanho
+                );
+
+            expandido =
+                expandirPath(
+                    emoji.completo,
+                    outline
+                );
+
+            semHoles =
+                removerHoles(
+                    expandido
+                );
+
+            base =
+                semHoles.copy();
+        }
+
+        else {
+            emoji =
+                criarEmojiCard(
+                    dados,
+                    cardLargura,
+                    cardAltura,
+                    cardMargem
+                );
+
+            base =
+                criarCard(
+                    cardLargura,
+                    cardAltura,
+                    cardRaio
+                );
+        }
 
         // =========================================
-        // EMOJI 2 — gravação original
+        // CORTE / ARGOLA
         // =========================================
 
-        emoji =
-            criarEmojiEscalado(
-                dados,
-                tamanho
+        if (
+            pecaTemArgola()
+        ) {
+            corte =
+                adicionarFuro(
+                    base,
+                    holeDiameter,
+                    holeOutline,
+                    holePosition
+                );
+        }
+
+        else {
+            corte =
+                base.copy();
+        }
+
+        const dCorte =
+            corte.toSVGString();
+
+        const bounds =
+            boundsPath(
+                corte
             );
-
 
         const dPreenchimentos =
             emoji.preenchimentos
@@ -3453,69 +3420,11 @@ async function gerarSvg() {
                     .toSVGString()
                 : "";
 
-
         const dTracos =
             emoji.tracos
                 ? emoji.tracos
                     .toSVGString()
                 : "";
-
-
-        // =========================================
-        // EMOJI 1 — base do chaveiro
-        // =========================================
-
-        expandido =
-            expandirPath(
-                emoji.completo,
-                outline
-            );
-
-
-        semHoles =
-            removerHoles(
-                expandido
-            );
-
-
-        corte =
-            adicionarFuro(
-                semHoles,
-                holeDiameter,
-                holeOutline,
-                holePosition
-            );
-
-
-        const dCorte =
-            corte.toSVGString();
-
-
-        const bounds =
-            boundsPath(
-                corte
-            );
-
-
-        const larguraPecaMm =
-            bounds.width;
-
-
-        const alturaPecaMm =
-            bounds.height;
-
-
-        dimensoesFinais.textContent =
-            `Dimensões finais: ${
-                larguraPecaMm.toFixed(
-                    1
-                )
-            } × ${
-                alturaPecaMm.toFixed(
-                    1
-                )
-            } mm`;
-
 
         const emojiMarkup =
             markupEmoji(
@@ -3525,18 +3434,36 @@ async function gerarSvg() {
                 tracoEmoji
             );
 
+        const autorMarkup =
+            markupAutor(
+                bounds
+            );
+
+        const visual =
+            boundsVisual(
+                bounds
+            );
+
+        dimensoesFinais.textContent =
+            `Dimensões finais: ${
+                bounds.width.toFixed(1)
+            } × ${
+                bounds.height.toFixed(1)
+            } mm`;
 
         // =========================================
         // PREVIEW
         // =========================================
 
-        const svgPreview = `
+        const svgPreview =
+            `
 <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="${bounds.minX} ${bounds.minY} ${bounds.width} ${bounds.height}"
+    viewBox="${visual.minX} ${visual.minY} ${visual.width} ${visual.height}"
     width="100%"
     height="100%"
     preserveAspectRatio="xMidYMid meet"
+    shape-rendering="geometricPrecision"
 >
     <path
         id="corte"
@@ -3550,47 +3477,43 @@ async function gerarSvg() {
     />
 
     ${emojiMarkup}
+
+    ${autorMarkup}
 </svg>
-        `.trim();
-
+            `.trim();
 
         // =========================================
-        // DOWNLOAD
+        // SVG PARA DOWNLOAD
         // =========================================
 
-        const margem =
-            2;
-
+        const m =
+            MARGEM_SVG_DOWNLOAD_MM;
 
         const viewX =
-            bounds.minX -
-            margem;
-
+            visual.minX -
+            m;
 
         const viewY =
-            bounds.minY -
-            margem;
-
+            visual.minY -
+            m;
 
         const viewW =
-            bounds.width +
-            margem *
-            2;
-
+            visual.width +
+            m * 2;
 
         const viewH =
-            bounds.height +
-            margem *
-            2;
+            visual.height +
+            m * 2;
 
-
-        svgGerado = `
+        svgGerado =
+            `
 <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="${viewX} ${viewY} ${viewW} ${viewH}"
     width="${viewW.toFixed(3)}mm"
     height="${viewH.toFixed(3)}mm"
     preserveAspectRatio="xMinYMin meet"
+    shape-rendering="geometricPrecision"
 >
     <!-- VERMELHO = CORTE -->
     <path
@@ -3606,117 +3529,106 @@ async function gerarSvg() {
 
     <!-- EMOJI = GRAVAÇÃO -->
     ${emojiMarkup}
-</svg>
-        `.trim();
 
+    <!-- AUTOR = GRAVAÇÃO AZUL -->
+    ${autorMarkup}
+</svg>
+            `.trim();
 
         if (
             minhaGeracao !==
             geracaoAtual
         ) {
-
             return;
         }
 
-
         atualizarPrancheta(
             svgPreview,
-            larguraPecaMm,
-            alturaPecaMm
+            visual,
+            bounds
         );
 
+        // Se a identificação foi ativada sem nome,
+        // a prévia continua funcionando, mas o download
+        // só será liberado quando o nome for preenchido.
 
-        botaoBaixar.disabled =
-            false;
+        if (
+            inputIdentificarAutor.checked &&
+            !inputNomeAutor.value.trim()
+        ) {
+            botaoBaixar.disabled =
+                true;
 
+            definirMensagem(
+                "Digite o nome do autor para liberar o download.",
+                true
+            );
+        }
 
-        mensagem.textContent =
-            `Atualizado em ${
-                (
-                    performance.now() -
-                    inicio
-                ).toFixed(0)
-            } ms.`;
+        else {
+            botaoBaixar.disabled =
+                false;
 
+            definirMensagem(
+                `${
+                    formato === "card"
+                        ? "Card"
+                        : "Chaveiro"
+                } atualizado em ${
+                    (
+                        performance.now() -
+                        inicio
+                    ).toFixed(0)
+                } ms. Arquivo: ${
+                    gerarNomeArquivoDownload()
+                }`
+            );
+        }
     }
 
-    catch (
-        erro
-    ) {
-
+    catch (erro) {
         console.error(
             erro
         );
-
 
         if (
             minhaGeracao ===
             geracaoAtual
         ) {
-
-            mensagem.textContent =
-                "Erro: " +
-                erro.message;
-
-
             botaoBaixar.disabled =
                 true;
+
+            svgGerado =
+                "";
+
+            definirMensagem(
+                "Erro: " +
+                erro.message,
+                true
+            );
         }
     }
 
     finally {
-
-        // IMPORTANTE:
-        // SkPath vive na heap WASM e deve ser deletado.
-
-        if (
-            corte
-        ) {
+        if (corte) {
             corte.delete();
         }
 
+        if (base) {
+            base.delete();
+        }
 
-        if (
-            semHoles
-        ) {
+        if (semHoles) {
             semHoles.delete();
         }
 
-
-        if (
-            expandido
-        ) {
+        if (expandido) {
             expandido.delete();
         }
 
-
-        if (
+        destruirConjunto(
             emoji
-        ) {
-
-            if (
-                emoji.completo
-            ) {
-
-                emoji.completo.delete();
-            }
-
-
-            if (
-                emoji.preenchimentos
-            ) {
-
-                emoji.preenchimentos.delete();
-            }
-
-
-            if (
-                emoji.tracos
-            ) {
-
-                emoji.tracos.delete();
-            }
-        }
+        );
     }
 }
 
@@ -3726,39 +3638,28 @@ async function gerarSvg() {
 // =====================================================
 
 function baixarSvg() {
+    if (!svgGerado) {
+        return;
+    }
 
-    if (
-        !svgGerado
-    ) {
+    try {
+        validarAutor();
+    }
+
+    catch (erro) {
+        definirMensagem(
+            erro.message,
+            true
+        );
+
+        inputNomeAutor.focus();
 
         return;
     }
 
-
-    const item =
-        obterIconeSelecionado();
-
-
-    const nome =
-        item.nome
-            .normalize(
-                "NFD"
-            )
-            .replace(
-                /[\u0300-\u036f]/g,
-                ""
-            )
-            .replace(
-                /\s+/g,
-                "_"
-            )
-            .toLowerCase();
-
-
     const conteudo =
         '<?xml version="1.0" encoding="UTF-8"?>\n' +
         svgGerado;
-
 
     const blob =
         new Blob(
@@ -3769,37 +3670,29 @@ function baixarSvg() {
             }
         );
 
-
     const url =
         URL.createObjectURL(
             blob
         );
-
 
     const link =
         document.createElement(
             "a"
         );
 
-
     link.href =
         url;
 
-
     link.download =
-        `${nome}_chaveiro.svg`;
-
+        gerarNomeArquivoDownload();
 
     document.body.appendChild(
         link
     );
 
-
     link.click();
 
-
     link.remove();
-
 
     URL.revokeObjectURL(
         url
@@ -3812,10 +3705,8 @@ function baixarSvg() {
 // =====================================================
 
 function atualizarVisibilidadeTraco() {
-
     const estilo =
         selectEstiloEmoji.value;
-
 
     controleTraco.classList.toggle(
         "escondido",
@@ -3825,26 +3716,80 @@ function atualizarVisibilidadeTraco() {
 }
 
 
-function solicitarAtualizacao() {
+function atualizarInterfaceFormato() {
+    const card =
+        formatoAtual() === "card";
 
+    controlesCard.classList.toggle(
+        "hidden",
+        !card
+    );
+
+    controlesChaveiro.classList.toggle(
+        "hidden",
+        card
+    );
+
+    if (card) {
+        ultimoAnguloChaveiro =
+            Number(
+                inputPosicaoArgola.value
+            );
+
+        inputPosicaoArgola.value =
+            String(
+                ultimoAnguloCard
+            );
+    }
+
+    else {
+        ultimoAnguloCard =
+            Number(
+                inputPosicaoArgola.value
+            );
+
+        inputPosicaoArgola.value =
+            String(
+                ultimoAnguloChaveiro
+            );
+    }
+
+    valorPosicaoArgola.textContent =
+        `${
+            Number(
+                inputPosicaoArgola.value
+            ).toFixed(0)
+        }°`;
+
+    atualizarInterfaceArgola();
+
+    solicitarAtualizacao();
+}
+
+
+function atualizarInterfaceArgola() {
+    controlesArgola.classList.toggle(
+        "hidden",
+        !pecaTemArgola()
+    );
+}
+
+
+function solicitarAtualizacao() {
     if (
         frameAtualizacao !==
         null
     ) {
-
         return;
     }
 
-
     frameAtualizacao =
         requestAnimationFrame(
-            () => {
-
+            async () => {
                 frameAtualizacao =
                     null;
 
-
-                gerarSvg();
+                await gerarSvg();
             }
         );
 }
@@ -3857,9 +3802,6 @@ function solicitarAtualizacao() {
 selectColecao.addEventListener(
     "change",
     () => {
-
-        atualizarInformacoesColecao();
-
         atualizarInformacoesColecao();
 
         atualizarCabecalhoIcone();
@@ -3883,41 +3825,71 @@ selectCategoria.addEventListener(
 );
 
 
-inputTamanho.addEventListener(
-    "input",
-    solicitarAtualizacao
+formatoChaveiro.addEventListener(
+    "change",
+    atualizarInterfaceFormato
 );
 
 
-inputBorda.addEventListener(
-    "input",
-    solicitarAtualizacao
+formatoCard.addEventListener(
+    "change",
+    atualizarInterfaceFormato
 );
 
 
-inputFuro.addEventListener(
-    "input",
-    solicitarAtualizacao
+inputCardArgola.addEventListener(
+    "change",
+    () => {
+        atualizarInterfaceArgola();
+
+        solicitarAtualizacao();
+    }
 );
 
 
-inputEspessuraArgola.addEventListener(
-    "input",
-    solicitarAtualizacao
+[
+    inputTamanho,
+    inputBorda,
+    inputCardLargura,
+    inputCardAltura,
+    inputCardRaio,
+    inputCardMargem,
+    inputFuro,
+    inputEspessuraArgola,
+    inputTracoEmoji
+]
+.forEach(
+    input => {
+        input.addEventListener(
+            "input",
+            solicitarAtualizacao
+        );
+    }
 );
 
 
 inputPosicaoArgola.addEventListener(
     "input",
     () => {
+        const valor =
+            Number(
+                inputPosicaoArgola.value
+            );
 
         valorPosicaoArgola.textContent =
-            `${
-                Number(
-                    inputPosicaoArgola.value
-                ).toFixed(0)
-            }°`;
+            `${valor.toFixed(0)}°`;
 
+        if (
+            formatoAtual() === "card"
+        ) {
+            ultimoAnguloCard =
+                valor;
+        }
+
+        else {
+            ultimoAnguloChaveiro =
+                valor;
+        }
 
         solicitarAtualizacao();
     }
@@ -3927,7 +3899,6 @@ inputPosicaoArgola.addEventListener(
 selectEstiloEmoji.addEventListener(
     "change",
     () => {
-
         atualizarVisibilidadeTraco();
 
         solicitarAtualizacao();
@@ -3935,9 +3906,35 @@ selectEstiloEmoji.addEventListener(
 );
 
 
-inputTracoEmoji.addEventListener(
+inputIdentificarAutor.addEventListener(
+    "change",
+    () => {
+        inputNomeAutor.disabled =
+            !inputIdentificarAutor.checked;
+
+        if (
+            inputIdentificarAutor.checked
+        ) {
+            inputNomeAutor.focus();
+        }
+
+        solicitarAtualizacao();
+    }
+);
+
+
+inputNomeAutor.addEventListener(
     "input",
-    solicitarAtualizacao
+    () => {
+        inputNomeAutor.value =
+            inputNomeAutor.value
+                .replace(
+                    /[\r\n]+/g,
+                    " "
+                );
+
+        solicitarAtualizacao();
+    }
 );
 
 
@@ -3954,6 +3951,10 @@ botaoBaixar.addEventListener(
 window.addEventListener(
     "load",
     async () => {
+        inputNomeAutor.disabled =
+            !inputIdentificarAutor.checked;
+
+        atualizarInformacoesColecao();
 
         atualizarCabecalhoIcone();
 
@@ -3961,35 +3962,36 @@ window.addEventListener(
 
         atualizarVisibilidadeTraco();
 
+        atualizarInterfaceArgola();
+
+        valorPosicaoArgola.textContent =
+            `${
+                Number(
+                    inputPosicaoArgola.value
+                ).toFixed(0)
+            }°`;
 
         try {
-
             await inicializarPathKit();
-
 
             await gerarSvg();
         }
 
-        catch (
-            erro
-        ) {
-
+        catch (erro) {
             console.error(
                 erro
             );
 
-
-            statusPathKit.textContent =
-                "Falha ao carregar o motor vetorial";
-
-            statusPathKit.classList.add(
+            atualizarStatusMotor(
+                "Falha ao carregar o motor vetorial",
                 "erro"
             );
 
-
-            mensagem.textContent =
+            definirMensagem(
                 "Erro: " +
-                erro.message;
+                erro.message,
+                true
+            );
         }
     }
 );

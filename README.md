@@ -1,193 +1,295 @@
-# Gerador de chaveiros com emoji - NuRIA
+# Gerador de Chaveiros e Cards com Emoji — NuRIA
 
-Protótipo vetorial construído a partir da estrutura observada no projeto
-**Emoji Keychain** de referência.
+Aplicação web para criação de peças em SVG a partir de emojis vetoriais, preparada para uso em corte e gravação a laser.
 
-## Arquivos
+O gerador permite produzir **chaveiros com contorno baseado no emoji** ou **cards retangulares**, com opção de argola, identificação do autor e diferentes estilos de gravação.
 
-- `index.html`
-- `style.css`
-- `script.js`
+## Funcionalidades
 
-Não há `pathkit.wasm` no repositório. O PathKit é carregado via CDN para manter
-o projeto pequeno.
+- Seleção de emojis por coleção, categoria ou busca.
+- Coleções disponíveis:
+  - **Noto Emoji 600**
+  - **OpenMoji Black**
+- Dois formatos de peça:
+  - **Chaveiro**
+  - **Card**
+- Ajuste do tamanho e do contorno externo do chaveiro.
+- Ajuste das dimensões, raio dos cantos e margem interna do card.
+- Argola opcional no card.
+- Controle do diâmetro do furo, espessura da borda da argola e posição angular.
+- Três estilos para o emoji:
+  - azul preenchido;
+  - somente contorno azul;
+  - contorno azul com preenchimento preto.
+- Identificação opcional do autor.
+- Inclusão do nome do autor em azul no SVG, **5 mm abaixo da peça**.
+- Pré-visualização em grade milimetrada.
+- Exportação direta em SVG.
 
-## Como testar
+## Convenção de cores para a laser
 
-Na pasta:
+O arquivo exportado utiliza a seguinte convenção:
 
-```bash
-python3 -m http.server 8080
-```
+| Cor | Função |
+|---|---|
+| **Vermelho** | Corte da peça |
+| **Azul** | Gravação vetorial |
+| **Preto** | Preenchimento para gravação, quando selecionado |
 
-Abra:
+Antes de enviar o arquivo para a cortadora laser, confira se o software da máquina está configurado para interpretar essas cores da forma desejada.
+
+## Como utilizar
+
+### 1. Escolha o emoji
+
+Na área de controles:
+
+1. Selecione uma coleção de emojis.
+2. Utilize o campo **Buscar** ou escolha uma **Categoria**.
+3. Clique no emoji desejado.
+
+A prévia é atualizada automaticamente.
+
+### 2. Escolha o formato
+
+O gerador oferece dois formatos.
+
+#### Chaveiro
+
+No modo **Chaveiro**, o contorno vermelho acompanha a forma externa do emoji.
+
+É possível configurar:
+
+- **Tamanho** do emoji;
+- **Outline**, que determina a distância entre o desenho e o contorno de corte;
+- parâmetros da argola.
+
+#### Card
+
+No modo **Card**, o emoji é centralizado dentro de um cartão.
+
+Por padrão, o card utiliza:
+
+- largura: **38 mm**;
+- altura: **50 mm**;
+- raio dos cantos: **3 mm**;
+- margem interna: **4 mm**.
+
+Esses valores podem ser alterados.
+
+Também é possível desmarcar **Adicionar argola** para gerar somente o cartão, sem furo.
+
+### 3. Configure a argola
+
+Quando a peça possui argola, podem ser ajustados:
+
+- **Furo** — diâmetro do furo;
+- **Borda do furo** — espessura de material ao redor do furo;
+- **Posição do furo** — posição angular ao redor da peça.
+
+No chaveiro, a posição inicial é **−45°**.
+
+No card, a posição inicial é centralizada no topo.
+
+### 4. Escolha o estilo de gravação
+
+No campo **Estilo do emoji**, escolha uma das opções:
+
+#### Azul preenchido
+
+O emoji é exportado como uma área azul preenchida.
+
+#### Somente contorno azul
+
+O emoji é exportado sem preenchimento, utilizando apenas linhas azuis.
+
+Nesse modo, a espessura do contorno pode ser ajustada.
+
+#### Contorno azul + preenchimento preto
+
+O emoji recebe:
+
+- contorno azul;
+- preenchimento preto.
+
+Essa opção pode demandar maior tempo de gravação na máquina.
+
+### 5. Identifique o autor
+
+Para incluir o nome do estudante ou autor:
+
+1. Marque **Identificar autor**.
+2. Digite o nome no campo **Nome do autor**.
+
+O nome será:
+
+- incluído em **azul** no SVG;
+- posicionado **5 mm abaixo da linha de corte**;
+- utilizado no nome do arquivo exportado.
+
+Se a identificação não for ativada, o gerador utiliza automaticamente a palavra **aluno** no nome do arquivo.
+
+## Nome dos arquivos exportados
+
+O formato do nome depende do tipo de peça e da identificação do autor.
+
+### Chaveiro
+
+Com autor:
 
 ```text
-http://localhost:8080
+chaveiro-emoji-Herbert.svg
 ```
 
-Não abra o `index.html` diretamente com `file://`, pois o navegador precisa
-usar `fetch()` para carregar os SVGs dos emojis.
+Sem autor:
 
-## Pipeline geométrico
+```text
+chaveiro-emoji-aluno.svg
+```
 
-A versão reproduz a lógica observada no `project.json` do projeto de referência:
+### Card
 
-### Camada de corte
+Com autor:
 
-1. carrega o emoji monocromático;
-2. dimensiona pelo parâmetro `size`;
-3. expande a geometria (`outline`) com junção redonda;
-4. remove vazios internos (`RemoveHoles`);
-5. adiciona argola e furo;
-6. exporta o resultado como linha vermelha.
+```text
+emoji-card-Herbert.svg
+```
 
-### Camada de gravação
+Sem autor:
 
-Uma segunda cópia do emoji é dimensionada pelo mesmo `size` e mantida sem os
-modificadores geométricos.
+```text
+emoji-card-aluno.svg
+```
 
-O modo padrão é **azul preenchido**, equivalente à camada roxa preenchida do
-projeto de referência.
+Espaços e caracteres incompatíveis com nomes de arquivo são normalizados automaticamente.
 
-Também há dois modos experimentais:
+## Teste local
 
-- somente contorno azul;
-- contorno azul + preenchimento preto.
+O projeto deve ser executado através de um servidor HTTP local. Evite abrir o `index.html` diretamente com `file://`, pois o gerador carrega recursos externos e arquivos SVG dinamicamente.
 
-## Defaults
+Na pasta do projeto, execute:
 
-Os valores iniciais foram convertidos dos defaults encontrados no projeto:
+```bash
+python3 -m http.server 8000 > servidor.log 2>&1 &
+```
 
-- `size`: 1.40 in ≈ 35.6 mm
-- `outline`: 0.10 in ≈ 2.5 mm
-- `holePosition`: -45°
-- `holeDiameter`: 0.19 in ≈ 4.8 mm
-- `holeOutline`: 0.12 in ≈ 3.0 mm
+Depois acesse no navegador:
+
+```text
+http://localhost:8000
+```
+
+Para verificar o servidor:
+
+```bash
+ps aux | grep "http.server 8000"
+```
+
+Para acompanhar o log:
+
+```bash
+tail -f servidor.log
+```
+
+Para encerrar:
+
+```bash
+pkill -f "http.server 8000"
+```
+
+Caso uma alteração no JavaScript ou CSS não apareça imediatamente, faça uma atualização completa no navegador:
+
+```text
+Ctrl + Shift + R
+```
+
+## Estrutura do projeto
+
+```text
+.
+├── index.html
+├── script.js
+├── style.css
+└── README.md
+```
+
+### `index.html`
+
+Contém a interface do gerador e carrega o PathKit e os arquivos da aplicação.
+
+### `style.css`
+
+Define a interface, a grade milimetrada, os controles, a pré-visualização e o layout responsivo.
+
+### `script.js`
+
+Responsável por:
+
+- catálogo e busca de emojis;
+- carregamento das coleções;
+- conversão dos SVGs para geometria vetorial;
+- operações booleanas com PathKit;
+- geração do contorno de corte;
+- criação da argola;
+- criação do card;
+- geração da gravação;
+- identificação do autor;
+- pré-visualização;
+- exportação do SVG.
 
 ## Dependências
 
-### PathKit
+O projeto é executado diretamente no navegador e não necessita de instalação de pacotes JavaScript.
 
-Carregado de:
+Ele utiliza recursos externos carregados pela internet, incluindo:
 
-```text
-https://cdn.jsdelivr.net/npm/pathkit-wasm@1.0.0/bin/
-```
+- **PathKit WASM** via jsDelivr;
+- arquivos vetoriais das coleções de emojis configuradas no projeto.
 
-O PathKit é a interface WebAssembly para as PathOps do Skia.
+Por isso, é necessária conexão com a internet durante o uso.
 
-### Emojis
+## Publicação no GitHub Pages
 
-Nesta versão de teste, os SVGs são carregados do endpoint identificado no
-projeto de referência:
+O projeto pode ser publicado diretamente pelo GitHub Pages.
 
-```text
-https://assets.cuttle.xyz/noto-emoji-600/<unicode>.svg
-```
-
-Isso é adequado para comparar o comportamento visual durante o protótipo,
-mas não é uma boa dependência para publicação permanente. Quando o motor
-estiver validado, o recomendado é substituir esse endpoint por uma cópia
-própria dos assets Noto compatíveis/licenciados.
-
-## Observação
-
-A implementação de `AddHole` e a regra exata usada internamente pela
-plataforma para posicionar a argola não estão serializadas no `project.json`;
-portanto essa etapa foi reproduzida geometricamente: o centro do furo é
-posicionado por ângulo na borda externa e o círculo da argola é unido ao
-outline antes de subtrair o furo.
-
-
-## Versão 2 — preservação de fill e stroke
-
-A camada de gravação agora preserva a semântica original do SVG Noto:
-
-- os `stroke` originais são convertidos em áreas azuis;
-- somente as regiões que originalmente tinham `fill` sólido recebem o
-  preenchimento preto opcional;
-- no modo "Somente contorno azul", apenas essas regiões originalmente
-  preenchidas viram contornos azuis.
-
-Isso evita preencher de preto a cabeça inteira quando apenas olhos, marcas,
-orelhas, nariz ou outros detalhes sólidos deveriam receber preenchimento.
-
-
-## Versão 3 — compound paths e `fill-rule="evenodd"`
-
-Alguns Noto Emoji usam um único `path` composto para representar regiões
-preenchidas e seus vazios internos. É o caso de figuras em que o cabelo é
-preenchido, mas o rosto permanece vazio.
-
-A versão anterior exportava esses paths com `fill-rule="nonzero"`, o que podia
-eliminar visualmente os vazios e transformar o desenho numa silhueta sólida.
-
-Agora as regiões originalmente preenchidas são exportadas com
-`fill-rule="evenodd"`. Assim:
-
-- o cabelo pode permanecer preenchido;
-- o rosto continua vazado;
-- olhos, nariz e outros subcontornos internos permanecem coerentes;
-- os emojis formados por shapes independentes continuam funcionando da mesma
-  forma.
-
-
-## Versão 4 — catálogo ampliado
-
-O seletor foi ampliado para **218 ícones** distribuídos
-entre rostos, pessoas, animais, comida, natureza, símbolos, tecnologia,
-transporte, diversão e esportes.
-
-A busca continua filtrando localmente por nome e palavras-chave. As miniaturas
-usam `loading="lazy"` para evitar carregar todo o catálogo de uma só vez.
-
-
-## Versão 5 — duas coleções de emoji
-
-O seletor agora permite alternar entre:
-
-- **Noto Emoji 600** — coleção monocromática usada como referência principal;
-- **OpenMoji Black 17.0.0** — coleção monocromática alternativa, com outra
-  linguagem visual.
-
-O mesmo catálogo de 218 entradas é reutilizado nas duas coleções. Isso oferece
-até 436 variações visuais sem alterar o motor geométrico.
-
-### OpenMoji
-
-Os SVGs são carregados via jsDelivr:
+Coloque os arquivos na raiz do repositório:
 
 ```text
-https://cdn.jsdelivr.net/npm/openmoji@17.0.0/black/svg/<UNICODE>.svg
+index.html
+script.js
+style.css
+README.md
 ```
 
-OpenMoji é licenciado sob **CC BY-SA 4.0** e exige atribuição.
+No GitHub:
 
-### Cache
+1. Abra **Settings** do repositório.
+2. Entre em **Pages**.
+3. Em **Build and deployment**, escolha **Deploy from a branch**.
+4. Selecione a branch `main`.
+5. Selecione `/ (root)`.
+6. Salve.
 
-O cache agora é separado por `coleção + código Unicode`, evitando que trocar
-de Noto para OpenMoji reutilize acidentalmente a geometria da coleção anterior.
+Após a publicação, o gerador poderá ser utilizado diretamente pelo navegador.
 
-### Disponibilidade
+## Observação sobre uso em corte a laser
 
-Se um código Unicode específico não existir numa coleção, a miniatura é
-marcada visualmente como indisponível e a geração mostra uma mensagem clara.
+Sempre faça uma conferência do SVG antes da produção definitiva.
 
+Recomenda-se verificar:
 
-## Versão 6 — correção dos strokes fechados do OpenMoji
+- dimensões finais;
+- espessura mínima das partes da peça;
+- diâmetro do furo;
+- integração da argola com o corpo;
+- presença das linhas vermelhas de corte;
+- presença das linhas ou áreas azuis de gravação;
+- preenchimentos pretos, quando utilizados.
 
-Os SVGs Black do OpenMoji usam muitos elementos com `fill="none"` e
-`stroke="#000000"`. Alguns desses strokes são caminhos fechados, por exemplo
-partes da boca de 😀.
+Para novos materiais ou novas configurações de potência e velocidade, faça primeiro um teste em uma peça pequena.
 
-O motor converte os strokes em áreas vetoriais para preservar a espessura
-original. Um stroke fechado passa a ter dois contornos: externo e interno.
+## Créditos
 
-A visualização anterior usava `fill-rule="nonzero"` para essas áreas. Em
-algumas geometrias, isso fazia o contorno interno deixar de funcionar como
-vazio, transformando uma linha fechada em uma mancha azul sólida.
+Projeto desenvolvido no contexto do **NuRIA — Núcleo de Pesquisas em Robótica e IA**.
 
-Agora os strokes expandidos são renderizados com `fill-rule="evenodd"`.
-Assim o interior continua vazado, enquanto os fills reais (como os olhos)
-continuam sendo tratados separadamente.
+A opção **OpenMoji Black** utiliza a coleção OpenMoji, disponibilizada sob licença **CC BY-SA 4.0**.

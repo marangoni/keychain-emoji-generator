@@ -2,18 +2,11 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Gerador de chaveiros e cards com emoji - NuRIA</title>
 
-    <title>Gerador de chaveiros com emoji - NuRIA</title>
-
-    <link
-        rel="stylesheet"
-        href="style.css?v=6"
-    >
+    <link rel="stylesheet" href="style.css?v=7">
 </head>
 
 <body>
@@ -21,28 +14,22 @@
 <main class="container">
 
     <header class="cabecalho">
-
         <div>
-            <h1>Gerador de chaveiros com emoji - NuRIA</h1>
+            <h1>Gerador de chaveiros e cards com emoji - NuRIA</h1>
 
             <p>
-                Protótipo vetorial baseado na mesma lógica geométrica
-                identificada no projeto de referência.
+                Escolha um emoji, selecione o formato e gere um SVG
+                preparado para corte e gravação a laser.
             </p>
         </div>
 
-        <div
-            id="statusPathKit"
-            class="status-pathkit"
-        >
+        <div id="statusPathKit" class="status-pathkit">
             Carregando motor vetorial...
         </div>
-
     </header>
 
 
     <div class="painel">
-
 
         <!-- ===================================== -->
         <!-- VISUALIZAÇÃO                          -->
@@ -51,7 +38,6 @@
         <section class="visualizacao">
 
             <div class="visualizacao-cabecalho">
-
                 <div>
                     <h2>Visualização</h2>
 
@@ -61,51 +47,37 @@
                     </p>
                 </div>
 
-
-                <div
-                    id="dimensoesFinais"
-                    class="dimensoes-finais"
-                >
+                <div id="dimensoesFinais" class="dimensoes-finais">
                     Dimensões finais: —
                 </div>
-
             </div>
 
 
             <div class="preview-scroll">
-
-                <div
-                    id="mesaMedicao"
-                    class="mesa-medicao"
-                >
+                <div id="mesaMedicao" class="mesa-medicao">
 
                     <div class="canto-regua">
                         mm
                     </div>
-
 
                     <div
                         id="reguaHorizontal"
                         class="regua-horizontal"
                     ></div>
 
-
                     <div
                         id="reguaVertical"
                         class="regua-vertical"
                     ></div>
 
-
                     <div
                         id="areaMedicao"
                         class="area-medicao"
                     >
-
                         <div
                             id="pecaPreview"
                             class="peca-preview"
                         ></div>
-
 
                         <div
                             id="medidasPreview"
@@ -113,34 +85,22 @@
                         >
                             —
                         </div>
-
                     </div>
 
                 </div>
-
             </div>
 
 
             <div class="acoes-preview">
-
-                <button
-                    id="baixar"
-                    disabled
-                >
+                <button id="baixar" disabled>
                     Baixar SVG
                 </button>
-
             </div>
 
-
-            <div
-                id="mensagem"
-                class="mensagem"
-            ></div>
+            <div id="mensagem" class="mensagem"></div>
 
 
             <div class="legenda">
-
                 <span class="legenda-corte">
                     ● Corte
                 </span>
@@ -150,9 +110,8 @@
                 </span>
 
                 <span class="legenda-preto">
-                    ● Preenchimento preto opcional
+                    ● Preenchimento preto
                 </span>
-
             </div>
 
         </section>
@@ -164,19 +123,16 @@
 
         <section class="controles">
 
+            <!-- EMOJI SELECIONADO -->
 
             <div class="bloco-selecionado">
-
                 <div class="titulo-linha">
-
                     <span>Emoji</span>
 
                     <strong id="nomeIconeSelecionado">
                         Gato sorridente
                     </strong>
-
                 </div>
-
 
                 <div
                     id="iconeSelecionado"
@@ -184,103 +140,65 @@
                 >
                     Carregando...
                 </div>
-
             </div>
 
 
-            <div class="grupo-controle">
+            <!-- COLEÇÃO -->
 
+            <div class="grupo-controle">
                 <label for="colecaoEmoji">
                     Coleção
                 </label>
 
                 <select id="colecaoEmoji">
-
-                    <option
-                        value="noto"
-                        selected
-                    >
+                    <option value="noto" selected>
                         Noto Emoji 600
                     </option>
 
                     <option value="openmoji">
                         OpenMoji Black
                     </option>
-
                 </select>
 
                 <small id="descricaoColecao">
                     Noto Emoji monocromático — desenho semelhante ao gerador de referência.
                 </small>
-
             </div>
 
 
-            <div class="grupo-controle">
+            <!-- BUSCA -->
 
-                <label for="buscaIcone">
-                    Buscar
-                </label>
+            <div class="grade-parametros">
+                <div class="grupo-controle">
+                    <label for="buscaIcone">
+                        Buscar
+                    </label>
 
-                <input
-                    type="search"
-                    id="buscaIcone"
-                    placeholder="Ex.: gato, cachorro, robô, coração..."
-                >
+                    <input
+                        type="search"
+                        id="buscaIcone"
+                        placeholder="Ex.: gato, robô..."
+                    >
+                </div>
 
-            </div>
+                <div class="grupo-controle">
+                    <label for="categoriaIcone">
+                        Categoria
+                    </label>
 
-
-            <div class="grupo-controle">
-
-                <label for="categoriaIcone">
-                    Categoria
-                </label>
-
-                <select id="categoriaIcone">
-
-                    <option value="todos">
-                        Todos
-                    </option>
-
-                    <option value="rostos">
-                        Rostos
-                    </option>
-
-                    <option value="pessoas">
-                        Pessoas
-                    </option>
-
-                    <option value="animais">
-                        Animais
-                    </option>
-
-                    <option value="comida">
-                        Comida
-                    </option>
-
-                    <option value="natureza">
-                        Natureza
-                    </option>
-
-                    <option value="simbolos">
-                        Símbolos
-                    </option>
-
-                    <option value="tecnologia">
-                        Tecnologia e objetos
-                    </option>
-
-                    <option value="transporte">
-                        Transporte
-                    </option>
-
-                    <option value="diversao">
-                        Diversão e esportes
-                    </option>
-
-                </select>
-
+                    <select id="categoriaIcone">
+                        <option value="todos">Todos</option>
+                        <option value="rostos">Rostos</option>
+                        <option value="pessoas">Pessoas</option>
+                        <option value="animais">Animais</option>
+                        <option value="comida">Comida</option>
+                        <option value="natureza">Natureza</option>
+                        <option value="simbolos">Símbolos</option>
+                        <option value="tecnologia">Tecnologia e objetos</option>
+                        <option value="transporte">Transporte</option>
+                        <option value="diversao">Diversão e esportes</option>
+                    </select>
+                </div>
             </div>
 
 
@@ -288,7 +206,6 @@
                 id="gradeIcones"
                 class="grade-icones"
             ></div>
-
 
             <div
                 id="contadorIcones"
@@ -298,149 +215,313 @@
             </div>
 
 
+            <!-- ================================= -->
+            <!-- FORMATO                           -->
+            <!-- ================================= -->
+
             <div class="separador">
-                Geometria
+                Formato
             </div>
 
+            <div class="seletor-formato">
 
-            <div class="grade-parametros">
+                <label class="opcao-formato">
+                    <input
+                        type="radio"
+                        name="formatoPeca"
+                        id="formatoChaveiro"
+                        value="chaveiro"
+                        checked
+                    >
 
-
-                <div class="grupo-controle">
-
-                    <label for="tamanhoEmoji">
-                        Tamanho
-                    </label>
-
-                    <div class="campo-unidade">
-
-                        <input
-                            type="number"
-                            id="tamanhoEmoji"
-                            value="35.6"
-                            min="15"
-                            max="100"
-                            step="0.5"
-                        >
-
-                        <span>mm</span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="grupo-controle">
-
-                    <label for="borda">
-                        Outline
-                    </label>
-
-                    <div class="campo-unidade">
-
-                        <input
-                            type="number"
-                            id="borda"
-                            value="2.5"
-                            min="0.5"
-                            max="10"
-                            step="0.1"
-                        >
-
-                        <span>mm</span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="grupo-controle">
-
-                    <label for="furo">
-                        Furo
-                    </label>
-
-                    <div class="campo-unidade">
-
-                        <input
-                            type="number"
-                            id="furo"
-                            value="4.8"
-                            min="2"
-                            max="15"
-                            step="0.1"
-                        >
-
-                        <span>mm</span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="grupo-controle">
-
-                    <label for="espessuraArgola">
-                        Borda do furo
-                    </label>
-
-                    <div class="campo-unidade">
-
-                        <input
-                            type="number"
-                            id="espessuraArgola"
-                            value="3.0"
-                            min="1"
-                            max="10"
-                            step="0.1"
-                        >
-
-                        <span>mm</span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="grupo-controle">
-
-                <label for="posicaoArgola">
-
-                    Posição do furo:
-
-                    <strong id="valorPosicaoArgola">
-                        -45°
-                    </strong>
-
+                    <span>
+                        <strong>Chaveiro</strong>
+                        <small>Contorno acompanha o emoji.</small>
+                    </span>
                 </label>
 
 
-                <input
-                    type="range"
-                    id="posicaoArgola"
-                    min="-180"
-                    max="180"
-                    value="-45"
-                    step="1"
-                >
+                <label class="opcao-formato">
+                    <input
+                        type="radio"
+                        name="formatoPeca"
+                        id="formatoCard"
+                        value="card"
+                    >
 
-                <small>
-                    A posição é angular, como no projeto de referência.
-                </small>
+                    <span>
+                        <strong>Card</strong>
+                        <small>Emoji centralizado em um cartão.</small>
+                    </span>
+                </label>
 
             </div>
 
 
-            <div class="grupo-controle">
+            <!-- ================================= -->
+            <!-- CHAVEIRO                          -->
+            <!-- ================================= -->
 
+            <div id="controlesChaveiro">
+
+                <div class="separador separador-secundario">
+                    Geometria do chaveiro
+                </div>
+
+                <div class="grade-parametros">
+
+                    <div class="grupo-controle">
+                        <label for="tamanhoEmoji">
+                            Tamanho
+                        </label>
+
+                        <div class="campo-unidade">
+                            <input
+                                type="number"
+                                id="tamanhoEmoji"
+                                value="35.6"
+                                min="15"
+                                max="100"
+                                step="0.5"
+                            >
+
+                            <span>mm</span>
+                        </div>
+                    </div>
+
+
+                    <div class="grupo-controle">
+                        <label for="borda">
+                            Outline
+                        </label>
+
+                        <div class="campo-unidade">
+                            <input
+                                type="number"
+                                id="borda"
+                                value="2.5"
+                                min="0.5"
+                                max="10"
+                                step="0.1"
+                            >
+
+                            <span>mm</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- CARD                              -->
+            <!-- ================================= -->
+
+            <div id="controlesCard" class="hidden">
+
+                <div class="separador separador-secundario">
+                    Geometria do card
+                </div>
+
+                <div class="grade-parametros">
+
+                    <div class="grupo-controle">
+                        <label for="cardLargura">
+                            Largura
+                        </label>
+
+                        <div class="campo-unidade">
+                            <input
+                                type="number"
+                                id="cardLargura"
+                                value="38"
+                                min="20"
+                                max="100"
+                                step="0.5"
+                            >
+
+                            <span>mm</span>
+                        </div>
+                    </div>
+
+
+                    <div class="grupo-controle">
+                        <label for="cardAltura">
+                            Altura
+                        </label>
+
+                        <div class="campo-unidade">
+                            <input
+                                type="number"
+                                id="cardAltura"
+                                value="50"
+                                min="20"
+                                max="120"
+                                step="0.5"
+                            >
+
+                            <span>mm</span>
+                        </div>
+                    </div>
+
+
+                    <div class="grupo-controle">
+                        <label for="cardRaio">
+                            Raio dos cantos
+                        </label>
+
+                        <div class="campo-unidade">
+                            <input
+                                type="number"
+                                id="cardRaio"
+                                value="3"
+                                min="0"
+                                max="15"
+                                step="0.5"
+                            >
+
+                            <span>mm</span>
+                        </div>
+                    </div>
+
+
+                    <div class="grupo-controle">
+                        <label for="cardMargem">
+                            Margem interna
+                        </label>
+
+                        <div class="campo-unidade">
+                            <input
+                                type="number"
+                                id="cardMargem"
+                                value="4"
+                                min="1"
+                                max="15"
+                                step="0.5"
+                            >
+
+                            <span>mm</span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="grupo-controle">
+                    <label class="opcao-checkbox">
+                        <input
+                            type="checkbox"
+                            id="cardArgola"
+                            checked
+                        >
+
+                        <span>
+                            <strong>Adicionar argola</strong>
+                            <small>
+                                Desmarque para gerar somente o cartão.
+                            </small>
+                        </span>
+                    </label>
+                </div>
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- ARGOLA                            -->
+            <!-- ================================= -->
+
+            <div id="controlesArgola">
+
+                <div class="separador separador-secundario">
+                    Argola
+                </div>
+
+                <div class="grade-parametros">
+
+                    <div class="grupo-controle">
+                        <label for="furo">
+                            Furo
+                        </label>
+
+                        <div class="campo-unidade">
+                            <input
+                                type="number"
+                                id="furo"
+                                value="4.8"
+                                min="2"
+                                max="15"
+                                step="0.1"
+                            >
+
+                            <span>mm</span>
+                        </div>
+                    </div>
+
+
+                    <div class="grupo-controle">
+                        <label for="espessuraArgola">
+                            Borda do furo
+                        </label>
+
+                        <div class="campo-unidade">
+                            <input
+                                type="number"
+                                id="espessuraArgola"
+                                value="3.0"
+                                min="1"
+                                max="10"
+                                step="0.1"
+                            >
+
+                            <span>mm</span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="grupo-controle">
+                    <label for="posicaoArgola">
+                        Posição do furo:
+
+                        <strong id="valorPosicaoArgola">
+                            -45°
+                        </strong>
+                    </label>
+
+                    <input
+                        type="range"
+                        id="posicaoArgola"
+                        min="-180"
+                        max="180"
+                        value="-45"
+                        step="1"
+                    >
+
+                    <small>
+                        Posição angular ao redor da peça.
+                    </small>
+                </div>
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- GRAVAÇÃO DO EMOJI                 -->
+            <!-- ================================= -->
+
+            <div class="separador">
+                Gravação do emoji
+            </div>
+
+            <div class="grupo-controle">
                 <label for="estiloEmoji">
                     Estilo do emoji
                 </label>
 
                 <select id="estiloEmoji">
-
                     <option
                         value="filled-blue"
                         selected
@@ -455,9 +536,7 @@
                     <option value="outline-black">
                         Contorno azul + preenchimento preto
                     </option>
-
                 </select>
-
             </div>
 
 
@@ -465,13 +544,11 @@
                 id="controleTraco"
                 class="grupo-controle controle-traco"
             >
-
                 <label for="tracoEmoji">
                     Espessura do contorno azul
                 </label>
 
                 <div class="campo-unidade">
-
                     <input
                         type="number"
                         id="tracoEmoji"
@@ -482,24 +559,63 @@
                     >
 
                     <span>mm</span>
-
                 </div>
 
                 <small>
                     Usado somente nos dois modos de contorno.
                 </small>
+            </div>
 
+
+            <!-- ================================= -->
+            <!-- IDENTIFICAÇÃO                     -->
+            <!-- ================================= -->
+
+            <div class="separador">
+                Identificação
+            </div>
+
+            <div class="grupo-controle">
+                <label class="opcao-checkbox">
+                    <input
+                        type="checkbox"
+                        id="identificarAutor"
+                    >
+
+                    <span>
+                        <strong>Identificar autor</strong>
+
+                        <small>
+                            Nome em azul 5 mm abaixo da peça.
+                        </small>
+                    </span>
+                </label>
+            </div>
+
+
+            <div class="grupo-controle">
+                <label for="nomeAutor">
+                    Nome do autor
+                </label>
+
+                <input
+                    type="text"
+                    id="nomeAutor"
+                    maxlength="40"
+                    placeholder="Ex.: Herbert"
+                    disabled
+                >
+
+                <small>
+                    O nome é incluído na gravação e também no nome do arquivo.
+                </small>
             </div>
 
 
             <div class="nota-tecnica">
-
-                <strong>Motor desta versão:</strong>
-                o mesmo SVG monocromático é usado duas vezes:
-                uma cópia permanece como gravação e outra recebe
-                expansão vetorial, remoção dos vazios internos e
-                adição do furo.
-
+                <strong>Nome do arquivo:</strong>
+                sem identificação, usa <code>aluno</code>.
+                Com identificação, utiliza o nome informado.
             </div>
 
         </section>
@@ -508,7 +624,6 @@
 
 
     <footer class="rodape">
-
         <span id="creditoColecao">
             Coleção atual: Noto Emoji 600.
         </span>
@@ -518,22 +633,16 @@
         <span>
             OpenMoji: CC BY-SA 4.0.
         </span>
-
     </footer>
 
 </main>
 
 
-<!--
-    PathKit = Skia PathOps em WebAssembly.
-    O arquivo WASM fica no CDN e NÃO entra no repositório.
--->
-
 <script
     src="https://cdn.jsdelivr.net/npm/pathkit-wasm@1.0.0/bin/pathkit.js"
 ></script>
 
-<script src="script.js?v=6"></script>
+<script src="script.js?v=7"></script>
 
 </body>
 </html>
