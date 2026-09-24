@@ -1,21 +1,27 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
     <title>Gerador de chaveiros e cards com emoji - NuRIA</title>
 
-    <link rel="stylesheet" href="style.css?v=7">
+
+    <link rel="stylesheet" href="style.css?v=8">
 </head>
+
 
 <body>
 
+
 <main class="container">
+
 
     <header class="cabecalho">
         <div>
             <h1>Gerador de chaveiros e cards com emoji - NuRIA</h1>
+
 
             <p>
                 Escolha um emoji, selecione o formato e gere um SVG
@@ -23,23 +29,34 @@
             </p>
         </div>
 
-        <div id="statusPathKit" class="status-pathkit">
-            Carregando motor vetorial...
+
+        <div class="cabecalho-status">
+            <span id="versaoFerramenta" class="versao-ferramenta">v8</span>
+
+            <div id="statusPathKit" class="status-pathkit">
+                Carregando motor vetorial...
+            </div>
         </div>
     </header>
 
 
+
+
     <div class="painel">
+
 
         <!-- ===================================== -->
         <!-- VISUALIZAÇÃO                          -->
         <!-- ===================================== -->
 
+
         <section class="visualizacao">
+
 
             <div class="visualizacao-cabecalho">
                 <div>
                     <h2>Visualização</h2>
+
 
                     <p>
                         Grade em milímetros. Vermelho = corte;
@@ -47,28 +64,35 @@
                     </p>
                 </div>
 
+
                 <div id="dimensoesFinais" class="dimensoes-finais">
                     Dimensões finais: —
                 </div>
             </div>
 
 
+
+
             <div class="preview-scroll">
                 <div id="mesaMedicao" class="mesa-medicao">
+
 
                     <div class="canto-regua">
                         mm
                     </div>
+
 
                     <div
                         id="reguaHorizontal"
                         class="regua-horizontal"
                     ></div>
 
+
                     <div
                         id="reguaVertical"
                         class="regua-vertical"
                     ></div>
+
 
                     <div
                         id="areaMedicao"
@@ -79,6 +103,7 @@
                             class="peca-preview"
                         ></div>
 
+
                         <div
                             id="medidasPreview"
                             class="medidas-preview"
@@ -87,17 +112,27 @@
                         </div>
                     </div>
 
+
                 </div>
             </div>
+
+
 
 
             <div class="acoes-preview">
                 <button id="baixar" disabled>
                     Baixar SVG
                 </button>
+
+                <button id="baixarDuplaCamada" disabled>
+                    Baixar 2 SVGs — dupla camada
+                </button>
             </div>
 
+
             <div id="mensagem" class="mensagem"></div>
+
+
 
 
             <div class="legenda">
@@ -105,34 +140,44 @@
                     ● Corte
                 </span>
 
+
                 <span class="legenda-emoji">
                     ● Emoji / gravação
                 </span>
+
 
                 <span class="legenda-preto">
                     ● Preenchimento preto
                 </span>
             </div>
 
+
         </section>
+
+
 
 
         <!-- ===================================== -->
         <!-- CONTROLES                             -->
         <!-- ===================================== -->
 
+
         <section class="controles">
 
+
             <!-- EMOJI SELECIONADO -->
+
 
             <div class="bloco-selecionado">
                 <div class="titulo-linha">
                     <span>Emoji</span>
 
+
                     <strong id="nomeIconeSelecionado">
                         Gato sorridente
                     </strong>
                 </div>
+
 
                 <div
                     id="iconeSelecionado"
@@ -143,22 +188,28 @@
             </div>
 
 
+
+
             <!-- COLEÇÃO -->
+
 
             <div class="grupo-controle">
                 <label for="colecaoEmoji">
                     Coleção
                 </label>
 
+
                 <select id="colecaoEmoji">
                     <option value="noto" selected>
                         Noto Emoji 600
                     </option>
 
+
                     <option value="openmoji">
                         OpenMoji Black
                     </option>
                 </select>
+
 
                 <small id="descricaoColecao">
                     Noto Emoji monocromático — desenho semelhante ao gerador de referência.
@@ -166,13 +217,17 @@
             </div>
 
 
+
+
             <!-- BUSCA -->
+
 
             <div class="grade-parametros">
                 <div class="grupo-controle">
                     <label for="buscaIcone">
                         Buscar
                     </label>
+
 
                     <input
                         type="search"
@@ -181,10 +236,12 @@
                     >
                 </div>
 
+
                 <div class="grupo-controle">
                     <label for="categoriaIcone">
                         Categoria
                     </label>
+
 
                     <select id="categoriaIcone">
                         <option value="todos">Todos</option>
@@ -202,10 +259,13 @@
             </div>
 
 
+
+
             <div
                 id="gradeIcones"
                 class="grade-icones"
             ></div>
+
 
             <div
                 id="contadorIcones"
@@ -215,15 +275,20 @@
             </div>
 
 
+
+
             <!-- ================================= -->
             <!-- FORMATO                           -->
             <!-- ================================= -->
+
 
             <div class="separador">
                 Formato
             </div>
 
+
             <div class="seletor-formato">
+
 
                 <label class="opcao-formato">
                     <input
@@ -234,11 +299,14 @@
                         checked
                     >
 
+
                     <span>
                         <strong>Chaveiro</strong>
                         <small>Contorno acompanha o emoji.</small>
                     </span>
                 </label>
+
+
 
 
                 <label class="opcao-formato">
@@ -249,31 +317,40 @@
                         value="card"
                     >
 
+
                     <span>
                         <strong>Card</strong>
                         <small>Emoji centralizado em um cartão.</small>
                     </span>
                 </label>
 
+
             </div>
+
+
 
 
             <!-- ================================= -->
             <!-- CHAVEIRO                          -->
             <!-- ================================= -->
 
+
             <div id="controlesChaveiro">
+
 
                 <div class="separador separador-secundario">
                     Geometria do chaveiro
                 </div>
 
+
                 <div class="grade-parametros">
+
 
                     <div class="grupo-controle">
                         <label for="tamanhoEmoji">
                             Tamanho
                         </label>
+
 
                         <div class="campo-unidade">
                             <input
@@ -285,15 +362,19 @@
                                 step="0.5"
                             >
 
+
                             <span>mm</span>
                         </div>
                     </div>
+
+
 
 
                     <div class="grupo-controle">
                         <label for="borda">
                             Outline
                         </label>
+
 
                         <div class="campo-unidade">
                             <input
@@ -305,31 +386,41 @@
                                 step="0.1"
                             >
 
+
                             <span>mm</span>
                         </div>
                     </div>
 
+
                 </div>
 
+
             </div>
+
+
 
 
             <!-- ================================= -->
             <!-- CARD                              -->
             <!-- ================================= -->
 
+
             <div id="controlesCard" class="hidden">
+
 
                 <div class="separador separador-secundario">
                     Geometria do card
                 </div>
 
+
                 <div class="grade-parametros">
+
 
                     <div class="grupo-controle">
                         <label for="cardLargura">
                             Largura
                         </label>
+
 
                         <div class="campo-unidade">
                             <input
@@ -341,15 +432,19 @@
                                 step="0.5"
                             >
 
+
                             <span>mm</span>
                         </div>
                     </div>
+
+
 
 
                     <div class="grupo-controle">
                         <label for="cardAltura">
                             Altura
                         </label>
+
 
                         <div class="campo-unidade">
                             <input
@@ -361,15 +456,19 @@
                                 step="0.5"
                             >
 
+
                             <span>mm</span>
                         </div>
                     </div>
+
+
 
 
                     <div class="grupo-controle">
                         <label for="cardRaio">
                             Raio dos cantos
                         </label>
+
 
                         <div class="campo-unidade">
                             <input
@@ -381,15 +480,19 @@
                                 step="0.5"
                             >
 
+
                             <span>mm</span>
                         </div>
                     </div>
+
+
 
 
                     <div class="grupo-controle">
                         <label for="cardMargem">
                             Margem interna
                         </label>
+
 
                         <div class="campo-unidade">
                             <input
@@ -401,11 +504,15 @@
                                 step="0.5"
                             >
 
+
                             <span>mm</span>
                         </div>
                     </div>
 
+
                 </div>
+
+
 
 
                 <div class="grupo-controle">
@@ -416,6 +523,7 @@
                             checked
                         >
 
+
                         <span>
                             <strong>Adicionar argola</strong>
                             <small>
@@ -425,25 +533,33 @@
                     </label>
                 </div>
 
+
             </div>
+
+
 
 
             <!-- ================================= -->
             <!-- ARGOLA                            -->
             <!-- ================================= -->
 
+
             <div id="controlesArgola">
+
 
                 <div class="separador separador-secundario">
                     Argola
                 </div>
 
+
                 <div class="grade-parametros">
+
 
                     <div class="grupo-controle">
                         <label for="furo">
                             Furo
                         </label>
+
 
                         <div class="campo-unidade">
                             <input
@@ -455,15 +571,19 @@
                                 step="0.1"
                             >
 
+
                             <span>mm</span>
                         </div>
                     </div>
+
+
 
 
                     <div class="grupo-controle">
                         <label for="espessuraArgola">
                             Borda do furo
                         </label>
+
 
                         <div class="campo-unidade">
                             <input
@@ -475,21 +595,27 @@
                                 step="0.1"
                             >
 
+
                             <span>mm</span>
                         </div>
                     </div>
 
+
                 </div>
+
+
 
 
                 <div class="grupo-controle">
                     <label for="posicaoArgola">
                         Posição do furo:
 
+
                         <strong id="valorPosicaoArgola">
                             -45°
                         </strong>
                     </label>
+
 
                     <input
                         type="range"
@@ -500,36 +626,36 @@
                         step="1"
                     >
 
+
                     <small>
                         Posição angular ao redor da peça.
                     </small>
                 </div>
 
+
             </div>
+
+
 
 
             <!-- ================================= -->
             <!-- GRAVAÇÃO DO EMOJI                 -->
             <!-- ================================= -->
 
+
             <div class="separador">
                 Gravação do emoji
             </div>
+
 
             <div class="grupo-controle">
                 <label for="estiloEmoji">
                     Estilo do emoji
                 </label>
 
-                <select id="estiloEmoji">
-                    <option
-                        value="filled-blue"
-                        selected
-                    >
-                        Azul preenchido — referência
-                    </option>
 
-                    <option value="outline-blue">
+                <select id="estiloEmoji">
+                    <option value="outline-blue" selected>
                         Somente contorno azul
                     </option>
 
@@ -540,6 +666,8 @@
             </div>
 
 
+
+
             <div
                 id="controleTraco"
                 class="grupo-controle controle-traco"
@@ -548,42 +676,51 @@
                     Espessura do contorno azul
                 </label>
 
+
                 <div class="campo-unidade">
                     <input
                         type="number"
                         id="tracoEmoji"
-                        value="1.5"
+                        value="0.4"
                         min="0.2"
                         max="4"
                         step="0.1"
                     >
 
+
                     <span>mm</span>
                 </div>
 
+
                 <small>
-                    Usado somente nos dois modos de contorno.
+                    Espessura aplicada ao contorno de gravação.
                 </small>
             </div>
+
+
 
 
             <!-- ================================= -->
             <!-- IDENTIFICAÇÃO                     -->
             <!-- ================================= -->
 
+
             <div class="separador">
                 Identificação
             </div>
+
 
             <div class="grupo-controle">
                 <label class="opcao-checkbox">
                     <input
                         type="checkbox"
-                        id="identificarAutor"
+                        id="identificarAutor" checked
                     >
+
 
                     <span>
                         <strong>Identificar autor</strong>
+
 
                         <small>
                             Nome em azul 5 mm abaixo da peça.
@@ -593,18 +730,21 @@
             </div>
 
 
+
+
             <div class="grupo-controle">
                 <label for="nomeAutor">
                     Nome do autor
                 </label>
+
 
                 <input
                     type="text"
                     id="nomeAutor"
                     maxlength="40"
                     placeholder="Ex.: Herbert"
-                    disabled
                 >
+
 
                 <small>
                     O nome é incluído na gravação e também no nome do arquivo.
@@ -612,15 +752,21 @@
             </div>
 
 
+
+
             <div class="nota-tecnica">
-                <strong>Nome do arquivo:</strong>
-                sem identificação, usa <code>aluno</code>.
-                Com identificação, utiliza o nome informado.
+                <strong>Identificação obrigatória:</strong>
+                informe o nome do autor para liberar o download
+                do arquivo de corte e da opção de dupla camada.
             </div>
+
 
         </section>
 
+
     </div>
+
+
 
 
     <footer class="rodape">
@@ -628,21 +774,28 @@
             Coleção atual: Noto Emoji 600.
         </span>
 
+
         <span class="credito-separador">•</span>
+
 
         <span>
             OpenMoji: CC BY-SA 4.0.
         </span>
     </footer>
 
+
 </main>
+
+
 
 
 <script
     src="https://cdn.jsdelivr.net/npm/pathkit-wasm@1.0.0/bin/pathkit.js"
 ></script>
 
-<script src="script.js?v=7"></script>
+
+<script src="script.js?v=8"></script>
+
 
 </body>
 </html>

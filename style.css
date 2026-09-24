@@ -1,6 +1,7 @@
-* {
+﻿* {
     box-sizing: border-box;
 }
+
 
 html,
 body {
@@ -8,11 +9,14 @@ body {
     min-height: 100%;
 }
 
+
 body {
     padding: 8px;
 
+
     background: #f3f3f3;
     color: #202020;
+
 
     font-family:
         Arial,
@@ -21,20 +25,27 @@ body {
 }
 
 
+
+
 /* =========================================
    CONTAINER
    ========================================= */
+
 
 .container {
     width: 100%;
     max-width: 1440px;
 
+
     margin: 0 auto;
     padding: 14px 22px;
 
+
     background: #ffffff;
 
+
     border-radius: 12px;
+
 
     box-shadow:
         0 4px 16px
@@ -42,30 +53,40 @@ body {
 }
 
 
+
+
 /* =========================================
    CABEÇALHO
    ========================================= */
 
+
 .cabecalho {
     display: flex;
+
 
     align-items: flex-start;
     justify-content: space-between;
 
+
     gap: 16px;
+
 
     margin-bottom: 12px;
     padding-bottom: 10px;
+
 
     border-bottom:
         1px solid #ededed;
 }
 
+
 .cabecalho h1 {
     margin: 0;
 
+
     font-size: 28px;
 }
+
 
 .cabecalho p {
     margin:
@@ -73,88 +94,138 @@ body {
         0
         0;
 
+
     color: #666;
 
+
     font-size: 12px;
+}
+
+
+.cabecalho-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: none;
+}
+
+.versao-ferramenta {
+    flex: none;
+    padding: 6px 9px;
+    background: #f3f3f3;
+    border: 1px solid #d8d8d8;
+    border-radius: 999px;
+    color: #555;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
 }
 
 .status-pathkit {
     flex: none;
 
+
     padding:
         6px
         10px;
 
+
     background: #fff4cf;
+
 
     border:
         1px solid #e4d38c;
 
+
     border-radius: 6px;
 
+
     color: #6f5a12;
+
 
     font-size: 11px;
 }
 
+
 .status-pathkit.ok {
     background: #e7f8ee;
 
+
     border-color: #b8dfc8;
+
 
     color: #27643f;
 }
 
+
 .status-pathkit.erro {
     background: #fde8e8;
 
+
     border-color: #e7bcbc;
+
 
     color: #8a2b2b;
 }
+
+
 
 
 /* =========================================
    PAINEL PRINCIPAL
    ========================================= */
 
+
 .painel {
     display: grid;
+
 
     grid-template-columns:
         minmax(500px, 1fr)
         365px;
 
+
     gap: 20px;
+
 
     align-items: start;
 }
+
+
 
 
 /* =========================================
    VISUALIZAÇÃO
    ========================================= */
 
+
 .visualizacao {
     min-width: 0;
 }
 
+
 .visualizacao-cabecalho {
     display: flex;
+
 
     align-items: flex-start;
     justify-content: space-between;
 
+
     gap: 12px;
+
 
     margin-bottom: 6px;
 }
 
+
 .visualizacao h2 {
     margin: 0;
 
+
     font-size: 20px;
 }
+
 
 .visualizacao-cabecalho p {
     margin:
@@ -162,216 +233,292 @@ body {
         0
         0;
 
+
     color: #777;
+
 
     font-size: 11px;
 }
+
 
 .dimensoes-finais {
     padding:
         6px
         9px;
 
+
     background: #f3f3f3;
 
+
     border-radius: 6px;
+
 
     font-size: 11px;
     font-weight: bold;
 
+
     white-space: nowrap;
 }
+
+
 
 
 /* =========================================
    PREVIEW
    ========================================= */
 
+
 .preview-scroll {
     width: 100%;
 
+
     display: flex;
+
 
     justify-content: center;
 
+
     overflow: auto;
+
 
     padding:
         6px
         0;
 
+
     background: #fafafa;
+
 
     border:
         1px solid #ededed;
 
+
     border-radius: 8px;
 }
+
 
 .mesa-medicao {
     position: relative;
 
+
     flex: none;
+
 
     min-width: 100px;
     min-height: 100px;
 }
 
+
 .canto-regua {
     position: absolute;
+
 
     left: 0;
     top: 0;
 
+
     width: 38px;
     height: 30px;
 
+
     display: flex;
+
 
     align-items: center;
     justify-content: center;
 
+
     z-index: 4;
 
+
     background: #ececec;
+
 
     border:
         1px solid #d6d6d6;
 
+
     color: #777;
+
 
     font-size: 9px;
 }
 
+
 .regua-horizontal {
     position: absolute;
+
 
     left: 38px;
     top: 0;
 
+
     height: 30px;
+
 
     z-index: 3;
 
+
     overflow: hidden;
 
+
     background: #f3f3f3;
+
 
     border-top:
         1px solid #d6d6d6;
 
+
     border-right:
         1px solid #d6d6d6;
+
 
     border-bottom:
         1px solid #d6d6d6;
 }
+
 
 .regua-vertical {
     position: absolute;
 
+
     left: 0;
     top: 30px;
 
+
     width: 38px;
+
 
     z-index: 3;
 
+
     overflow: hidden;
 
+
     background: #f3f3f3;
+
 
     border-left:
         1px solid #d6d6d6;
 
+
     border-right:
         1px solid #d6d6d6;
+
 
     border-bottom:
         1px solid #d6d6d6;
 }
 
+
 .tick-horizontal {
     position: absolute;
 
+
     top: 17px;
+
 
     width: 1px;
     height: 5px;
 
+
     background: #999;
 }
+
 
 .tick-horizontal.medio {
     top: 14px;
     height: 8px;
 }
 
+
 .tick-horizontal.maior {
     top: 10px;
     height: 12px;
 
+
     background: #555;
 }
+
 
 .tick-horizontal .label {
     position: absolute;
 
+
     top: -10px;
     left: 2px;
 
+
     color: #666;
+
 
     font-size: 8px;
 }
 
+
 .tick-vertical {
     position: absolute;
 
+
     left: 26px;
+
 
     width: 5px;
     height: 1px;
 
+
     background: #999;
 }
+
 
 .tick-vertical.medio {
     left: 23px;
     width: 8px;
 }
 
+
 .tick-vertical.maior {
     left: 19px;
     width: 12px;
 
+
     background: #555;
 }
+
 
 .tick-vertical .label {
     position: absolute;
 
+
     right: 14px;
     top: -5px;
 
+
     color: #666;
+
 
     font-size: 8px;
 }
+
 
 .area-medicao {
     --grid-1: 5px;
     --grid-5: 25px;
     --grid-10: 50px;
 
+
     position: absolute;
+
 
     left: 38px;
     top: 30px;
 
+
     overflow: hidden;
 
+
     background-color: #ffffff;
+
 
     background-image:
         linear-gradient(
@@ -405,338 +552,454 @@ body {
             transparent 1px
         );
 
+
     background-size:
         var(--grid-10)
         var(--grid-10),
 
+
         var(--grid-10)
         var(--grid-10),
 
-        var(--grid-5)
-        var(--grid-5),
 
         var(--grid-5)
         var(--grid-5),
+
+
+        var(--grid-5)
+        var(--grid-5),
+
 
         var(--grid-1)
         var(--grid-1),
+
 
         var(--grid-1)
         var(--grid-1);
 }
 
+
 .peca-preview {
     position: absolute;
+
 
     z-index: 2;
 }
 
+
 .peca-preview svg {
     display: block;
+
 
     width: 100%;
     height: 100%;
 
+
     overflow: visible;
 }
+
 
 .medidas-preview {
     position: absolute;
 
+
     left: 12px;
     bottom: 10px;
 
+
     z-index: 3;
+
 
     padding:
         5px
         8px;
 
+
     background:
         rgba(255, 255, 255, 0.92);
 
+
     border-radius: 5px;
+
 
     font-size: 12px;
     font-weight: 500;
 }
+
+
 
 
 /* =========================================
    DOWNLOAD / MENSAGEM
    ========================================= */
 
+
 .acoes-preview {
-    display: flex;
-
-    justify-content: flex-end;
-
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
     margin-top: 7px;
 }
 
+
 button {
     min-height: 38px;
+
 
     padding:
         8px
         18px;
 
+
     border: 0;
+
 
     border-radius: 7px;
 
+
     background: #222;
 
+
     color: #fff;
+
 
     font-size: 13px;
     font-weight: 500;
 
+
     cursor: pointer;
 }
+
 
 button:hover:not(:disabled) {
     background: #3c3c3c;
 }
 
+
 button:disabled {
     background: #aaa;
+
 
     cursor: default;
 }
 
+
 .mensagem {
     min-height: 17px;
 
+
     margin-top: 5px;
+
 
     color: #666;
 
+
     font-size: 11px;
+
 
     text-align: right;
 }
 
+
 .legenda {
     display: flex;
 
+
     justify-content: flex-end;
+
 
     gap: 13px;
 
+
     margin-top: 3px;
+
 
     font-size: 11px;
 }
+
 
 .legenda-corte {
     color: #ff0000;
 }
 
+
 .legenda-emoji {
     color: #0000ff;
 }
+
 
 .legenda-preto {
     color: #111;
 }
 
 
+
+
 /* =========================================
    CONTROLES
    ========================================= */
 
+
 .controles {
     padding: 13px;
 
+
     background: #fafafa;
+
 
     border:
         1px solid #eeeeee;
 
+
     border-radius: 10px;
 }
+
 
 .grupo-controle {
     display: flex;
 
+
     flex-direction: column;
+
 
     gap: 4px;
 
+
     margin-bottom: 8px;
 }
+
 
 .grupo-controle label {
     font-size: 12px;
     font-weight: 500;
 }
 
+
 .grupo-controle input,
 .grupo-controle select {
     width: 100%;
 
+
     height: 31px;
+
 
     padding:
         4px
         7px;
 
+
     border:
         1px solid #c9c9c9;
 
+
     border-radius: 5px;
+
 
     background: #fff;
 
+
     font-size: 12px;
 }
+
 
 .grupo-controle input:focus,
 .grupo-controle select:focus {
     outline: none;
 
+
     border-color: #555;
 }
+
 
 .grupo-controle input[type="range"] {
     height: auto;
 
+
     padding: 0;
+
 
     border: 0;
 }
 
+
 .grupo-controle input:disabled {
     background: #ededed;
 
+
     color: #999;
+
 
     cursor: not-allowed;
 }
 
+
 .grupo-controle small {
     color: #777;
 
+
     font-size: 10px;
+
 
     line-height: 1.3;
 }
+
+
 
 
 /* =========================================
    EMOJI
    ========================================= */
 
+
 .bloco-selecionado {
     margin-bottom: 8px;
 }
 
+
 .titulo-linha {
     display: flex;
 
+
     justify-content: space-between;
 
+
     gap: 10px;
+
 
     font-size: 12px;
 }
 
+
 .icone-selecionado {
     display: flex;
+
 
     align-items: center;
     justify-content: center;
 
+
     height: 64px;
+
 
     margin-top: 5px;
 
+
     overflow: hidden;
+
 
     background: #ededed;
 
+
     border-radius: 7px;
 }
+
 
 .icone-selecionado img {
     width: 54px;
     height: 54px;
 
+
     object-fit: contain;
 }
+
 
 .icone-indisponivel {
     padding: 8px;
 
+
     color: #777;
 
+
     font-size: 10px;
+
 
     text-align: center;
 }
 
+
 .grade-icones {
     display: grid;
+
 
     grid-template-columns:
         repeat(6, 1fr);
 
+
     gap: 4px;
 
+
     max-height: 210px;
+
 
     margin-bottom: 8px;
     padding: 5px;
 
+
     overflow-y: auto;
 
+
     background: #fff;
+
 
     border:
         1px solid #ddd;
 
+
     border-radius: 6px;
 }
+
 
 .botao-icone {
     min-width: 0;
     min-height: 44px;
 
+
     padding: 3px;
+
 
     border:
         1px solid transparent;
 
+
     border-radius: 6px;
+
 
     background: #f4f4f4;
 }
+
 
 .botao-icone:hover {
     background: #e8e8e8;
 }
 
+
 .botao-icone.ativo {
     border-color: #222;
 
+
     background: #dcefff;
 }
+
 
 .botao-icone.indisponivel {
     opacity: 0.35;
 }
 
+
 .botao-icone img {
     display: block;
+
 
     width: 34px;
     height: 34px;
 
+
     margin: auto;
+
 
     object-fit: contain;
 }
+
 
 .contador-icones {
     margin:
@@ -744,17 +1007,23 @@ button:disabled {
         2px
         8px;
 
+
     color: #777;
 
+
     font-size: 10px;
+
 
     text-align: right;
 }
 
 
+
+
 /* =========================================
    SEPARADORES / PARÂMETROS
    ========================================= */
+
 
 .separador {
     margin:
@@ -762,111 +1031,149 @@ button:disabled {
         0
         7px;
 
+
     padding-top: 7px;
+
 
     border-top:
         1px solid #e4e4e4;
 
+
     color: #666;
+
 
     font-size: 10px;
     font-weight: bold;
 
+
     text-transform: uppercase;
 }
+
 
 .separador-secundario {
     margin-top: 5px;
 
+
     border-top-style: dashed;
 }
+
 
 .grade-parametros {
     display: grid;
 
+
     grid-template-columns:
         1fr
         1fr;
+
 
     gap:
         0
         8px;
 }
 
+
 .campo-unidade {
     display: grid;
+
 
     grid-template-columns:
         1fr
         32px;
 
+
     gap: 3px;
 }
+
 
 .campo-unidade span {
     display: flex;
 
+
     align-items: center;
     justify-content: center;
 
+
     height: 31px;
+
 
     background: #eee;
 
+
     border-radius: 5px;
+
 
     color: #666;
 
+
     font-size: 10px;
 }
+
+
 
 
 /* =========================================
    FORMATO
    ========================================= */
 
+
 .seletor-formato {
     display: grid;
+
 
     grid-template-columns:
         1fr
         1fr;
 
+
     gap: 7px;
+
 
     margin-bottom: 7px;
 }
 
+
 .opcao-formato {
     display: flex;
 
+
     align-items: flex-start;
 
+
     gap: 6px;
+
 
     padding:
         7px
         8px;
 
+
     background: #fff;
+
 
     border:
         1px solid #d8d8d8;
 
+
     border-radius: 6px;
+
 
     cursor: pointer;
 }
 
+
 .opcao-formato:has(input:checked) {
     border-color: #777;
+
 
     background: #f0f5fa;
 }
 
+
 .opcao-formato input {
     width: auto;
     height: auto;
+
 
     margin:
         2px
@@ -874,189 +1181,250 @@ button:disabled {
         0;
 }
 
+
 .opcao-formato span {
     display: flex;
 
+
     flex-direction: column;
+
 
     gap: 2px;
 }
+
 
 .opcao-formato strong {
     font-size: 11px;
 }
 
+
 .opcao-formato small {
     color: #777;
+
 
     font-size: 9px;
     line-height: 1.25;
 }
 
 
+
+
 /* =========================================
    CHECKBOXES
    ========================================= */
 
+
 .opcao-checkbox {
     display: flex;
 
+
     align-items: flex-start;
 
+
     gap: 7px;
+
 
     padding:
         7px
         8px;
 
+
     background: #f7f7f7;
+
 
     border:
         1px solid #dddddd;
 
+
     border-radius: 5px;
+
 
     cursor: pointer;
 }
+
 
 .opcao-checkbox input {
     width: auto;
     height: auto;
 
+
     margin-top: 1px;
 }
+
 
 .opcao-checkbox span {
     display: flex;
 
+
     flex-direction: column;
+
 
     gap: 2px;
 }
 
+
 .opcao-checkbox small {
     color: #666;
 
+
     font-size: 9px;
 }
+
+
 
 
 /* =========================================
    OUTROS
    ========================================= */
 
+
 .controle-traco.escondido {
     display: none;
 }
 
+
 .nota-tecnica {
     margin-top: 7px;
+
 
     padding:
         7px
         9px;
 
+
     background: #eef6fb;
+
 
     border:
         1px solid #d4e2eb;
 
+
     border-radius: 6px;
+
 
     color: #4f6170;
 
+
     font-size: 9px;
+
 
     line-height: 1.35;
 }
 
+
 .nota-tecnica code {
     font-size: 9px;
 }
+
 
 .hidden {
     display: none !important;
 }
 
 
+
+
 /* =========================================
    RODAPÉ
    ========================================= */
 
+
 .rodape {
     display: flex;
 
+
     justify-content: center;
+
 
     gap: 7px;
 
+
     flex-wrap: wrap;
+
 
     margin-top: 12px;
     padding-top: 9px;
 
+
     border-top:
         1px solid #ededed;
 
+
     color: #777;
+
 
     font-size: 10px;
 }
+
 
 .credito-separador {
     color: #bbb;
 }
 
 
+
+
 /* =========================================
    RESPONSIVO
    ========================================= */
+
 
 @media (max-width: 940px) {
     .painel {
         grid-template-columns: 1fr;
     }
 
+
     .controles {
         max-width: 620px;
     }
 }
+
 
 @media (max-width: 600px) {
     body {
         padding: 0;
     }
 
+
     .container {
         padding: 12px;
 
+
         border-radius: 0;
     }
+
 
     .cabecalho {
         flex-direction: column;
     }
 
+
     .cabecalho h1 {
         font-size: 23px;
     }
 
+
     .visualizacao-cabecalho {
         flex-direction: column;
     }
+
 
     .grade-parametros,
     .seletor-formato {
         grid-template-columns: 1fr;
     }
 
+
     .grade-icones {
         grid-template-columns:
             repeat(5, 1fr);
     }
 
+
     .legenda {
         justify-content: flex-start;
+
 
         flex-wrap: wrap;
     }

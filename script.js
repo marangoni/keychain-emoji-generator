@@ -1,10 +1,19 @@
-// =====================================================
+﻿// =====================================================
 // Gerador de chaveiros e cards com emoji - NuRIA
-// Versão 7
+// Versão 8
 //
 // vermelho = corte
 // azul     = gravação
 // preto    = preenchimento opcional
+//
+// V8:
+// - estilo "Azul preenchido" removido
+// - padrão: somente contorno azul
+// - espessura padrão do contorno: 0,4 mm
+// - identificação do autor habilitada por padrão
+// - downloads bloqueados sem nome do autor
+// - versão exibida na página
+// - dupla camada: desenho azul do emoji convertido para vermelho no segundo SVG
 //
 // V7:
 // - Chaveiro ou Card
@@ -19,13 +28,17 @@
 // =====================================================
 
 
+
+
 // =====================================================
 // DOM
 // =====================================================
 
+
 const selectColecao = document.getElementById("colecaoEmoji");
 const descricaoColecao = document.getElementById("descricaoColecao");
 const creditoColecao = document.getElementById("creditoColecao");
+
 
 const inputBusca = document.getElementById("buscaIcone");
 const selectCategoria = document.getElementById("categoriaIcone");
@@ -34,14 +47,17 @@ const contadorIcones = document.getElementById("contadorIcones");
 const iconeSelecionado = document.getElementById("iconeSelecionado");
 const nomeIconeSelecionado = document.getElementById("nomeIconeSelecionado");
 
+
 const formatoChaveiro = document.getElementById("formatoChaveiro");
 const formatoCard = document.getElementById("formatoCard");
 const controlesChaveiro = document.getElementById("controlesChaveiro");
 const controlesCard = document.getElementById("controlesCard");
 const controlesArgola = document.getElementById("controlesArgola");
 
+
 const inputTamanho = document.getElementById("tamanhoEmoji");
 const inputBorda = document.getElementById("borda");
+
 
 const inputCardLargura = document.getElementById("cardLargura");
 const inputCardAltura = document.getElementById("cardAltura");
@@ -49,22 +65,29 @@ const inputCardRaio = document.getElementById("cardRaio");
 const inputCardMargem = document.getElementById("cardMargem");
 const inputCardArgola = document.getElementById("cardArgola");
 
+
 const inputFuro = document.getElementById("furo");
 const inputEspessuraArgola = document.getElementById("espessuraArgola");
 const inputPosicaoArgola = document.getElementById("posicaoArgola");
 const valorPosicaoArgola = document.getElementById("valorPosicaoArgola");
 
+
 const selectEstiloEmoji = document.getElementById("estiloEmoji");
 const inputTracoEmoji = document.getElementById("tracoEmoji");
 const controleTraco = document.getElementById("controleTraco");
 
+
 const inputIdentificarAutor = document.getElementById("identificarAutor");
 const inputNomeAutor = document.getElementById("nomeAutor");
+const versaoFerramenta = document.getElementById("versaoFerramenta");
+
 
 const dimensoesFinais = document.getElementById("dimensoesFinais");
 const botaoBaixar = document.getElementById("baixar");
+const botaoBaixarDuplaCamada = document.getElementById("baixarDuplaCamada");
 const mensagem = document.getElementById("mensagem");
 const statusPathKit = document.getElementById("statusPathKit");
+
 
 const mesaMedicao = document.getElementById("mesaMedicao");
 const reguaHorizontal = document.getElementById("reguaHorizontal");
@@ -74,9 +97,12 @@ const pecaPreview = document.getElementById("pecaPreview");
 const medidasPreview = document.getElementById("medidasPreview");
 
 
+
+
 // =====================================================
 // CONFIGURAÇÕES
 // =====================================================
+
 
 const COLECOES = {
     noto: {
@@ -91,6 +117,7 @@ const COLECOES = {
         arquivo:
             hex => `${hex.toLowerCase()}.svg`
     },
+
 
     openmoji: {
         id: "openmoji",
@@ -107,21 +134,31 @@ const COLECOES = {
 };
 
 
+
+
 const PATHKIT_CDN =
     "https://cdn.jsdelivr.net/npm/pathkit-wasm@1.0.0/bin/";
 
+
 const PX_POR_MM = 5;
+
 
 const LARGURA_REGUA_VERTICAL = 38;
 const ALTURA_REGUA_HORIZONTAL = 30;
 
+
 const MARGEM_PRANCHETA_MM = 8;
+
 
 const ESPESSURA_CORTE_MM = 0.15;
 const MARGEM_SVG_DOWNLOAD_MM = 2;
+const VERSAO_APP = "8";
+
+
 
 
 // Autor: mesmo padrão usado no gerador de futebol.
+
 
 const TAMANHO_AUTOR_MM = 2.82;
 const TAMANHO_MIN_AUTOR_MM = 1.8;
@@ -129,9 +166,12 @@ const DISTANCIA_AUTOR_CORTE_MM = 5;
 const MARGEM_AUTOR_LATERAL_MM = 2;
 
 
+
+
 // =====================================================
 // CATÁLOGO
 // =====================================================
+
 
 function icone(
     id,
@@ -150,7 +190,10 @@ function icone(
 }
 
 
+
+
 const ICONES = [
+
 
     // ROSTOS
     icone("grinning", "Rosto sorridente", "1f600", "rostos", "grinning sorriso feliz"),
@@ -197,6 +240,7 @@ const ICONES = [
     icone("nerd", "Nerd", "1f913", "rostos", "nerd óculos"),
     icone("monocle", "Monóculo", "1f9d0", "rostos", "monóculo"),
 
+
     // GATOS
     icone("cat-grin", "Gato sorridente", "1f638", "animais", "gato cat gatinho sorriso sorridente"),
     icone("cat-smile", "Gato feliz", "1f63a", "animais", "gato feliz"),
@@ -207,6 +251,7 @@ const ICONES = [
     icone("cat-scream", "Gato assustado", "1f640", "animais", "gato assustado"),
     icone("cat-cry", "Gato chorando", "1f63f", "animais", "gato choro"),
     icone("cat-angry", "Gato bravo", "1f63e", "animais", "gato bravo"),
+
 
     // ANIMAIS
     icone("dog", "Cachorro", "1f436", "animais", "cachorro cao cão dog"),
@@ -256,6 +301,7 @@ const ICONES = [
     icone("shark", "Tubarão", "1f988", "animais", "tubarão tubarao shark"),
     icone("crocodile", "Crocodilo", "1f40a", "animais", "crocodilo"),
 
+
     // PESSOAS
     icone("baby", "Bebê", "1f476", "pessoas", "bebê bebe baby"),
     icone("boy", "Menino", "1f466", "pessoas", "menino boy"),
@@ -270,6 +316,7 @@ const ICONES = [
     icone("santa", "Papai Noel", "1f385", "pessoas", "papai noel santa natal"),
     icone("angel", "Anjinho", "1f47c", "pessoas", "anjo angel"),
     icone("princess", "Princesa", "1f478", "pessoas", "princesa princess"),
+
 
     // COMIDA
     icone("apple-red", "Maçã", "1f34e", "comida", "maçã maca apple"),
@@ -306,6 +353,7 @@ const ICONES = [
     icone("cake", "Bolo de aniversário", "1f382", "comida", "bolo aniversário aniversario cake"),
     icone("coffee", "Café", "2615", "comida", "café cafe coffee"),
 
+
     // NATUREZA
     icone("sun", "Sol", "2600", "natureza", "sol sun"),
     icone("moon", "Lua", "1f319", "natureza", "lua moon"),
@@ -320,6 +368,7 @@ const ICONES = [
     icone("palm", "Palmeira", "1f334", "natureza", "palmeira palm"),
     icone("cactus", "Cacto", "1f335", "natureza", "cacto cactus"),
     icone("leaf", "Folha", "1f343", "natureza", "folha leaf"),
+
 
     // SÍMBOLOS
     icone("heart", "Coração", "2764", "simbolos", "coração coracao heart amor"),
@@ -338,6 +387,7 @@ const ICONES = [
     icone("music-note", "Nota musical", "1f3b5", "simbolos", "música musica nota"),
     icone("music-notes", "Notas musicais", "1f3b6", "simbolos", "música musica notas"),
     icone("hundred", "Cem", "1f4af", "simbolos", "100 cem hundred"),
+
 
     // TECNOLOGIA / OBJETOS
     icone("robot", "Robô", "1f916", "tecnologia", "robô robo robot ia"),
@@ -358,6 +408,7 @@ const ICONES = [
     icone("microscope", "Microscópio", "1f52c", "tecnologia", "microscópio microscopio ciência ciencia"),
     icone("telescope", "Telescópio", "1f52d", "tecnologia", "telescópio telescopio astronomia"),
 
+
     // TRANSPORTE
     icone("car", "Carro", "1f697", "transporte", "carro car"),
     icone("taxi", "Táxi", "1f695", "transporte", "táxi taxi carro"),
@@ -369,6 +420,7 @@ const ICONES = [
     icone("helicopter", "Helicóptero", "1f681", "transporte", "helicóptero helicoptero"),
     icone("ship", "Navio", "1f6a2", "transporte", "navio ship"),
     icone("train", "Trem", "1f686", "transporte", "trem train"),
+
 
     // DIVERSÃO / ESPORTES
     icone("ghost", "Fantasma", "1f47b", "diversao", "fantasma ghost halloween"),
@@ -392,39 +444,53 @@ const ICONES = [
 ];
 
 
+
+
 // =====================================================
 // ESTADO
 // =====================================================
 
+
 let PathKit = null;
 let pathKitPromise = null;
 
+
 let idIconeSelecionado = "cat-grin";
 
+
 let svgGerado = "";
+let svgGeradoCamada2 = "";
 let frameAtualizacao = null;
 let geracaoAtual = 0;
 
+
 let ultimoAnguloChaveiro = -45;
 let ultimoAnguloCard = -90;
+
+
 
 
 // Cache somente de strings SVG/path.
 // Não mantemos SkPath no cache para evitar vazamento
 // de memória na heap WASM.
 
+
 const cacheEmoji = new Map();
+
+
 
 
 // =====================================================
 // HELPERS
 // =====================================================
 
+
 function definirMensagem(
     texto,
     erro = false
 ) {
     mensagem.textContent = texto;
+
 
     mensagem.style.color =
         erro
@@ -433,16 +499,20 @@ function definirMensagem(
 }
 
 
+
+
 function atualizarStatusMotor(
     texto,
     tipo = ""
 ) {
     statusPathKit.textContent = texto;
 
+
     statusPathKit.classList.remove(
         "ok",
         "erro"
     );
+
 
     if (tipo) {
         statusPathKit.classList.add(tipo);
@@ -450,11 +520,15 @@ function atualizarStatusMotor(
 }
 
 
+
+
 function formatoAtual() {
     return formatoCard.checked
         ? "card"
         : "chaveiro";
 }
+
+
 
 
 function cardTemArgola() {
@@ -465,6 +539,8 @@ function cardTemArgola() {
 }
 
 
+
+
 function pecaTemArgola() {
     return (
         formatoAtual() === "chaveiro" ||
@@ -473,9 +549,12 @@ function pecaTemArgola() {
 }
 
 
+
+
 // =====================================================
 // NOME DO ARQUIVO
 // =====================================================
+
 
 function normalizarNomeArquivo(texto) {
     return String(texto || "")
@@ -489,10 +568,13 @@ function normalizarNomeArquivo(texto) {
 }
 
 
+
+
 function obterAutorArquivo() {
     if (!inputIdentificarAutor.checked) {
         return "aluno";
     }
+
 
     return (
         normalizarNomeArquivo(
@@ -503,21 +585,36 @@ function obterAutorArquivo() {
 }
 
 
+
+
 function gerarNomeArquivoDownload() {
-    const autor =
-        obterAutorArquivo();
-
-    if (formatoAtual() === "card") {
-        return `emoji-card-${autor}.svg`;
-    }
-
-    return `chaveiro-emoji-${autor}.svg`;
+    const autor = obterAutorArquivo();
+    return formatoAtual() === "card"
+        ? `emoji-card-${autor}.svg`
+        : `chaveiro-emoji-${autor}.svg`;
 }
+
+function gerarNomeArquivoDuplo1() {
+    const autor = obterAutorArquivo();
+    return formatoAtual() === "card"
+        ? `emoji-card-${autor}-1.svg`
+        : `chaveiro-emoji-${autor}-1.svg`;
+}
+
+function gerarNomeArquivoDuplo2() {
+    const autor = obterAutorArquivo();
+    return formatoAtual() === "card"
+        ? `emoji-card-${autor}-2.svg`
+        : `chaveiro-emoji-${autor}-2.svg`;
+}
+
+
 
 
 // =====================================================
 // AUTOR
 // =====================================================
+
 
 function escaparXml(texto) {
     return String(texto || "")
@@ -529,10 +626,13 @@ function escaparXml(texto) {
 }
 
 
+
+
 function obterNomeAutor() {
     if (!inputIdentificarAutor.checked) {
         return "";
     }
+
 
     return inputNomeAutor.value
         .trim()
@@ -540,11 +640,16 @@ function obterNomeAutor() {
 }
 
 
+
+
 const canvasMedicaoTexto =
     document.createElement("canvas");
 
+
 const contextoMedicaoTexto =
     canvasMedicaoTexto.getContext("2d");
+
+
 
 
 function calcularFonteAutor(
@@ -558,21 +663,26 @@ function calcularFonteAutor(
         return TAMANHO_AUTOR_MM;
     }
 
+
     const fontePx =
         8 * 96 / 72;
 
+
     contextoMedicaoTexto.font =
         `${fontePx}px Arial, Helvetica, sans-serif`;
+
 
     const larguraPx =
         contextoMedicaoTexto
             .measureText(texto)
             .width;
 
+
     const larguraMm =
         larguraPx *
         25.4 /
         96;
+
 
     if (
         larguraMm <=
@@ -581,9 +691,11 @@ function calcularFonteAutor(
         return TAMANHO_AUTOR_MM;
     }
 
+
     const escala =
         larguraDisponivelMm /
         larguraMm;
+
 
     return Math.max(
         TAMANHO_MIN_AUTOR_MM,
@@ -593,15 +705,19 @@ function calcularFonteAutor(
 }
 
 
+
+
 function dadosAutor(
     bounds
 ) {
     const nome =
         obterNomeAutor();
 
+
     if (!nome) {
         return null;
     }
+
 
     const larguraDisponivel =
         Math.max(
@@ -611,11 +727,13 @@ function dadosAutor(
             2
         );
 
+
     const tamanhoFonte =
         calcularFonteAutor(
             nome,
             larguraDisponivel
         );
+
 
     return {
         nome,
@@ -630,15 +748,19 @@ function dadosAutor(
 }
 
 
+
+
 function markupAutor(
     bounds
 ) {
     const dados =
         dadosAutor(bounds);
 
+
     if (!dados) {
         return "";
     }
+
 
     return `
 <text
@@ -657,11 +779,14 @@ function markupAutor(
 }
 
 
+
+
 function boundsVisual(
     boundsCorte
 ) {
     const autor =
         dadosAutor(boundsCorte);
+
 
     if (!autor) {
         return {
@@ -669,10 +794,12 @@ function boundsVisual(
         };
     }
 
+
     const maxY =
         autor.y +
         autor.tamanhoFonte +
         1;
+
 
     return {
         minX:
@@ -691,9 +818,12 @@ function boundsVisual(
 }
 
 
+
+
 // =====================================================
 // URL / COLEÇÃO
 // =====================================================
+
 
 function obterColecaoSelecionada() {
     return (
@@ -705,11 +835,14 @@ function obterColecaoSelecionada() {
 }
 
 
+
+
 function chaveCacheEmoji(
     item
 ) {
     const colecao =
         obterColecaoSelecionada();
+
 
     return (
         colecao.id +
@@ -719,11 +852,14 @@ function chaveCacheEmoji(
 }
 
 
+
+
 function urlIcone(
     item
 ) {
     const colecao =
         obterColecaoSelecionada();
+
 
     return (
         colecao.base +
@@ -735,21 +871,28 @@ function urlIcone(
 }
 
 
+
+
 function atualizarInformacoesColecao() {
     const colecao =
         obterColecaoSelecionada();
 
+
     descricaoColecao.textContent =
         colecao.descricao;
+
 
     creditoColecao.textContent =
         colecao.credito;
 }
 
 
+
+
 // =====================================================
 // CATÁLOGO / UI DE ÍCONES
 // =====================================================
+
 
 function obterIconeSelecionado() {
     return ICONES.find(
@@ -760,12 +903,16 @@ function obterIconeSelecionado() {
 }
 
 
+
+
 function atualizarCabecalhoIcone() {
     const item =
         obterIconeSelecionado();
 
+
     nomeIconeSelecionado.textContent =
         item.nome;
+
 
     iconeSelecionado.innerHTML =
         `
@@ -775,10 +922,12 @@ function atualizarCabecalhoIcone() {
             >
         `;
 
+
     const imagem =
         iconeSelecionado.querySelector(
             "img"
         );
+
 
     imagem.addEventListener(
         "error",
@@ -797,17 +946,22 @@ function atualizarCabecalhoIcone() {
 }
 
 
+
+
 function renderizarGradeIcones() {
     const busca =
         inputBusca.value
             .trim()
             .toLowerCase();
 
+
     const categoria =
         selectCategoria.value;
 
+
     gradeIcones.innerHTML =
         "";
+
 
     const filtrados =
         ICONES.filter(
@@ -817,6 +971,7 @@ function renderizarGradeIcones() {
                     item.categoria ===
                     categoria;
 
+
                 const texto =
                     (
                         item.nome +
@@ -825,11 +980,13 @@ function renderizarGradeIcones() {
                     )
                         .toLowerCase();
 
+
                 const okBusca =
                     !busca ||
                     texto.includes(
                         busca
                     );
+
 
                 return (
                     okCategoria &&
@@ -838,8 +995,10 @@ function renderizarGradeIcones() {
             }
         );
 
+
     contadorIcones.textContent =
         `${filtrados.length} de ${ICONES.length} ícones`;
+
 
     for (
         const item
@@ -850,11 +1009,14 @@ function renderizarGradeIcones() {
                 "button"
             );
 
+
         botao.type =
             "button";
 
+
         botao.className =
             "botao-icone";
+
 
         if (
             item.id ===
@@ -865,8 +1027,10 @@ function renderizarGradeIcones() {
             );
         }
 
+
         botao.title =
             item.nome;
+
 
         botao.innerHTML =
             `
@@ -877,24 +1041,30 @@ function renderizarGradeIcones() {
                 >
             `;
 
+
         botao.addEventListener(
             "click",
             () => {
                 idIconeSelecionado =
                     item.id;
 
+
                 atualizarCabecalhoIcone();
 
+
                 renderizarGradeIcones();
+
 
                 solicitarAtualizacao();
             }
         );
 
+
         const miniatura =
             botao.querySelector(
                 "img"
             );
+
 
         miniatura.addEventListener(
             "error",
@@ -902,6 +1072,7 @@ function renderizarGradeIcones() {
                 botao.classList.add(
                     "indisponivel"
                 );
+
 
                 botao.title =
                     `${item.nome} — indisponível nesta coleção`;
@@ -911,6 +1082,7 @@ function renderizarGradeIcones() {
             }
         );
 
+
         gradeIcones.appendChild(
             botao
         );
@@ -918,22 +1090,28 @@ function renderizarGradeIcones() {
 }
 
 
+
+
 // =====================================================
 // PATHKIT
 // =====================================================
+
 
 async function inicializarPathKit() {
     if (PathKit) {
         return PathKit;
     }
 
+
     if (pathKitPromise) {
         return pathKitPromise;
     }
 
+
     atualizarStatusMotor(
         "Carregando motor vetorial..."
     );
+
 
     if (
         typeof PathKitInit !==
@@ -944,6 +1122,7 @@ async function inicializarPathKit() {
         );
     }
 
+
     pathKitPromise =
         PathKitInit({
             locateFile:
@@ -952,34 +1131,43 @@ async function inicializarPathKit() {
                     file
         });
 
+
     try {
         PathKit =
             await pathKitPromise;
+
 
         atualizarStatusMotor(
             "Motor vetorial pronto",
             "ok"
         );
 
+
         return PathKit;
     }
 
+
     catch (erro) {
         pathKitPromise = null;
+
 
         atualizarStatusMotor(
             "Falha no motor vetorial",
             "erro"
         );
 
+
         throw erro;
     }
 }
 
 
+
+
 // =====================================================
 // CORES
 // =====================================================
+
 
 function corNormalizada(
     valor
@@ -993,6 +1181,8 @@ function corNormalizada(
 }
 
 
+
+
 function corNenhuma(
     valor
 ) {
@@ -1000,6 +1190,7 @@ function corNenhuma(
         corNormalizada(
             valor
         );
+
 
     return (
         !v ||
@@ -1010,6 +1201,8 @@ function corNenhuma(
 }
 
 
+
+
 function corBranca(
     valor
 ) {
@@ -1017,6 +1210,7 @@ function corBranca(
         corNormalizada(
             valor
         );
+
 
     return (
         v === "#fff" ||
@@ -1028,9 +1222,12 @@ function corBranca(
 }
 
 
+
+
 // =====================================================
 // SVG PRIMITIVE -> PATHKIT
 // =====================================================
+
 
 function numeroAtributo(
     elemento,
@@ -1044,12 +1241,15 @@ function numeroAtributo(
             )
         );
 
+
     return Number.isFinite(
         valor
     )
         ? valor
         : padrao;
 }
+
+
 
 
 function pontosSvg(
@@ -1059,6 +1259,7 @@ function pontosSvg(
         return [];
     }
 
+
     const numeros =
         valor
             .trim()
@@ -1066,8 +1267,10 @@ function pontosSvg(
             .map(Number)
             .filter(Number.isFinite);
 
+
     const resultado =
         [];
+
 
     for (
         let i = 0;
@@ -1082,8 +1285,11 @@ function pontosSvg(
         });
     }
 
+
     return resultado;
 }
+
+
 
 
 function criarPathElemento(
@@ -1093,6 +1299,7 @@ function criarPathElemento(
         elemento.tagName
             .toLowerCase();
 
+
     if (
         tag === "path"
     ) {
@@ -1101,14 +1308,17 @@ function criarPathElemento(
                 "d"
             );
 
+
         if (!d) {
             return null;
         }
+
 
         return PathKit.FromSVGString(
             d
         );
     }
+
 
     if (
         tag === "circle"
@@ -1119,17 +1329,20 @@ function criarPathElemento(
                 "cx"
             );
 
+
         const cy =
             numeroAtributo(
                 elemento,
                 "cy"
             );
 
+
         const r =
             numeroAtributo(
                 elemento,
                 "r"
             );
+
 
         return PathKit.FromSVGString(`
             M ${cx-r} ${cy}
@@ -1138,6 +1351,7 @@ function criarPathElemento(
             Z
         `);
     }
+
 
     if (
         tag === "ellipse"
@@ -1148,11 +1362,13 @@ function criarPathElemento(
                 "cx"
             );
 
+
         const cy =
             numeroAtributo(
                 elemento,
                 "cy"
             );
+
 
         const rx =
             numeroAtributo(
@@ -1160,11 +1376,13 @@ function criarPathElemento(
                 "rx"
             );
 
+
         const ry =
             numeroAtributo(
                 elemento,
                 "ry"
             );
+
 
         return PathKit.FromSVGString(`
             M ${cx-rx} ${cy}
@@ -1173,6 +1391,7 @@ function criarPathElemento(
             Z
         `);
     }
+
 
     if (
         tag === "rect"
@@ -1183,11 +1402,13 @@ function criarPathElemento(
                 "x"
             );
 
+
         const y =
             numeroAtributo(
                 elemento,
                 "y"
             );
+
 
         const w =
             numeroAtributo(
@@ -1195,11 +1416,13 @@ function criarPathElemento(
                 "width"
             );
 
+
         const h =
             numeroAtributo(
                 elemento,
                 "height"
             );
+
 
         return PathKit.FromSVGString(`
             M ${x} ${y}
@@ -1210,6 +1433,7 @@ function criarPathElemento(
         `);
     }
 
+
     if (
         tag === "line"
     ) {
@@ -1219,11 +1443,13 @@ function criarPathElemento(
                 "x1"
             );
 
+
         const y1 =
             numeroAtributo(
                 elemento,
                 "y1"
             );
+
 
         const x2 =
             numeroAtributo(
@@ -1231,17 +1457,20 @@ function criarPathElemento(
                 "x2"
             );
 
+
         const y2 =
             numeroAtributo(
                 elemento,
                 "y2"
             );
 
+
         return PathKit.FromSVGString(`
             M ${x1} ${y1}
             L ${x2} ${y2}
         `);
     }
+
 
     if (
         tag === "polygon" ||
@@ -1254,12 +1483,15 @@ function criarPathElemento(
                 )
             );
 
+
         if (!pontos.length) {
             return null;
         }
 
+
         let d =
             `M ${pontos[0].x} ${pontos[0].y}`;
+
 
         for (
             let i = 1;
@@ -1270,24 +1502,30 @@ function criarPathElemento(
                 ` L ${pontos[i].x} ${pontos[i].y}`;
         }
 
+
         if (
             tag === "polygon"
         ) {
             d += " Z";
         }
 
+
         return PathKit.FromSVGString(
             d
         );
     }
 
+
     return null;
 }
+
+
 
 
 // =====================================================
 // MATRIZ RELATIVA
 // =====================================================
+
 
 function matrizRelativa(
     root,
@@ -1297,8 +1535,10 @@ function matrizRelativa(
         const rootCTM =
             root.getCTM();
 
+
         const elementCTM =
             elemento.getCTM();
+
 
         if (
             !rootCTM ||
@@ -1309,6 +1549,7 @@ function matrizRelativa(
             );
         }
 
+
         const relativa =
             rootCTM
                 .inverse()
@@ -1316,20 +1557,24 @@ function matrizRelativa(
                     elementCTM
                 );
 
+
         return [
             relativa.a,
             relativa.c,
             relativa.e,
 
+
             relativa.b,
             relativa.d,
             relativa.f,
+
 
             0,
             0,
             1
         ];
     }
+
 
     catch {
         return [
@@ -1341,9 +1586,12 @@ function matrizRelativa(
 }
 
 
+
+
 // =====================================================
 // BOOLEANAS PATHKIT
 // =====================================================
+
 
 function opNovo(
     a,
@@ -1361,13 +1609,16 @@ function opNovo(
                 operacao
             );
 
+
         if (resultado) {
             return resultado;
         }
     }
 
+
     const resultado =
         a.copy();
+
 
     const ok =
         resultado.op(
@@ -1375,16 +1626,21 @@ function opNovo(
             operacao
         );
 
+
     if (ok === false) {
         resultado.delete();
+
 
         throw new Error(
             "Falha numa operação geométrica do PathKit."
         );
     }
 
+
     return resultado;
 }
+
+
 
 
 function unirNoAcumulador(
@@ -1395,6 +1651,7 @@ function unirNoAcumulador(
         return geometria.copy();
     }
 
+
     const novo =
         opNovo(
             acumulado,
@@ -1402,10 +1659,14 @@ function unirNoAcumulador(
             PathKit.PathOp.UNION
         );
 
+
     acumulado.delete();
+
 
     return novo;
 }
+
+
 
 
 function subtrairDoAcumulador(
@@ -1416,6 +1677,7 @@ function subtrairDoAcumulador(
         return null;
     }
 
+
     const novo =
         opNovo(
             acumulado,
@@ -1423,15 +1685,20 @@ function subtrairDoAcumulador(
             PathKit.PathOp.DIFFERENCE
         );
 
+
     acumulado.delete();
+
 
     return novo;
 }
 
 
+
+
 // =====================================================
 // SVG -> GEOMETRIAS PATHKIT
 // =====================================================
+
 
 function svgParaGeometriasPathKit(
     svgText
@@ -1442,14 +1709,17 @@ function svgParaGeometriasPathKit(
         );
     }
 
+
     const parser =
         new DOMParser();
+
 
     const doc =
         parser.parseFromString(
             svgText,
             "image/svg+xml"
         );
+
 
     if (
         doc.querySelector(
@@ -1461,54 +1731,69 @@ function svgParaGeometriasPathKit(
         );
     }
 
+
     const suporte =
         document.createElement(
             "div"
         );
 
+
     suporte.style.position =
         "fixed";
+
 
     suporte.style.left =
         "-100000px";
 
+
     suporte.style.top =
         "0";
+
 
     suporte.style.width =
         "1200px";
 
+
     suporte.style.height =
         "1200px";
+
 
     suporte.style.opacity =
         "0";
 
+
     suporte.style.pointerEvents =
         "none";
+
 
     suporte.style.overflow =
         "hidden";
 
+
     suporte.innerHTML =
         svgText;
+
 
     document.body.appendChild(
         suporte
     );
+
 
     const root =
         suporte.querySelector(
             "svg"
         );
 
+
     if (!root) {
         suporte.remove();
+
 
         throw new Error(
             "SVG sem elemento raiz."
         );
     }
+
 
     const viewBox =
         (
@@ -1521,12 +1806,14 @@ function svgParaGeometriasPathKit(
             .split(/[\s,]+/)
             .map(Number);
 
+
     const vbW =
         Number.isFinite(
             viewBox[2]
         )
             ? viewBox[2]
             : 100;
+
 
     const vbH =
         Number.isFinite(
@@ -1535,17 +1822,21 @@ function svgParaGeometriasPathKit(
             ? viewBox[3]
             : 100;
 
+
     root.setAttribute(
         "width",
         String(vbW)
     );
+
 
     root.setAttribute(
         "height",
         String(vbH)
     );
 
+
     root.getBoundingClientRect();
+
 
     const elementos =
         Array.from(
@@ -1554,14 +1845,19 @@ function svgParaGeometriasPathKit(
             )
         );
 
+
     let completo =
         null;
+
 
     let preenchimentos =
         null;
 
+
     let tracos =
         null;
+
+
 
 
     function aplicarMascaraBranca(
@@ -1573,11 +1869,13 @@ function svgParaGeometriasPathKit(
                 geometria
             );
 
+
         preenchimentos =
             subtrairDoAcumulador(
                 preenchimentos,
                 geometria
             );
+
 
         tracos =
             subtrairDoAcumulador(
@@ -1585,6 +1883,8 @@ function svgParaGeometriasPathKit(
                 geometria
             );
     }
+
+
 
 
     try {
@@ -1600,10 +1900,12 @@ function svgParaGeometriasPathKit(
                 continue;
             }
 
+
             const estilo =
                 getComputedStyle(
                     elemento
                 );
+
 
             if (
                 estilo.display === "none" ||
@@ -1612,10 +1914,12 @@ function svgParaGeometriasPathKit(
                 continue;
             }
 
+
             const opacity =
                 parseFloat(
                     estilo.opacity
                 );
+
 
             if (
                 Number.isFinite(opacity) &&
@@ -1624,21 +1928,26 @@ function svgParaGeometriasPathKit(
                 continue;
             }
 
+
             const fill =
                 estilo.fill;
 
+
             const stroke =
                 estilo.stroke;
+
 
             const fillOpacity =
                 parseFloat(
                     estilo.fillOpacity
                 );
 
+
             const strokeOpacity =
                 parseFloat(
                     estilo.strokeOpacity
                 );
+
 
             const temFill =
                 !corNenhuma(fill) &&
@@ -1649,10 +1958,12 @@ function svgParaGeometriasPathKit(
                     fillOpacity > 0
                 );
 
+
             const larguraStroke =
                 parseFloat(
                     estilo.strokeWidth
                 );
+
 
             const temStroke =
                 !corNenhuma(stroke) &&
@@ -1667,6 +1978,7 @@ function svgParaGeometriasPathKit(
                 ) &&
                 larguraStroke > 0;
 
+
             if (
                 !temFill &&
                 !temStroke
@@ -1674,14 +1986,17 @@ function svgParaGeometriasPathKit(
                 continue;
             }
 
+
             const base =
                 criarPathElemento(
                     elemento
                 );
 
+
             if (!base) {
                 continue;
             }
+
 
             const matriz =
                 matrizRelativa(
@@ -1689,14 +2004,17 @@ function svgParaGeometriasPathKit(
                     elemento
                 );
 
+
             try {
                 if (temFill) {
                     const preenchido =
                         base.copy();
 
+
                     preenchido.transform(
                         matriz
                     );
+
 
                     if (
                         corBranca(fill)
@@ -1706,12 +2024,14 @@ function svgParaGeometriasPathKit(
                         );
                     }
 
+
                     else {
                         preenchimentos =
                             unirNoAcumulador(
                                 preenchimentos,
                                 preenchido
                             );
+
 
                         completo =
                             unirNoAcumulador(
@@ -1720,34 +2040,42 @@ function svgParaGeometriasPathKit(
                             );
                     }
 
+
                     preenchido.delete();
                 }
+
 
                 if (temStroke) {
                     const contorno =
                         base.copy();
 
+
                     contorno.stroke({
                         width:
                             larguraStroke,
+
 
                         join:
                             PathKit
                                 .StrokeJoin
                                 .ROUND,
 
+
                         cap:
                             PathKit
                                 .StrokeCap
                                 .ROUND,
 
+
                         res_scale:
                             2
                     });
 
+
                     contorno.transform(
                         matriz
                     );
+
 
                     if (
                         corBranca(stroke)
@@ -1757,12 +2085,14 @@ function svgParaGeometriasPathKit(
                         );
                     }
 
+
                     else {
                         tracos =
                             unirNoAcumulador(
                                 tracos,
                                 contorno
                             );
+
 
                         completo =
                             unirNoAcumulador(
@@ -1771,14 +2101,17 @@ function svgParaGeometriasPathKit(
                             );
                     }
 
+
                     contorno.delete();
                 }
             }
+
 
             finally {
                 base.delete();
             }
         }
+
 
         if (!completo) {
             throw new Error(
@@ -1786,15 +2119,19 @@ function svgParaGeometriasPathKit(
             );
         }
 
+
         completo.simplify();
+
 
         if (preenchimentos) {
             preenchimentos.simplify();
         }
 
+
         if (tracos) {
             tracos.simplify();
         }
+
 
         return {
             completo,
@@ -1803,15 +2140,19 @@ function svgParaGeometriasPathKit(
         };
     }
 
+
     finally {
         suporte.remove();
     }
 }
 
 
+
+
 // =====================================================
 // CACHE DO EMOJI
 // =====================================================
+
 
 async function carregarEmoji(
     item
@@ -1820,6 +2161,7 @@ async function carregarEmoji(
         chaveCacheEmoji(
             item
         );
+
 
     if (
         cacheEmoji.has(
@@ -1831,12 +2173,15 @@ async function carregarEmoji(
         );
     }
 
+
     const colecao =
         obterColecaoSelecionada();
+
 
     definirMensagem(
         `Carregando ${item.nome} — ${colecao.nome}...`
     );
+
 
     const resposta =
         await fetch(
@@ -1845,24 +2190,29 @@ async function carregarEmoji(
             )
         );
 
+
     if (!resposta.ok) {
         throw new Error(
             `O ícone ${item.nome} não está disponível em ${colecao.nome} (HTTP ${resposta.status}).`
         );
     }
 
+
     const svgText =
         await resposta.text();
+
 
     const geometrias =
         svgParaGeometriasPathKit(
             svgText
         );
 
+
     try {
         const dCompleto =
             geometrias.completo
                 .toSVGString();
+
 
         const dPreenchimentos =
             geometrias.preenchimentos
@@ -1870,15 +2220,18 @@ async function carregarEmoji(
                     .toSVGString()
                 : "";
 
+
         const dTracos =
             geometrias.tracos
                 ? geometrias.tracos
                     .toSVGString()
                 : "";
 
+
         const bounds =
             geometrias.completo
                 .computeTightBounds();
+
 
         const resultado = {
             svgText,
@@ -1888,16 +2241,20 @@ async function carregarEmoji(
             bounds
         };
 
+
         cacheEmoji.set(
             chaveCache,
             resultado
         );
 
+
         return resultado;
     }
 
+
     finally {
         geometrias.completo.delete();
+
 
         if (
             geometrias.preenchimentos
@@ -1905,6 +2262,7 @@ async function carregarEmoji(
             geometrias.preenchimentos
                 .delete();
         }
+
 
         if (
             geometrias.tracos
@@ -1916,9 +2274,12 @@ async function carregarEmoji(
 }
 
 
+
+
 // =====================================================
 // CONJUNTO DE PATHS
 // =====================================================
+
 
 function reconstruirEmoji(
     dados
@@ -1928,11 +2289,13 @@ function reconstruirEmoji(
             dados.dCompleto
         );
 
+
     if (!completo) {
         throw new Error(
             "Não foi possível reconstruir o path do emoji."
         );
     }
+
 
     const preenchimentos =
         dados.dPreenchimentos
@@ -1941,6 +2304,7 @@ function reconstruirEmoji(
             )
             : null;
 
+
     const tracos =
         dados.dTracos
             ? PathKit.FromSVGString(
@@ -1948,12 +2312,15 @@ function reconstruirEmoji(
             )
             : null;
 
+
     return {
         completo,
         preenchimentos,
         tracos
     };
 }
+
+
 
 
 function transformarConjunto(
@@ -1964,6 +2331,7 @@ function transformarConjunto(
         matriz
     );
 
+
     if (
         conjunto.preenchimentos
     ) {
@@ -1973,6 +2341,7 @@ function transformarConjunto(
             );
     }
 
+
     if (
         conjunto.tracos
     ) {
@@ -1981,9 +2350,12 @@ function transformarConjunto(
                 matriz
             );
     }
+
 
     return conjunto;
 }
+
+
 
 
 // =====================================================
@@ -1991,6 +2363,7 @@ function transformarConjunto(
 //
 // O maior lado passa a medir "tamanhoMm".
 // =====================================================
+
 
 function criarEmojiEscalado(
     dados,
@@ -2001,23 +2374,28 @@ function criarEmojiEscalado(
             dados
         );
 
+
     const b =
         conjunto.completo
             .computeTightBounds();
+
 
     const largura =
         b.fRight -
         b.fLeft;
 
+
     const altura =
         b.fBottom -
         b.fTop;
+
 
     const maiorLado =
         Math.max(
             largura,
             altura
         );
+
 
     if (
         maiorLado <= 0
@@ -2026,14 +2404,17 @@ function criarEmojiEscalado(
             conjunto
         );
 
+
         throw new Error(
             "Emoji com dimensões inválidas."
         );
     }
 
+
     const escala =
         tamanhoMm /
         maiorLado;
+
 
     const cx =
         (
@@ -2041,11 +2422,13 @@ function criarEmojiEscalado(
             b.fRight
         ) / 2;
 
+
     const cy =
         (
             b.fTop +
             b.fBottom
         ) / 2;
+
 
     return transformarConjunto(
         conjunto,
@@ -2054,9 +2437,11 @@ function criarEmojiEscalado(
             0,
             -cx * escala,
 
+
             0,
             escala,
             -cy * escala,
+
 
             0,
             0,
@@ -2066,9 +2451,12 @@ function criarEmojiEscalado(
 }
 
 
+
+
 // =====================================================
 // ESCALA DO EMOJI - CARD
 // =====================================================
+
 
 function criarEmojiCard(
     dados,
@@ -2081,17 +2469,21 @@ function criarEmojiCard(
             dados
         );
 
+
     const b =
         conjunto.completo
             .computeTightBounds();
+
 
     const largura =
         b.fRight -
         b.fLeft;
 
+
     const altura =
         b.fBottom -
         b.fTop;
+
 
     if (
         largura <= 0 ||
@@ -2101,18 +2493,22 @@ function criarEmojiCard(
             conjunto
         );
 
+
         throw new Error(
             "Emoji com dimensões inválidas."
         );
     }
 
+
     const larguraDisponivel =
         larguraCard -
         margem * 2;
 
+
     const alturaDisponivel =
         alturaCard -
         margem * 2;
+
 
     if (
         larguraDisponivel <= 0 ||
@@ -2122,10 +2518,12 @@ function criarEmojiCard(
             conjunto
         );
 
+
         throw new Error(
             "A margem interna do card é maior que a área disponível."
         );
     }
+
 
     const escala =
         Math.min(
@@ -2135,17 +2533,20 @@ function criarEmojiCard(
             altura
         );
 
+
     const cx =
         (
             b.fLeft +
             b.fRight
         ) / 2;
 
+
     const cy =
         (
             b.fTop +
             b.fBottom
         ) / 2;
+
 
     return transformarConjunto(
         conjunto,
@@ -2154,9 +2555,11 @@ function criarEmojiCard(
             0,
             -cx * escala,
 
+
             0,
             escala,
             -cy * escala,
+
 
             0,
             0,
@@ -2166,6 +2569,8 @@ function criarEmojiCard(
 }
 
 
+
+
 function destruirConjunto(
     conjunto
 ) {
@@ -2173,17 +2578,20 @@ function destruirConjunto(
         return;
     }
 
+
     if (
         conjunto.completo
     ) {
         conjunto.completo.delete();
     }
 
+
     if (
         conjunto.preenchimentos
     ) {
         conjunto.preenchimentos.delete();
     }
+
 
     if (
         conjunto.tracos
@@ -2193,9 +2601,12 @@ function destruirConjunto(
 }
 
 
+
+
 // =====================================================
 // EXPAND / OUTLINE
 // =====================================================
+
 
 function expandirPath(
     original,
@@ -2204,23 +2615,28 @@ function expandirPath(
     const expandido =
         original.copy();
 
+
     expandido.stroke({
         width:
             distancia * 2,
+
 
         join:
             PathKit
                 .StrokeJoin
                 .ROUND,
 
+
         cap:
             PathKit
                 .StrokeCap
                 .ROUND,
 
+
         res_scale:
             2
     });
+
 
     const unido =
         opNovo(
@@ -2229,17 +2645,23 @@ function expandirPath(
             PathKit.PathOp.UNION
         );
 
+
     expandido.delete();
 
+
     unido.simplify();
+
 
     return unido;
 }
 
 
+
+
 // =====================================================
 // REMOVE HOLES
 // =====================================================
+
 
 function separarContornos(
     cmds
@@ -2247,8 +2669,10 @@ function separarContornos(
     const contornos =
         [];
 
+
     let atual =
         [];
+
 
     for (
         const cmd
@@ -2263,13 +2687,16 @@ function separarContornos(
                 atual
             );
 
+
             atual =
                 [];
         }
 
+
         atual.push(
             cmd
         );
+
 
         if (
             cmd[0] ===
@@ -2279,10 +2706,12 @@ function separarContornos(
                 atual
             );
 
+
             atual =
                 [];
         }
     }
+
 
     if (
         atual.length
@@ -2292,8 +2721,11 @@ function separarContornos(
         );
     }
 
+
     return contornos;
 }
+
+
 
 
 function removerHoles(
@@ -2304,8 +2736,10 @@ function removerHoles(
             path.toCmds()
         );
 
+
     let acumulado =
         null;
+
 
     for (
         const cmdsContorno
@@ -2317,14 +2751,17 @@ function removerHoles(
             continue;
         }
 
+
         const contorno =
             PathKit.FromCmds(
                 cmdsContorno
             );
 
+
         if (!contorno) {
             continue;
         }
+
 
         if (
             PathKit.FillType &&
@@ -2336,28 +2773,36 @@ function removerHoles(
             );
         }
 
+
         acumulado =
             unirNoAcumulador(
                 acumulado,
                 contorno
             );
 
+
         contorno.delete();
     }
+
 
     if (!acumulado) {
         return path.copy();
     }
 
+
     acumulado.simplify();
+
 
     return acumulado;
 }
 
 
+
+
 // =====================================================
 // FORMAS
 // =====================================================
+
 
 function criarCirculo(
     cx,
@@ -2371,6 +2816,8 @@ function criarCirculo(
         Z
     `);
 }
+
+
 
 
 function criarRetanguloArredondado(
@@ -2390,6 +2837,7 @@ function criarRetanguloArredondado(
             )
         );
 
+
     if (
         r <= 0
     ) {
@@ -2401,6 +2849,7 @@ function criarRetanguloArredondado(
             Z
         `);
     }
+
 
     return PathKit.FromSVGString(`
         M ${x+r} ${y}
@@ -2415,6 +2864,8 @@ function criarRetanguloArredondado(
         Z
     `);
 }
+
+
 
 
 function criarCard(
@@ -2432,14 +2883,19 @@ function criarCard(
 }
 
 
+
+
 // =====================================================
 // POSIÇÃO ANGULAR DA ARGOLA
 // =====================================================
+
 
 const contextoHitTest =
     document
         .createElement("canvas")
         .getContext("2d");
+
+
 
 
 function encontrarBordaNoAngulo(
@@ -2449,11 +2905,13 @@ function encontrarBordaNoAngulo(
     const bounds =
         path.computeTightBounds();
 
+
     const cx =
         (
             bounds.fLeft +
             bounds.fRight
         ) / 2;
+
 
     const cy =
         (
@@ -2461,24 +2919,30 @@ function encontrarBordaNoAngulo(
             bounds.fBottom
         ) / 2;
 
+
     const rad =
         anguloGraus *
         Math.PI /
         180;
 
+
     const dx =
         Math.cos(rad);
 
+
     const dy =
         Math.sin(rad);
+
 
     const largura =
         bounds.fRight -
         bounds.fLeft;
 
+
     const altura =
         bounds.fBottom -
         bounds.fTop;
+
 
     const maxDist =
         Math.hypot(
@@ -2487,17 +2951,22 @@ function encontrarBordaNoAngulo(
         ) * 1.5 +
         10;
 
+
     const path2D =
         path.toPath2D();
+
 
     const passos =
         900;
 
+
     let ultimoDentro =
         null;
 
+
     let primeiroForaDepois =
         null;
+
 
     for (
         let i = 0;
@@ -2509,15 +2978,18 @@ function encontrarBordaNoAngulo(
             i /
             passos;
 
+
         const x =
             cx +
             dx *
             dist;
 
+
         const y =
             cy +
             dy *
             dist;
+
 
         const dentro =
             contextoHitTest
@@ -2528,13 +3000,16 @@ function encontrarBordaNoAngulo(
                     "nonzero"
                 );
 
+
         if (dentro) {
             ultimoDentro =
                 dist;
 
+
             primeiroForaDepois =
                 null;
         }
+
 
         else if (
             ultimoDentro !== null
@@ -2542,9 +3017,11 @@ function encontrarBordaNoAngulo(
             primeiroForaDepois =
                 dist;
 
+
             break;
         }
     }
+
 
     if (
         ultimoDentro === null
@@ -2554,6 +3031,7 @@ function encontrarBordaNoAngulo(
                 largura,
                 altura
             ) / 2;
+
 
         return {
             x:
@@ -2569,8 +3047,10 @@ function encontrarBordaNoAngulo(
         };
     }
 
+
     let baixo =
         ultimoDentro;
+
 
     let alto =
         primeiroForaDepois ??
@@ -2580,6 +3060,7 @@ function encontrarBordaNoAngulo(
             maxDist /
             passos
         );
+
 
     for (
         let i = 0;
@@ -2592,15 +3073,18 @@ function encontrarBordaNoAngulo(
                 alto
             ) / 2;
 
+
         const x =
             cx +
             dx *
             meio;
 
+
         const y =
             cy +
             dy *
             meio;
+
 
         if (
             contextoHitTest
@@ -2615,11 +3099,13 @@ function encontrarBordaNoAngulo(
                 meio;
         }
 
+
         else {
             alto =
                 meio;
         }
     }
+
 
     return {
         x:
@@ -2627,10 +3113,12 @@ function encontrarBordaNoAngulo(
             dx *
             baixo,
 
+
         y:
             cy +
             dy *
             baixo,
+
 
         dx,
         dy
@@ -2638,9 +3126,12 @@ function encontrarBordaNoAngulo(
 }
 
 
+
+
 // =====================================================
 // ARGOLA + FURO
 // =====================================================
+
 
 function adicionarFuro(
     base,
@@ -2654,18 +3145,22 @@ function adicionarFuro(
             holePosition
         );
 
+
     const raioInterno =
         holeDiameter / 2;
+
 
     const raioExterno =
         raioInterno +
         holeThickness;
+
 
     const sobreposicao =
         Math.max(
             0.6,
             holeThickness
         );
+
 
     const distanciaCentro =
         Math.max(
@@ -2674,15 +3169,18 @@ function adicionarFuro(
             sobreposicao
         );
 
+
     const cx =
         borda.x +
         borda.dx *
         distanciaCentro;
 
+
     const cy =
         borda.y +
         borda.dy *
         distanciaCentro;
+
 
     const externo =
         criarCirculo(
@@ -2691,6 +3189,7 @@ function adicionarFuro(
             raioExterno
         );
 
+
     const unido =
         opNovo(
             base,
@@ -2698,7 +3197,9 @@ function adicionarFuro(
             PathKit.PathOp.UNION
         );
 
+
     externo.delete();
+
 
     const interno =
         criarCirculo(
@@ -2707,6 +3208,7 @@ function adicionarFuro(
             raioInterno
         );
 
+
     const final =
         opNovo(
             unido,
@@ -2714,19 +3216,26 @@ function adicionarFuro(
             PathKit.PathOp.DIFFERENCE
         );
 
+
     unido.delete();
+
 
     interno.delete();
 
+
     final.simplify();
+
 
     return final;
 }
 
 
+
+
 // =====================================================
 // BOUNDS
 // =====================================================
+
 
 function boundsPath(
     path
@@ -2734,22 +3243,28 @@ function boundsPath(
     const b =
         path.computeTightBounds();
 
+
     return {
         minX:
             b.fLeft,
 
+
         minY:
             b.fTop,
+
 
         maxX:
             b.fRight,
 
+
         maxY:
             b.fBottom,
+
 
         width:
             b.fRight -
             b.fLeft,
+
 
         height:
             b.fBottom -
@@ -2758,9 +3273,12 @@ function boundsPath(
 }
 
 
+
+
 // =====================================================
 // GRAVAÇÃO DO EMOJI
 // =====================================================
+
 
 function markupEmoji(
     dPreenchimentos,
@@ -2771,8 +3289,10 @@ function markupEmoji(
     const partes =
         [];
 
+
     const paths =
         [];
+
 
     if (dPreenchimentos) {
         paths.push(
@@ -2780,37 +3300,20 @@ function markupEmoji(
         );
     }
 
+
     if (dTracos) {
         paths.push(
             dTracos
         );
     }
 
+
     if (!paths.length) {
         return "";
     }
 
-    if (
-        estilo ===
-        "filled-blue"
-    ) {
-        for (
-            const d
-            of paths
-        ) {
-            partes.push(`
-<path
-    class="emoji-gravacao"
-    d="${d}"
-    fill="#0000FF"
-    stroke="none"
-    fill-rule="evenodd"
-/>
-            `);
-        }
-    }
 
-    else if (
+    if (
         estilo ===
         "outline-black"
     ) {
@@ -2833,6 +3336,7 @@ function markupEmoji(
         }
     }
 
+
     else {
         for (
             const d
@@ -2853,15 +3357,43 @@ function markupEmoji(
         }
     }
 
+
     return partes.join(
         "\n"
     );
 }
 
 
+
+
+function markupEmojiDuplaCamada(
+    dPreenchimentos,
+    dTracos,
+    tracoEmoji
+) {
+    const paths = [];
+    if (dPreenchimentos) paths.push(dPreenchimentos);
+    if (dTracos) paths.push(dTracos);
+
+    return paths.map(
+        d => `
+<path
+    class="emoji-corte-camada-2"
+    d="${d}"
+    fill="none"
+    stroke="#FF0000"
+    stroke-width="${tracoEmoji}"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill-rule="evenodd"
+/>`.trim()
+    ).join("\n");
+}
+
 // =====================================================
 // RÉGUAS
 // =====================================================
+
 
 function gerarReguaHorizontal(
     larguraMm
@@ -2869,11 +3401,13 @@ function gerarReguaHorizontal(
     reguaHorizontal.innerHTML =
         "";
 
+
     reguaHorizontal.style.width =
         `${
             larguraMm *
             PX_POR_MM
         }px`;
+
 
     for (
         let mm = 0;
@@ -2885,8 +3419,10 @@ function gerarReguaHorizontal(
                 "div"
             );
 
+
         marca.className =
             "tick-horizontal";
+
 
         if (
             mm % 10 === 0
@@ -2895,21 +3431,26 @@ function gerarReguaHorizontal(
                 "maior"
             );
 
+
             const label =
                 document.createElement(
                     "span"
                 );
 
+
             label.className =
                 "label";
 
+
             label.textContent =
                 mm;
+
 
             marca.appendChild(
                 label
             );
         }
+
 
         else if (
             mm % 5 === 0
@@ -2919,11 +3460,13 @@ function gerarReguaHorizontal(
             );
         }
 
+
         marca.style.left =
             `${
                 mm *
                 PX_POR_MM
             }px`;
+
 
         reguaHorizontal.appendChild(
             marca
@@ -2932,17 +3475,21 @@ function gerarReguaHorizontal(
 }
 
 
+
+
 function gerarReguaVertical(
     alturaMm
 ) {
     reguaVertical.innerHTML =
         "";
 
+
     reguaVertical.style.height =
         `${
             alturaMm *
             PX_POR_MM
         }px`;
+
 
     for (
         let mm = 0;
@@ -2954,8 +3501,10 @@ function gerarReguaVertical(
                 "div"
             );
 
+
         marca.className =
             "tick-vertical";
+
 
         if (
             mm % 10 === 0
@@ -2964,21 +3513,26 @@ function gerarReguaVertical(
                 "maior"
             );
 
+
             const label =
                 document.createElement(
                     "span"
                 );
 
+
             label.className =
                 "label";
 
+
             label.textContent =
                 mm;
+
 
             marca.appendChild(
                 label
             );
         }
+
 
         else if (
             mm % 5 === 0
@@ -2988,11 +3542,13 @@ function gerarReguaVertical(
             );
         }
 
+
         marca.style.top =
             `${
                 mm *
                 PX_POR_MM
             }px`;
+
 
         reguaVertical.appendChild(
             marca
@@ -3001,9 +3557,12 @@ function gerarReguaVertical(
 }
 
 
+
+
 // =====================================================
 // PRANCHETA
 // =====================================================
+
 
 function atualizarPrancheta(
     svgPreview,
@@ -3024,6 +3583,7 @@ function atualizarPrancheta(
             10
         );
 
+
     const alturaPranchetaMm =
         Math.max(
             60,
@@ -3038,13 +3598,16 @@ function atualizarPrancheta(
             10
         );
 
+
     const larguraPx =
         larguraPranchetaMm *
         PX_POR_MM;
 
+
     const alturaPx =
         alturaPranchetaMm *
         PX_POR_MM;
+
 
     mesaMedicao.style.width =
         `${
@@ -3052,22 +3615,27 @@ function atualizarPrancheta(
             LARGURA_REGUA_VERTICAL
         }px`;
 
+
     mesaMedicao.style.height =
         `${
             alturaPx +
             ALTURA_REGUA_HORIZONTAL
         }px`;
 
+
     areaMedicao.style.width =
         `${larguraPx}px`;
 
+
     areaMedicao.style.height =
         `${alturaPx}px`;
+
 
     areaMedicao.style.setProperty(
         "--grid-1",
         `${PX_POR_MM}px`
     );
+
 
     areaMedicao.style.setProperty(
         "--grid-5",
@@ -3077,6 +3645,7 @@ function atualizarPrancheta(
         }px`
     );
 
+
     areaMedicao.style.setProperty(
         "--grid-10",
         `${
@@ -3085,19 +3654,24 @@ function atualizarPrancheta(
         }px`
     );
 
+
     const pecaWidth =
         visualBounds.width *
         PX_POR_MM;
+
 
     const pecaHeight =
         visualBounds.height *
         PX_POR_MM;
 
+
     pecaPreview.style.width =
         `${pecaWidth}px`;
 
+
     pecaPreview.style.height =
         `${pecaHeight}px`;
+
 
     pecaPreview.style.left =
         `${
@@ -3108,6 +3682,7 @@ function atualizarPrancheta(
             2
         }px`;
 
+
     pecaPreview.style.top =
         `${
             (
@@ -3117,8 +3692,10 @@ function atualizarPrancheta(
             2
         }px`;
 
+
     pecaPreview.innerHTML =
         svgPreview;
+
 
     medidasPreview.textContent =
         `↔ ${
@@ -3127,9 +3704,11 @@ function atualizarPrancheta(
             boundsPeca.height.toFixed(1)
         } mm`;
 
+
     gerarReguaHorizontal(
         larguraPranchetaMm
     );
+
 
     gerarReguaVertical(
         alturaPranchetaMm
@@ -3137,9 +3716,12 @@ function atualizarPrancheta(
 }
 
 
+
+
 // =====================================================
 // VALIDAÇÕES
 // =====================================================
+
 
 function validarNumero(
     valor,
@@ -3161,111 +3743,145 @@ function validarNumero(
 }
 
 
+
+
 function validarAutor() {
     if (
-        inputIdentificarAutor.checked &&
+        !inputIdentificarAutor.checked ||
         !inputNomeAutor.value.trim()
     ) {
         throw new Error(
-            "Digite o nome do autor."
+            "Informe o nome do autor para gerar os arquivos."
         );
     }
 }
+
+
 
 
 // =====================================================
 // GERAÇÃO
 // =====================================================
 
+
 async function gerarSvg() {
     await inicializarPathKit();
+
 
     const minhaGeracao =
         ++geracaoAtual;
 
+
     const inicio =
         performance.now();
+
 
     botaoBaixar.disabled =
         true;
 
+    botaoBaixarDuplaCamada.disabled =
+        true;
+
+    svgGeradoCamada2 =
+        "";
+
+
     let emoji =
         null;
+
 
     let expandido =
         null;
 
+
     let semHoles =
         null;
+
 
     let base =
         null;
 
+
     let corte =
         null;
+
 
     try {
         const item =
             obterIconeSelecionado();
 
+
         const formato =
             formatoAtual();
+
 
         const tamanho =
             Number(
                 inputTamanho.value
             );
 
+
         const outline =
             Number(
                 inputBorda.value
             );
+
 
         const cardLargura =
             Number(
                 inputCardLargura.value
             );
 
+
         const cardAltura =
             Number(
                 inputCardAltura.value
             );
+
 
         const cardRaio =
             Number(
                 inputCardRaio.value
             );
 
+
         const cardMargem =
             Number(
                 inputCardMargem.value
             );
+
 
         const holeDiameter =
             Number(
                 inputFuro.value
             );
 
+
         const holeOutline =
             Number(
                 inputEspessuraArgola.value
             );
+
 
         const holePosition =
             Number(
                 inputPosicaoArgola.value
             );
 
+
         const estilo =
             selectEstiloEmoji.value;
+
 
         const tracoEmoji =
             Number(
                 inputTracoEmoji.value
             );
 
+
         valorPosicaoArgola.textContent =
             `${holePosition.toFixed(0)}°`;
+
 
         if (
             formato === "chaveiro"
@@ -3275,6 +3891,7 @@ async function gerarSvg() {
                 "Tamanho inválido."
             );
 
+
             validarNumero(
                 outline,
                 "Outline inválido.",
@@ -3282,16 +3899,19 @@ async function gerarSvg() {
             );
         }
 
+
         else {
             validarNumero(
                 cardLargura,
                 "Largura do card inválida."
             );
 
+
             validarNumero(
                 cardAltura,
                 "Altura do card inválida."
             );
+
 
             validarNumero(
                 cardRaio,
@@ -3299,11 +3919,13 @@ async function gerarSvg() {
                 true
             );
 
+
             validarNumero(
                 cardMargem,
                 "Margem interna inválida."
             );
         }
+
 
         if (
             pecaTemArgola()
@@ -3313,25 +3935,25 @@ async function gerarSvg() {
                 "Diâmetro do furo inválido."
             );
 
+
             validarNumero(
                 holeOutline,
                 "Borda do furo inválida."
             );
         }
 
-        if (
-            estilo !== "filled-blue"
-        ) {
-            validarNumero(
-                tracoEmoji,
-                "Espessura do contorno azul inválida."
-            );
-        }
+
+        validarNumero(
+            tracoEmoji,
+            "Espessura do contorno azul inválida."
+        );
+
 
         const dados =
             await carregarEmoji(
                 item
             );
+
 
         if (
             minhaGeracao !==
@@ -3340,9 +3962,11 @@ async function gerarSvg() {
             return;
         }
 
+
         // =========================================
         // EMOJI / BASE
         // =========================================
+
 
         if (
             formato === "chaveiro"
@@ -3353,20 +3977,24 @@ async function gerarSvg() {
                     tamanho
                 );
 
+
             expandido =
                 expandirPath(
                     emoji.completo,
                     outline
                 );
 
+
             semHoles =
                 removerHoles(
                     expandido
                 );
 
+
             base =
                 semHoles.copy();
         }
+
 
         else {
             emoji =
@@ -3377,6 +4005,7 @@ async function gerarSvg() {
                     cardMargem
                 );
 
+
             base =
                 criarCard(
                     cardLargura,
@@ -3385,9 +4014,11 @@ async function gerarSvg() {
                 );
         }
 
+
         // =========================================
         // CORTE / ARGOLA
         // =========================================
+
 
         if (
             pecaTemArgola()
@@ -3401,18 +4032,22 @@ async function gerarSvg() {
                 );
         }
 
+
         else {
             corte =
                 base.copy();
         }
 
+
         const dCorte =
             corte.toSVGString();
+
 
         const bounds =
             boundsPath(
                 corte
             );
+
 
         const dPreenchimentos =
             emoji.preenchimentos
@@ -3420,11 +4055,13 @@ async function gerarSvg() {
                     .toSVGString()
                 : "";
 
+
         const dTracos =
             emoji.tracos
                 ? emoji.tracos
                     .toSVGString()
                 : "";
+
 
         const emojiMarkup =
             markupEmoji(
@@ -3434,15 +4071,30 @@ async function gerarSvg() {
                 tracoEmoji
             );
 
+        const emojiCamada2Markup =
+            markupEmojiDuplaCamada(
+                dPreenchimentos,
+                dTracos,
+                tracoEmoji
+            );
+
+        const boundsEmoji =
+            boundsPath(
+                emoji.completo
+            );
+
+
         const autorMarkup =
             markupAutor(
                 bounds
             );
 
+
         const visual =
             boundsVisual(
                 bounds
             );
+
 
         dimensoesFinais.textContent =
             `Dimensões finais: ${
@@ -3451,9 +4103,11 @@ async function gerarSvg() {
                 bounds.height.toFixed(1)
             } mm`;
 
+
         // =========================================
         // PREVIEW
         // =========================================
+
 
         const svgPreview =
             `
@@ -3476,34 +4130,43 @@ async function gerarSvg() {
         fill-rule="evenodd"
     />
 
+
     ${emojiMarkup}
+
 
     ${autorMarkup}
 </svg>
             `.trim();
 
+
         // =========================================
         // SVG PARA DOWNLOAD
         // =========================================
 
+
         const m =
             MARGEM_SVG_DOWNLOAD_MM;
+
 
         const viewX =
             visual.minX -
             m;
 
+
         const viewY =
             visual.minY -
             m;
+
 
         const viewW =
             visual.width +
             m * 2;
 
+
         const viewH =
             visual.height +
             m * 2;
+
 
         svgGerado =
             `
@@ -3527,13 +4190,36 @@ async function gerarSvg() {
         fill-rule="evenodd"
     />
 
+
     <!-- EMOJI = GRAVAÇÃO -->
     ${emojiMarkup}
+
 
     <!-- AUTOR = GRAVAÇÃO AZUL -->
     ${autorMarkup}
 </svg>
             `.trim();
+
+        const viewEmojiX = boundsEmoji.minX - m;
+        const viewEmojiY = boundsEmoji.minY - m;
+        const viewEmojiW = boundsEmoji.width + m * 2;
+        const viewEmojiH = boundsEmoji.height + m * 2;
+
+        svgGeradoCamada2 =
+            `
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="${viewEmojiX} ${viewEmojiY} ${viewEmojiW} ${viewEmojiH}"
+    width="${viewEmojiW.toFixed(3)}mm"
+    height="${viewEmojiH.toFixed(3)}mm"
+    preserveAspectRatio="xMinYMin meet"
+    shape-rendering="geometricPrecision"
+>
+    <!-- CAMADA 2: DESENHO AZUL CONVERTIDO PARA CORTE VERMELHO -->
+    ${emojiCamada2Markup}
+</svg>
+            `.trim();
+
 
         if (
             minhaGeracao !==
@@ -3542,54 +4228,46 @@ async function gerarSvg() {
             return;
         }
 
+
         atualizarPrancheta(
             svgPreview,
             visual,
             bounds
         );
 
-        // Se a identificação foi ativada sem nome,
-        // a prévia continua funcionando, mas o download
-        // só será liberado quando o nome for preenchido.
 
+        // A prévia continua disponível, mas os arquivos de fabricação
+        // exigem identificação do autor.
         if (
-            inputIdentificarAutor.checked &&
+            !inputIdentificarAutor.checked ||
             !inputNomeAutor.value.trim()
         ) {
-            botaoBaixar.disabled =
-                true;
+            botaoBaixar.disabled = true;
+            botaoBaixarDuplaCamada.disabled = true;
 
             definirMensagem(
-                "Digite o nome do autor para liberar o download.",
+                "Informe o nome do autor para liberar os downloads.",
                 true
             );
         }
-
         else {
-            botaoBaixar.disabled =
-                false;
+            botaoBaixar.disabled = false;
+            botaoBaixarDuplaCamada.disabled = false;
 
             definirMensagem(
-                `${
-                    formato === "card"
-                        ? "Card"
-                        : "Chaveiro"
-                } atualizado em ${
-                    (
-                        performance.now() -
-                        inicio
-                    ).toFixed(0)
-                } ms. Arquivo: ${
-                    gerarNomeArquivoDownload()
-                }`
+                `${formato === "card" ? "Card" : "Chaveiro"} atualizado em ${
+                    (performance.now() - inicio).toFixed(0)
+                } ms. Arquivo: ${gerarNomeArquivoDownload()}`
             );
         }
     }
+
 
     catch (erro) {
         console.error(
             erro
         );
+
 
         if (
             minhaGeracao ===
@@ -3598,8 +4276,10 @@ async function gerarSvg() {
             botaoBaixar.disabled =
                 true;
 
+
             svgGerado =
                 "";
+
 
             definirMensagem(
                 "Erro: " +
@@ -3609,22 +4289,27 @@ async function gerarSvg() {
         }
     }
 
+
     finally {
         if (corte) {
             corte.delete();
         }
 
+
         if (base) {
             base.delete();
         }
+
 
         if (semHoles) {
             semHoles.delete();
         }
 
+
         if (expandido) {
             expandido.delete();
         }
+
 
         destruirConjunto(
             emoji
@@ -3633,69 +4318,83 @@ async function gerarSvg() {
 }
 
 
+
+
 // =====================================================
 // DOWNLOAD
 // =====================================================
 
-function baixarSvg() {
-    if (!svgGerado) {
-        return;
-    }
 
-    try {
-        validarAutor();
-    }
-
-    catch (erro) {
-        definirMensagem(
-            erro.message,
-            true
-        );
-
-        inputNomeAutor.focus();
-
-        return;
-    }
+function baixarConteudoSvg(svg, nomeArquivo) {
+    if (!svg) return;
 
     const conteudo =
         '<?xml version="1.0" encoding="UTF-8"?>\n' +
-        svgGerado;
+        svg;
 
     const blob =
         new Blob(
             [conteudo],
-            {
-                type:
-                    "image/svg+xml;charset=utf-8"
-            }
+            { type: "image/svg+xml;charset=utf-8" }
         );
 
-    const url =
-        URL.createObjectURL(
-            blob
-        );
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
 
-    const link =
-        document.createElement(
-            "a"
-        );
+    link.href = url;
+    link.download = nomeArquivo;
 
-    link.href =
-        url;
-
-    link.download =
-        gerarNomeArquivoDownload();
-
-    document.body.appendChild(
-        link
-    );
-
+    document.body.appendChild(link);
     link.click();
-
     link.remove();
 
-    URL.revokeObjectURL(
-        url
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+
+function baixarSvg() {
+    if (!svgGerado) return;
+
+    try {
+        validarAutor();
+    }
+    catch (erro) {
+        definirMensagem(erro.message, true);
+        inputNomeAutor.focus();
+        return;
+    }
+
+    baixarConteudoSvg(
+        svgGerado,
+        gerarNomeArquivoDownload()
+    );
+}
+
+
+function baixarDuplaCamada() {
+    if (!svgGerado || !svgGeradoCamada2) return;
+
+    try {
+        validarAutor();
+    }
+    catch (erro) {
+        definirMensagem(erro.message, true);
+        inputNomeAutor.focus();
+        return;
+    }
+
+    baixarConteudoSvg(
+        svgGerado,
+        gerarNomeArquivoDuplo1()
+    );
+
+    baixarConteudoSvg(
+        svgGeradoCamada2,
+        gerarNomeArquivoDuplo2()
+    );
+
+    definirMensagem(
+        `Gerados: ${gerarNomeArquivoDuplo1()} e ${gerarNomeArquivoDuplo2()}`
     );
 }
 
@@ -3704,31 +4403,30 @@ function baixarSvg() {
 // UI
 // =====================================================
 
-function atualizarVisibilidadeTraco() {
-    const estilo =
-        selectEstiloEmoji.value;
 
-    controleTraco.classList.toggle(
-        "escondido",
-        estilo ===
-            "filled-blue"
-    );
+function atualizarVisibilidadeTraco() {
+    controleTraco.classList.remove("escondido");
 }
+
+
 
 
 function atualizarInterfaceFormato() {
     const card =
         formatoAtual() === "card";
 
+
     controlesCard.classList.toggle(
         "hidden",
         !card
     );
 
+
     controlesChaveiro.classList.toggle(
         "hidden",
         card
     );
+
 
     if (card) {
         ultimoAnguloChaveiro =
@@ -3736,11 +4434,13 @@ function atualizarInterfaceFormato() {
                 inputPosicaoArgola.value
             );
 
+
         inputPosicaoArgola.value =
             String(
                 ultimoAnguloCard
             );
     }
+
 
     else {
         ultimoAnguloCard =
@@ -3748,11 +4448,13 @@ function atualizarInterfaceFormato() {
                 inputPosicaoArgola.value
             );
 
+
         inputPosicaoArgola.value =
             String(
                 ultimoAnguloChaveiro
             );
     }
+
 
     valorPosicaoArgola.textContent =
         `${
@@ -3761,10 +4463,14 @@ function atualizarInterfaceFormato() {
             ).toFixed(0)
         }°`;
 
+
     atualizarInterfaceArgola();
+
 
     solicitarAtualizacao();
 }
+
+
 
 
 function atualizarInterfaceArgola() {
@@ -3775,6 +4481,8 @@ function atualizarInterfaceArgola() {
 }
 
 
+
+
 function solicitarAtualizacao() {
     if (
         frameAtualizacao !==
@@ -3783,11 +4491,13 @@ function solicitarAtualizacao() {
         return;
     }
 
+
     frameAtualizacao =
         requestAnimationFrame(
             async () => {
                 frameAtualizacao =
                     null;
+
 
                 await gerarSvg();
             }
@@ -3795,22 +4505,30 @@ function solicitarAtualizacao() {
 }
 
 
+
+
 // =====================================================
 // EVENTOS
 // =====================================================
+
 
 selectColecao.addEventListener(
     "change",
     () => {
         atualizarInformacoesColecao();
 
+
         atualizarCabecalhoIcone();
 
+
         renderizarGradeIcones();
+
 
         solicitarAtualizacao();
     }
 );
+
+
 
 
 inputBusca.addEventListener(
@@ -3819,10 +4537,14 @@ inputBusca.addEventListener(
 );
 
 
+
+
 selectCategoria.addEventListener(
     "change",
     renderizarGradeIcones
 );
+
+
 
 
 formatoChaveiro.addEventListener(
@@ -3831,10 +4553,14 @@ formatoChaveiro.addEventListener(
 );
 
 
+
+
 formatoCard.addEventListener(
     "change",
     atualizarInterfaceFormato
 );
+
+
 
 
 inputCardArgola.addEventListener(
@@ -3842,9 +4568,12 @@ inputCardArgola.addEventListener(
     () => {
         atualizarInterfaceArgola();
 
+
         solicitarAtualizacao();
     }
 );
+
+
 
 
 [
@@ -3868,6 +4597,8 @@ inputCardArgola.addEventListener(
 );
 
 
+
+
 inputPosicaoArgola.addEventListener(
     "input",
     () => {
@@ -3876,8 +4607,10 @@ inputPosicaoArgola.addEventListener(
                 inputPosicaoArgola.value
             );
 
+
         valorPosicaoArgola.textContent =
             `${valor.toFixed(0)}°`;
+
 
         if (
             formatoAtual() === "card"
@@ -3886,14 +4619,18 @@ inputPosicaoArgola.addEventListener(
                 valor;
         }
 
+
         else {
             ultimoAnguloChaveiro =
                 valor;
         }
 
+
         solicitarAtualizacao();
     }
 );
+
+
 
 
 selectEstiloEmoji.addEventListener(
@@ -3901,9 +4638,12 @@ selectEstiloEmoji.addEventListener(
     () => {
         atualizarVisibilidadeTraco();
 
+
         solicitarAtualizacao();
     }
 );
+
+
 
 
 inputIdentificarAutor.addEventListener(
@@ -3912,15 +4652,19 @@ inputIdentificarAutor.addEventListener(
         inputNomeAutor.disabled =
             !inputIdentificarAutor.checked;
 
+
         if (
             inputIdentificarAutor.checked
         ) {
             inputNomeAutor.focus();
         }
 
+
         solicitarAtualizacao();
     }
 );
+
+
 
 
 inputNomeAutor.addEventListener(
@@ -3933,9 +4677,12 @@ inputNomeAutor.addEventListener(
                     " "
                 );
 
+
         solicitarAtualizacao();
     }
 );
+
+
 
 
 botaoBaixar.addEventListener(
@@ -3943,26 +4690,45 @@ botaoBaixar.addEventListener(
     baixarSvg
 );
 
+botaoBaixarDuplaCamada.addEventListener(
+    "click",
+    baixarDuplaCamada
+);
+
+
+
 
 // =====================================================
 // INICIALIZAÇÃO
 // =====================================================
 
+
 window.addEventListener(
     "load",
     async () => {
+        if (versaoFerramenta) {
+            versaoFerramenta.textContent =
+                `v${VERSAO_APP}`;
+        }
+
         inputNomeAutor.disabled =
             !inputIdentificarAutor.checked;
 
+
         atualizarInformacoesColecao();
+
 
         atualizarCabecalhoIcone();
 
+
         renderizarGradeIcones();
+
 
         atualizarVisibilidadeTraco();
 
+
         atualizarInterfaceArgola();
+
 
         valorPosicaoArgola.textContent =
             `${
@@ -3971,21 +4737,26 @@ window.addEventListener(
                 ).toFixed(0)
             }°`;
 
+
         try {
             await inicializarPathKit();
 
+
             await gerarSvg();
         }
+
 
         catch (erro) {
             console.error(
                 erro
             );
 
+
             atualizarStatusMotor(
                 "Falha ao carregar o motor vetorial",
                 "erro"
             );
+
 
             definirMensagem(
                 "Erro: " +
